@@ -1,37 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:sodium/bloc/application_bloc.dart';
-import 'package:sodium/bloc/bloc_provider.dart';
-import 'package:sodium/bloc/overview_bloc.dart';
+import 'package:sodium/bloc/application/application_bloc.dart';
+import 'package:sodium/bloc/food_bloc.dart';
+import 'package:sodium/bloc/overview/overview_bloc.dart';
+import 'package:sodium/bloc/provider/bloc_provider.dart';
+import 'package:sodium/constant/styles.dart';
+import 'package:sodium/ui/food_add.dart';
 import 'package:sodium/ui/food_search.dart';
 import 'package:sodium/ui/login_screen.dart';
 import 'package:sodium/ui/main_screen.dart';
 import 'package:sodium/ui/register_screen.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(
+      BlocProvider<ApplicationBloc>(
+        bloc: ApplicationBloc(),
+        child: BlocProvider<OverviewBloc>(
+          bloc: OverviewBloc(),
+          child: BlocProvider<FoodBloc>(
+            bloc: FoodBloc(),
+            child: SodiumApp(),
+          ),
+        ),
+      ),
+    );
 
-class MyApp extends StatelessWidget {
+class SodiumApp extends StatelessWidget {
   final ThemeData themeData = ThemeData(
     fontFamily: 'Kanit',
-    primaryColor: Color(0xFFD0021B),
+    primaryColor: Style.primaryColor,
+    accentColor: Style.primaryColor,
   );
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ApplicationBloc>(
-      bloc: ApplicationBloc(),
-      child: BlocProvider<OverviewBloc>(
-        bloc: OverviewBloc(),
-        child: MaterialApp(
-          title: 'Sodium',
-          theme: themeData,
-          home: MainScreen(),
-          routes: {
-            LoginScreen.route: (_) => LoginScreen(),
-            RegisterScreen.route: (_) => RegisterScreen(),
-            FoodSearchScreen.route: (_) => FoodSearchScreen(),
-          },
-        ),
-      ),
+    return MaterialApp(
+      title: 'Sodium',
+      theme: themeData,
+      home: MainScreen(),
+      routes: {
+        LoginScreen.route: (_) => LoginScreen(),
+        RegisterScreen.route: (_) => RegisterScreen(),
+        FoodSearchScreen.route: (_) => FoodSearchScreen(),
+        FoodAddScreen.route: (_) => FoodAddScreen(),
+      },
     );
   }
 }

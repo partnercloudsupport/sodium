@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:sodium/constant/styles.dart';
 import 'package:sodium/data/model/food.dart';
 import 'package:sodium/ui/common/inkwell_container.dart';
 
-class SelectedFoodItem extends StatelessWidget {
+class FoodTile extends StatelessWidget {
   final Food food;
   final Function onLongPressed;
   final Function onPressed;
 
-  SelectedFoodItem({
+  FoodTile({
     this.food,
     this.onLongPressed,
     this.onPressed,
@@ -15,50 +16,49 @@ class SelectedFoodItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final heading = Expanded(
+      flex: 10,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            '${food.name}',
+            style: tileTitle,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            '${food.type}',
+            style: tileSubtitle,
+            textAlign: TextAlign.right,
+          ),
+        ],
+      ),
+    );
+
+    final trailing = Expanded(
+      flex: 4,
+      child: Text(
+        '${food.sodium} มก.',
+        style: tileTrailing,
+        textAlign: TextAlign.right,
+      ),
+    );
+
     final body = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Expanded(
-          flex: 10,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                food.name,
-                style: TextStyle(fontSize: 17.0, color: Colors.grey.shade700),
-                overflow: TextOverflow.ellipsis,
-              ),
-              Text(
-                '${food.getAmountText()} ${food.unit}',
-                style: TextStyle(fontSize: 14.0, color: Colors.grey.shade500),
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Text(
-            '${food.totalSodium.toStringAsFixed(2)}',
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              fontSize: 16.0,
-              color: Colors.grey.shade500,
-            ),
-          ),
-        )
+        heading,
+        food.isLocal ? trailing : Container(),
       ],
     );
 
     return InkWellContainer(
       onLongPressed: onLongPressed,
       onPressed: onPressed,
-      margin: EdgeInsets.only(bottom: 8.0),
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       highlightColor: Colors.white70,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 8.0),
-        child: body,
-      ),
+      child: body,
     );
   }
 }

@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sodium/bloc/application_bloc.dart';
-import 'package:sodium/bloc/bloc_provider.dart';
+import 'package:sodium/bloc/application/application_bloc.dart';
+import 'package:sodium/bloc/application/application_event.dart';
+import 'package:sodium/bloc/provider/bloc_provider.dart';
 import 'package:sodium/constant/styles.dart';
 import 'package:sodium/data/model/loading_status.dart';
 import 'package:sodium/data/model/user.dart';
@@ -42,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       completer: completer,
     );
 
-    applicationBloc.inRegisterUser.add(registerEvent);
+    applicationBloc.inRegister.add(registerEvent);
   }
 
   @override

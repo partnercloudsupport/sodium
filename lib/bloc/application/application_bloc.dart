@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sodium/bloc/bloc_provider.dart';
+import 'package:sodium/bloc/application/application_event.dart';
+import 'package:sodium/bloc/provider/bloc_provider.dart';
 import 'package:sodium/data/model/loading_status.dart';
 import 'package:sodium/data/model/user.dart';
 import 'package:sodium/data/repository/prefs_repository.dart';
@@ -25,16 +25,16 @@ class ApplicationBloc extends BlocBase {
   Sink<User> get inUpdateUser => _userUpdateController.sink;
 
   BehaviorSubject<Null> _userLogoutController = BehaviorSubject<Null>();
-  Sink<Null> get inLogoutUser => _userLogoutController.sink;
+  Sink<Null> get inLogout => _userLogoutController.sink;
 
-  BehaviorSubject<LoginEvent> _userLoginController = BehaviorSubject<LoginEvent>();
-  Sink<LoginEvent> get inLoginUser => _userLoginController.sink;
+  BehaviorSubject<LoginEvent> _loginController = BehaviorSubject<LoginEvent>();
+  Sink<LoginEvent> get inLogin => _loginController.sink;
 
   BehaviorSubject<LoadingStatus> _loginLoadingController = BehaviorSubject<LoadingStatus>();
   Stream<LoadingStatus> get outLoginLoading => _loginLoadingController.stream;
 
-  BehaviorSubject<RegisterEvent> _userRegisterController = BehaviorSubject<RegisterEvent>();
-  Sink<RegisterEvent> get inRegisterUser => _userRegisterController.sink;
+  BehaviorSubject<RegisterEvent> _registerController = BehaviorSubject<RegisterEvent>();
+  Sink<RegisterEvent> get inRegister => _registerController.sink;
 
   BehaviorSubject<LoadingStatus> _registerLoadingController = BehaviorSubject<LoadingStatus>();
   Stream<LoadingStatus> get outRegisterLoading => _registerLoadingController.stream;
@@ -43,11 +43,11 @@ class ApplicationBloc extends BlocBase {
   ApplicationBloc() {
     _loadToken();
 
-    _userLoginController.listen((LoginEvent event) {
+    _loginController.listen((LoginEvent event) {
       _loginLoadingController.addStream(_login(event));
     });
 
-    _userRegisterController.listen((RegisterEvent event) {
+    _registerController.listen((RegisterEvent event) {
       _registerLoadingController.addStream(_register(event));
     });
 
@@ -118,39 +118,15 @@ class ApplicationBloc extends BlocBase {
     }
   }
 
-
   @override
   void dispose() {
     _tokenController.close();
     _userController.close();
     _userUpdateController.close();
     _userLogoutController.close();
-    _userLoginController.close();
+    _loginController.close();
     _loginLoadingController.close();
-    _userRegisterController.close();
+    _registerController.close();
     _registerLoadingController.close();
   }
-}
-
-class LoginEvent {
-  final String email;
-  final String password;
-  final Completer<Null> completer;
-
-  LoginEvent({
-    @required this.email,
-    @required this.password,
-    this.completer,
-  });
-}
-
-
-class RegisterEvent {
-  final User user;
-  final Completer<Null> completer;
-
-  RegisterEvent({
-    @required this.user,
-    this.completer,
-  });
 }

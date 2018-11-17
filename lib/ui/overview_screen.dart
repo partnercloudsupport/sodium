@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sodium/bloc/bloc_provider.dart';
-import 'package:sodium/bloc/overview_bloc.dart';
+import 'package:sodium/bloc/food_bloc.dart';
+import 'package:sodium/bloc/overview/overview_bloc.dart';
+import 'package:sodium/bloc/provider/bloc_provider.dart';
+import 'package:sodium/constant/styles.dart';
 import 'package:sodium/data/model/food.dart';
+import 'package:sodium/ui/common/loading/shimmer.dart';
 import 'package:sodium/ui/common/section_divider.dart';
 import 'package:sodium/ui/common/selected_food_item.dart';
 import 'package:sodium/ui/common/sodium_pie_chart.dart';
@@ -18,16 +21,22 @@ class OverviewScreen extends StatefulWidget {
 }
 
 class _OverviewScreenState extends State<OverviewScreen> {
+  FoodBloc _foodBloc;
   OverviewBloc _overviewBloc;
+
   ScrollController _scrollController;
   bool _showFab;
 
-  _showFoodSearch(OverviewBloc overviewBloc) {
+  _showFoodSearch(FoodBloc overviewBloc) {
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => FoodSearchScreen()));
   }
 
-  Widget _buildDetailSection() {
-    final detailPart = Column(
+  Widget _buildUpperSection(List<Food> foods) {
+    final totalSodium = foods.fold(0, (accumulated, food) => food.sodium + accumulated);
+    final eaten = double.parse((totalSodium / 3000).toString()) * 100;
+    final remaining = 100 - eaten;
+
+    final detail = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
@@ -35,7 +44,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
           style: TextStyle(fontSize: 16.0),
         ),
         Text(
-          '1800 มก.',
+          '$totalSodium มก.',
           style: TextStyle(
             fontSize: 32.0,
             fontWeight: FontWeight.w500,
@@ -49,27 +58,37 @@ class _OverviewScreenState extends State<OverviewScreen> {
       ],
     );
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        detailPart,
-      ],
+    final pieChart = SodiumPieChart(
+      eaten: eaten,
+      remain: remaining,
+    );
+
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 16.0,
+        horizontal: 8.0,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          detail,
+          pieChart,
+        ],
+      ),
     );
   }
 
   List<Widget> _buildFoodItem(BuildContext context, List<Food> foods) {
     return foods
         .map(
-          (Food food) => SelectedFoodItem(
-                food: food,
-//        onLongPressed: () => _showConfirmDelete(food),
-//        onPressed: () => _showSelectedFoodEditing(food),
-              ),
+          (Food food) => FoodTile(food: food),
         )
         .toList();
   }
 
   Widget _buildFoodsSection(List<Food> foods) {
+    final totalSodium = foods.fold(0, (accumulated, food) => food.sodium + accumulated);
+
     final header = Container(
       padding: EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
@@ -77,10 +96,10 @@ class _OverviewScreenState extends State<OverviewScreen> {
         children: <Widget>[
           Text(
             'รายการอาหาร',
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+            style: title,
           ),
           Text(
-            foods.fold(0.0, (accumulated, food) => food.sodium + accumulated).toStringAsFixed(2),
+            '$totalSodium',
             style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20.0),
           )
         ],
@@ -95,7 +114,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
     final foodItems = _buildFoodItem(context, foods);
     foodContent.addAll(foodItems);
 
-    if (foods.isEmpty) {
+    if (foods.isNotEmpty) {
       final emptyContent = Column(
         children: <Widget>[
           Icon(
@@ -103,7 +122,10 @@ class _OverviewScreenState extends State<OverviewScreen> {
             color: Colors.grey.shade300,
           ),
           SizedBox(height: 16.0),
-          Text('คุณยังไม่ได้เพิ่มรายการอาหาร', style: TextStyle(color: Colors.grey)),
+          Text(
+            'คุณยังไม่ได้เพิ่มรายการอาหาร',
+            style: description,
+          ),
         ],
       );
 
@@ -117,19 +139,6 @@ class _OverviewScreenState extends State<OverviewScreen> {
     );
   }
 
-  Widget _buildUpperSection() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          _buildDetailSection(),
-          SodiumPieChart(),
-        ],
-      ),
-    );
-  }
-
   Widget _buildTrophySection() {
     return Container(
       padding: EdgeInsets.all(16.0),
@@ -137,14 +146,14 @@ class _OverviewScreenState extends State<OverviewScreen> {
         children: <Widget>[
           Text(
             '7 วันที่ผ่านมา',
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+            style: title,
           ),
           Text(
             'คุณสามรถรักษาระดับน้ำตาลได้ 5 วัน',
-            style: TextStyle(fontSize: 14.0, color: Colors.grey),
+            style: description,
           ),
           SizedBox(height: 16.0),
-          TrophyStats()
+          TrophyStats(),
         ],
       ),
     );
@@ -156,14 +165,9 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
     _scrollController = ScrollController();
     _scrollController.addListener(() {
-      if (_scrollController.position.userScrollDirection == ScrollDirection.forward)
-        setState(() {
-          _showFab = true;
-        });
-      else
-        setState(() {
-          _showFab = false;
-        });
+      setState(
+        () => _showFab = _scrollController.position.userScrollDirection == ScrollDirection.forward,
+      );
     });
 
     super.initState();
@@ -177,6 +181,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _foodBloc = BlocProvider.of<FoodBloc>(context);
     _overviewBloc = BlocProvider.of<OverviewBloc>(context);
 
     return Scaffold(
@@ -185,7 +190,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
           ? FloatingActionButton(
               backgroundColor: Theme.of(context).primaryColor,
               child: Icon(Icons.add),
-              onPressed: () => _showFoodSearch(_overviewBloc),
+              onPressed: () => _showFoodSearch(_foodBloc),
             )
           : null,
       body: CustomScrollView(
@@ -195,22 +200,31 @@ class _OverviewScreenState extends State<OverviewScreen> {
             centerTitle: true,
             snap: true,
             floating: true,
-            title: Text(
-              'กิจกรรมวันนี้',
-              style: TextStyle(color: Theme.of(context).primaryColor),
-            ),
-            elevation: .75,
-            backgroundColor: Colors.white,
+            title: Text('กิจกรรมวันนี้'),
+            elevation: 2.5,
+            // backgroundColor: Colors.white,
           ),
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                _buildUpperSection(),
+                StreamBuilder<List<Food>>(
+                  stream: _overviewBloc.outTodayEntry,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return ShimmerLoading.header();
+                    }
+
+                    return _buildUpperSection(snapshot.data);
+                  },
+                ),
                 SectionDivider(),
                 StreamBuilder<List<Food>>(
-                  stream: _overviewBloc.outFoods,
-                  initialData: [],
+                  stream: _overviewBloc.outTodayEntry,
                   builder: ((BuildContext context, AsyncSnapshot snapshot) {
+                    if (!snapshot.hasData) {
+                      return ShimmerLoading.list();
+                    }
+
                     return _buildFoodsSection(snapshot.data);
                   }),
                 ),

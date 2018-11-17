@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sodium/bloc/application_bloc.dart';
-import 'package:sodium/bloc/bloc_provider.dart';
+import 'package:sodium/bloc/application/application_bloc.dart';
+import 'package:sodium/bloc/application/application_event.dart';
+import 'package:sodium/bloc/provider/bloc_provider.dart';
 import 'package:sodium/constant/assets.dart';
 import 'package:sodium/constant/styles.dart';
 import 'package:sodium/data/model/loading_status.dart';
@@ -28,57 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   FocusNode _emailNode;
   FocusNode _passwordNode;
 
-  void _showRegister(BuildContext context) {
-    Navigator.of(context).pushNamed(RegisterScreen.route);
-  }
-
-  void _login(ApplicationBloc applicationBloc) {
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
-
-    Completer<Null> completer = Completer();
-    completer.future.then((_) {
-      showToast('เข้าสู่ระบบสำเร็จ');
-    }).catchError((error) {
-      showToast('เข้าสู่ระบบไม่สำเร็จ');
-    });
-
-    final LoginEvent loginEvent = LoginEvent(
-      email: _emailController.text,
-      password: _passwordController.text,
-      completer: completer,
-    );
-
-    applicationBloc.inLoginUser.add(loginEvent);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    _emailController = TextEditingController(text: 'user@gmail.com');
-    _passwordController = TextEditingController(text: '123456s');
-
-    _emailNode = FocusNode();
-    _passwordNode = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-
-    _emailNode.dispose();
-    _passwordNode.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    ApplicationBloc applicationBloc = BlocProvider.of<ApplicationBloc>(context);
-
+  Widget _buildInitialContent(ApplicationBloc applicationBloc) {
     final _header = Container(
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 16.0),
       width: double.infinity,
@@ -157,22 +108,78 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
 
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _header,
+          _form,
+        ],
+      ),
+    );
+  }
+
+  void _showRegister(BuildContext context) {
+    Navigator.of(context).pushNamed(RegisterScreen.route);
+  }
+
+  void _login(ApplicationBloc applicationBloc) {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    Completer<Null> completer = Completer();
+    completer.future.then((_) {
+      showToast('เข้าสู่ระบบสำเร็จ');
+    }).catchError((error) {
+      showToast('เข้าสู่ระบบไม่สำเร็จ');
+    });
+
+    final LoginEvent loginEvent = LoginEvent(
+      email: _emailController.text,
+      password: _passwordController.text,
+      completer: completer,
+    );
+
+    applicationBloc.inLogin.add(loginEvent);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _emailController = TextEditingController(text: 'user@gmail.com');
+    _passwordController = TextEditingController(text: '123456s');
+
+    _emailNode = FocusNode();
+    _passwordNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+
+    _emailNode.dispose();
+    _passwordNode.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ApplicationBloc applicationBloc = BlocProvider.of<ApplicationBloc>(context);
+
     return Scaffold(
       body: StreamBuilder(
         initialData: LoadingStatus.initial,
         stream: applicationBloc.outLoginLoading,
         builder: (BuildContext context, AsyncSnapshot<LoadingStatus> snapshot) {
+          final loadingStatus = snapshot.data;
+
           return LoadingView(
-            loadingStatus: snapshot.data,
+            loadingStatus: loadingStatus,
             loadingContent: LoadingContent(title: 'กำลังเข้าสู่ระบบ'),
-            initialContent: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  _header,
-                  _form,
-                ],
-              ),
-            ),
+            initialContent: _buildInitialContent(applicationBloc),
           );
         },
       ),

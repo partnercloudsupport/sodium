@@ -1,104 +1,67 @@
-import 'dart:io';
-
 import 'package:meta/meta.dart';
-import 'package:sodium/utils/string_util.dart';
 
 class Food {
   final int id;
   final String name;
-  final double sodium;
   final String unit;
-  final String category;
-  final double totalSodium;
-  final int wholeAmount;
-  final double fractionAmount;
-  final Uri imageUri;
-  final File imageFile;
-
-  Food.fatSecretList({
-    @required this.id,
-    @required this.name,
-    this.unit,
-    this.category,
-    this.sodium,
-    this.totalSodium,
-    this.wholeAmount,
-    this.fractionAmount,
-    this.imageUri,
-    this.imageFile,
-  });
+  final int sodium;
+  final int totalSodium;
+  final String type;
+  final bool isLocal;
+  final int serving;
 
   Food({
     @required this.id,
-    @required this.sodium,
     @required this.name,
-    @required this.unit,
-    @required this.category,
+    this.unit,
+    this.sodium,
     this.totalSodium,
-    this.wholeAmount,
-    this.fractionAmount,
-    this.imageUri,
-    this.imageFile,
+    this.type,
+    this.isLocal,
+    this.serving = 1,
   });
 
-  Food fromAddFood({
-    @required double totalCarb,
-    @required int wholeAmount,
-    @required double fractionAmount,
-    @required Uri imageUri,
-    @required File imageFile,
-  }) {
-    return this.copyWith(
-      totalCarb: totalCarb,
-      wholeAmount: wholeAmount,
-      fractionAmount: fractionAmount,
-      imageUri: imageUri,
-      imageFile: imageFile,
-    );
-  }
+  Food.fromEntry({
+    @required this.id,
+    @required this.name,
+    @required this.sodium,
+    @required this.totalSodium,
+    @required this.type,
+    @required this.isLocal,
+    @required this.serving,
+    this.unit,
+  });
 
   Food copyWith({
     int id,
     String name,
-    double sodium,
     String unit,
-    String category,
-    double totalCarb,
-    int wholeAmount,
-    double fractionAmount,
-    Uri imageUri,
-    File imageFile,
+    int sodium,
+    int totalSodium,
+    String type,
+    bool isLocal,
+    int amount,
   }) {
     return Food(
       id: id ?? this.id,
       name: name ?? this.name,
-      sodium: sodium ?? this.sodium,
       unit: unit ?? this.unit,
-      category: category ?? this.category,
-      totalSodium: totalCarb ?? this.totalSodium,
-      wholeAmount: wholeAmount ?? this.wholeAmount,
-      fractionAmount: fractionAmount ?? this.fractionAmount,
-      imageUri: imageUri ?? this.imageUri,
-      imageFile: imageFile,
+      sodium: sodium ?? this.sodium,
+      totalSodium: totalSodium ?? this.sodium,
+      type: type ?? this.type,
+      isLocal: isLocal ?? this.isLocal,
+      serving: amount ?? this.serving,
     );
-  }
-
-  String getAmountText() {
-    if (this.fractionAmount == 0.0) {
-      return '${this.wholeAmount}';
-    } else {
-      return '${this.wholeAmount} กับ ${fractionDoubleToText(this.fractionAmount)}';
-    }
   }
 
   @override
   String toString() {
-    return 'Food{id: $id, name: $name, sodium: $sodium, unit: $unit, category: $category, totalCarb: $totalSodium, wholeAmount: $wholeAmount, fractionAmount: $fractionAmount, imageUri: $imageUri, imageFile: $imageFile}';
+    return 'Food{id: $id, name: $name, unit: $unit, sodium: $sodium, totalSodium: $totalSodium, type: $type, isLocal: $isLocal, amount: $serving}';
   }
 }
 
 enum FoodCategory {
   FatSecret,
-  Local,
+  Thai,
   Homemade,
 }

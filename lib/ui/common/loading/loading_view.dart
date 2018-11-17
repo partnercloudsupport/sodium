@@ -7,6 +7,7 @@ class LoadingView extends StatelessWidget {
   final Widget loadingContent;
   final Widget errorContent;
   final Widget successContent;
+  final Widget notFoundContent;
 
   LoadingView({
     @required this.loadingStatus,
@@ -14,6 +15,7 @@ class LoadingView extends StatelessWidget {
     @required this.initialContent,
     this.errorContent,
     this.successContent,
+    this.notFoundContent,
   });
 
   @override
@@ -32,6 +34,9 @@ class LoadingView extends StatelessWidget {
         break;
       case LoadingStatus.error:
         content = errorContent ?? initialContent;
+        break;
+      case LoadingStatus.notFound:
+        content = notFoundContent ?? initialContent;
         break;
     }
 

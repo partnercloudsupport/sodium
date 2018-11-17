@@ -4,6 +4,14 @@ import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 class SodiumPieChart extends StatelessWidget {
   final GlobalKey<AnimatedCircularChartState> _chartKey = GlobalKey<AnimatedCircularChartState>();
 
+  final double eaten;
+  final double remain;
+
+  SodiumPieChart({
+    @required this.eaten,
+    @required this.remain,
+  });
+
   @override
   Widget build(BuildContext context) {
     return AnimatedCircularChart(
@@ -14,12 +22,12 @@ class SodiumPieChart extends StatelessWidget {
         CircularStackEntry(
           <CircularSegmentEntry>[
             CircularSegmentEntry(
-              33.33,
+              eaten,
               Theme.of(context).primaryColor,
               rankKey: 'completed',
             ),
             CircularSegmentEntry(
-              66.67,
+              remain,
               Colors.grey,
               rankKey: 'remaining',
             ),

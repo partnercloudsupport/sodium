@@ -17,6 +17,11 @@ class User {
     this.isAdmin = false,
   });
 
+  @override
+  String toString() {
+    return 'User{id: $id, name: $name, email: $email, password: $password, token: $token, isAdmin: $isAdmin}';
+  }
+
   User.register({
     this.id,
     @required this.name,
@@ -42,10 +47,5 @@ class User {
       token: token ?? this.token,
       isAdmin: isAdmin ?? this.isAdmin,
     );
-  }
-
-  @override
-  String toString() {
-    return 'User{email: $email, name: $name, isAdmin: $isAdmin}';
   }
 }

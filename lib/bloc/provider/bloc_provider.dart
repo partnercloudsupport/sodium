@@ -9,10 +9,9 @@ class BlocProvider<T extends BlocBase> extends StatefulWidget {
   final Widget child;
 
   BlocProvider({
-    Key key,
     this.bloc,
     this.child,
-  }) : super(key: key);
+  });
 
   @override
   _BlocProviderState createState() => _BlocProviderState<T>();
