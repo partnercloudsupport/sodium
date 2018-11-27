@@ -5,6 +5,7 @@ class User {
   final String name;
   final String email;
   final String password;
+  final int sodiumLimit;
   final String token;
   final bool isAdmin;
 
@@ -13,20 +14,26 @@ class User {
     this.name,
     this.email,
     this.password,
+    this.sodiumLimit = 2400,
     this.token,
     this.isAdmin = false,
   });
 
+  String toJson() {
+    return 'User{id: $id, name: $name, email: $email, password: $password, sodiumLimit: $sodiumLimit, token: $token, isAdmin: $isAdmin}';
+  }
+
   @override
   String toString() {
-    return 'User{id: $id, name: $name, email: $email, password: $password, token: $token, isAdmin: $isAdmin}';
+    return 'User{id: $id, name: $name, email: $email, password: $password, sodiumLimit: $sodiumLimit, token: $token, isAdmin: $isAdmin}';
   }
 
   User.register({
-    this.id,
     @required this.name,
     @required this.email,
     @required this.password,
+    this.sodiumLimit = 2400,
+    this.id,
     this.token,
     this.isAdmin = false,
   });
@@ -36,6 +43,7 @@ class User {
     String name,
     String email,
     String password,
+    int sodiumLimit,
     String token,
     bool isAdmin,
   }) {
@@ -44,6 +52,7 @@ class User {
       name: name ?? this.name,
       email: email ?? this.email,
       password: password ?? this.password,
+      sodiumLimit: sodiumLimit ?? this.sodiumLimit,
       token: token ?? this.token,
       isAdmin: isAdmin ?? this.isAdmin,
     );

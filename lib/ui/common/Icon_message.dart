@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class IconMessage extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String description;
+  final Icon icon;
+  final Text title;
+  final Text description;
 
   const IconMessage({
-    this.icon,
-    this.title,
+    @required this.icon,
+    @required this.title,
     this.description,
   });
 
@@ -18,16 +18,10 @@ class IconMessage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(icon, size: 64.0),
+          icon,
           SizedBox(height: 20.0),
-          Text(
-            '$title',
-            style: TextStyle(fontSize: 20.0),
-          ),
-          Text(
-            '$description',
-            style: TextStyle(fontSize: 16.0, color: Colors.grey),
-          )
+          title,
+          description != null ? description : Container(),
         ],
       ),
     );

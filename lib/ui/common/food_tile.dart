@@ -7,11 +7,20 @@ class FoodTile extends StatelessWidget {
   final Food food;
   final Function onLongPressed;
   final Function onPressed;
+  final bool search;
 
   FoodTile({
     this.food,
     this.onLongPressed,
     this.onPressed,
+    this.search = true,
+  });
+
+  FoodTile.selected({
+    this.food,
+    this.onLongPressed,
+    this.onPressed,
+    this.search = false,
   });
 
   @override
@@ -26,11 +35,17 @@ class FoodTile extends StatelessWidget {
             style: tileTitle,
             overflow: TextOverflow.ellipsis,
           ),
-          Text(
-            '${food.type}',
-            style: tileSubtitle,
-            textAlign: TextAlign.right,
-          ),
+          search
+              ? Text(
+                  '${food.type}',
+                  style: tileSubtitle,
+                  textAlign: TextAlign.right,
+                )
+              : Text(
+                  '${food.serving} หน่วย',
+                  style: tileSubtitle,
+                  textAlign: TextAlign.right,
+                ),
         ],
       ),
     );
@@ -38,7 +53,7 @@ class FoodTile extends StatelessWidget {
     final trailing = Expanded(
       flex: 4,
       child: Text(
-        '${food.sodium} มก.',
+        '${search ? food.sodium : food.totalSodium} มก.',
         style: tileTrailing,
         textAlign: TextAlign.right,
       ),

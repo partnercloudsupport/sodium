@@ -28,7 +28,7 @@ class SodiumPieChart extends StatelessWidget {
             ),
             CircularSegmentEntry(
               remain,
-              Colors.grey,
+              Colors.grey.shade400,
               rankKey: 'remaining',
             ),
           ],
@@ -37,11 +37,11 @@ class SodiumPieChart extends StatelessWidget {
       ],
       chartType: CircularChartType.Radial,
       percentageValues: true,
-      holeLabel: '75%',
+      holeLabel: '${eaten.toInt()}%',
       labelStyle: TextStyle(
         color: Theme.of(context).primaryColor,
         fontWeight: FontWeight.bold,
-        fontSize: 20.0,
+        fontSize: 24.0,
       ),
     );
   }

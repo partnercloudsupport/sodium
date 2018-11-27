@@ -1,38 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sodium/bloc/food_bloc.dart';
-import 'package:sodium/bloc/overview/overview_bloc.dart';
-import 'package:sodium/bloc/provider/bloc_provider.dart';
+import 'package:redux/redux.dart';
 import 'package:sodium/constant/styles.dart';
 import 'package:sodium/data/model/food.dart';
+import 'package:sodium/data/model/user.dart';
+import 'package:sodium/redux/app/app_state.dart';
+import 'package:sodium/redux/food/food_selector.dart';
+import 'package:sodium/ui/common/Icon_message.dart';
+import 'package:sodium/ui/common/chart/sodium_pie_chart.dart';
+import 'package:sodium/ui/common/food_tile.dart';
 import 'package:sodium/ui/common/loading/shimmer.dart';
 import 'package:sodium/ui/common/section_divider.dart';
-import 'package:sodium/ui/common/selected_food_item.dart';
-import 'package:sodium/ui/common/sodium_pie_chart.dart';
-import 'package:sodium/ui/common/trophy_stats.dart';
-import 'package:sodium/ui/food_search.dart';
+import 'package:sodium/ui/common/week_trophy/week_trophy_container.dart';
+import 'package:sodium/ui/food_search/food_search_screen.dart';
 
 class OverviewScreen extends StatefulWidget {
   static final String route = '/overview';
+
+  final OverviewScreenViewModel viewModel;
+
+  OverviewScreen({this.viewModel});
 
   @override
   _OverviewScreenState createState() => _OverviewScreenState();
 }
 
 class _OverviewScreenState extends State<OverviewScreen> {
-  FoodBloc _foodBloc;
-  OverviewBloc _overviewBloc;
-
   ScrollController _scrollController;
   bool _showFab;
 
-  _showFoodSearch(FoodBloc overviewBloc) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => FoodSearchScreen()));
+  _showFoodSearch() {
+    Navigator.of(context).pushNamed(FoodSearchScreen.route);
   }
 
   Widget _buildUpperSection(List<Food> foods) {
-    final totalSodium = foods.fold(0, (accumulated, food) => food.sodium + accumulated);
+    final totalSodium = foods.fold(0, (accumulated, food) => food.totalSodium + accumulated);
     final eaten = double.parse((totalSodium / 3000).toString()) * 100;
     final remaining = 100 - eaten;
 
@@ -41,7 +44,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
       children: <Widget>[
         Text(
           'ปริมาณโซเดียมที่ได้รับวันนี้',
-          style: TextStyle(fontSize: 16.0),
+          style: title,
         ),
         Text(
           '$totalSodium มก.',
@@ -52,8 +55,8 @@ class _OverviewScreenState extends State<OverviewScreen> {
           ),
         ),
         Text(
-          'ควรรับประทานไม่เกิน 2400 มก. ต่อวัน',
-          style: TextStyle(fontSize: 14.0),
+          'ควรรับประทานไม่เกิน ${widget.viewModel.user.sodiumLimit} มก. ต่อวัน',
+          style: description,
         ),
       ],
     );
@@ -71,37 +74,26 @@ class _OverviewScreenState extends State<OverviewScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          detail,
-          pieChart,
+          Expanded(flex: 7, child: detail),
+          Expanded(flex: 2, child: pieChart),
         ],
       ),
     );
   }
 
   List<Widget> _buildFoodItem(BuildContext context, List<Food> foods) {
-    return foods
-        .map(
-          (Food food) => FoodTile(food: food),
-        )
-        .toList();
+    return foods.map((Food food) => Padding(padding: EdgeInsets.only(bottom: 14.0), child: FoodTile.selected(food: food))).toList();
   }
 
   Widget _buildFoodsSection(List<Food> foods) {
-    final totalSodium = foods.fold(0, (accumulated, food) => food.sodium + accumulated);
-
     final header = Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            'รายการอาหาร',
+            'อาหารที่บริโภควันนี้',
             style: title,
           ),
-          Text(
-            '$totalSodium',
-            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20.0),
-          )
         ],
       ),
     );
@@ -111,28 +103,26 @@ class _OverviewScreenState extends State<OverviewScreen> {
       SizedBox(height: 8.0),
     ];
 
-    final foodItems = _buildFoodItem(context, foods);
+    final foodItems = _buildFoodItem(context, foods.reversed.toList());
     foodContent.addAll(foodItems);
 
-    if (foods.isNotEmpty) {
-      final emptyContent = Column(
-        children: <Widget>[
-          Icon(
-            FontAwesomeIcons.utensils,
-            color: Colors.grey.shade300,
-          ),
-          SizedBox(height: 16.0),
-          Text(
-            'คุณยังไม่ได้เพิ่มรายการอาหาร',
-            style: description,
-          ),
-        ],
+    if (foods.isEmpty) {
+      final emptyMessage = IconMessage(
+        title: Text(
+          'คุณยังไมได้เพิ่มบันทึกอาหาร',
+          style: description,
+        ),
+        icon: Icon(
+          FontAwesomeIcons.utensils,
+          color: Colors.grey.shade300,
+        ),
       );
 
-      foodContent.add(emptyContent);
+      foodContent.add(emptyMessage);
     }
 
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
         children: foodContent,
       ),
@@ -141,19 +131,22 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   Widget _buildTrophySection() {
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: EdgeInsets.symmetric(
+        horizontal: 8.0,
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            '7 วันที่ผ่านมา',
+            'ภาพรวมสัปดาห์นี้',
             style: title,
           ),
           Text(
-            'คุณสามรถรักษาระดับน้ำตาลได้ 5 วัน',
+            'คุณสามารถรักษาระดับน้ำตาลได้ 5 วัน',
             style: description,
           ),
           SizedBox(height: 16.0),
-          TrophyStats(),
+          TrophyWeekContainer(),
         ],
       ),
     );
@@ -181,16 +174,14 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _foodBloc = BlocProvider.of<FoodBloc>(context);
-    _overviewBloc = BlocProvider.of<OverviewBloc>(context);
-
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: _showFab
-          ? FloatingActionButton(
+          ? FloatingActionButton.extended(
               backgroundColor: Theme.of(context).primaryColor,
-              child: Icon(Icons.add),
-              onPressed: () => _showFoodSearch(_foodBloc),
+              icon: Icon(Icons.add),
+              label: Text('เพิ่มบันทึกอาหาร'),
+              onPressed: () => _showFoodSearch(),
             )
           : null,
       body: CustomScrollView(
@@ -207,35 +198,34 @@ class _OverviewScreenState extends State<OverviewScreen> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                StreamBuilder<List<Food>>(
-                  stream: _overviewBloc.outTodayEntry,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return ShimmerLoading.header();
-                    }
-
-                    return _buildUpperSection(snapshot.data);
-                  },
-                ),
-                SectionDivider(),
-                StreamBuilder<List<Food>>(
-                  stream: _overviewBloc.outTodayEntry,
-                  builder: ((BuildContext context, AsyncSnapshot snapshot) {
-                    if (!snapshot.hasData) {
-                      return ShimmerLoading.list();
-                    }
-
-                    return _buildFoodsSection(snapshot.data);
-                  }),
-                ),
+                widget.viewModel.entries != null ? _buildUpperSection(widget.viewModel.entries) : ShimmerLoading.header(),
                 SectionDivider(),
                 _buildTrophySection(),
+                SectionDivider(),
+                widget.viewModel.entries != null ? _buildFoodsSection(widget.viewModel.entries) : ShimmerLoading.list(),
                 SectionDivider(),
               ],
             ),
           )
         ],
       ),
+    );
+  }
+}
+
+class OverviewScreenViewModel {
+  final List<Food> entries;
+  final User user;
+
+  OverviewScreenViewModel({
+    @required this.entries,
+    @required this.user,
+  });
+
+  static OverviewScreenViewModel fromStore(Store<AppState> store) {
+    return OverviewScreenViewModel(
+      entries: todayEntriesSelector(store.state.entries),
+      user: store.state.user,
     );
   }
 }

@@ -38,7 +38,7 @@ class OverviewBloc extends BlocBase {
 
   void _createEntry(CreateEntryEvent event) async {
     try {
-      await _entryRepository.create(event.food);
+      await _entryRepository.createEntry(event.food);
       event.completer.complete(null);
       showToast('บันทึกแล้ว');
       _getEntries();
@@ -49,7 +49,7 @@ class OverviewBloc extends BlocBase {
 
   void _getEntries() async {
     try {
-      final foods = await _entryRepository.getEntries();
+      final foods = await _entryRepository.fetchEntries();
       _inTodayEntry.add(foods);
     } catch (error) {
       print(error);

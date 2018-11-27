@@ -4,13 +4,21 @@ class ValueSelector extends StatefulWidget {
   final int min;
   final int max;
   final initial;
+  final int excessValue;
+  final int values;
   final Function(int value) onValueChange;
+  final Color inactiveColor;
+  final Color activeColor;
 
   ValueSelector({
     this.min = 1,
     this.max = 7,
+    this.excessValue = 2500,
     this.initial = 1,
+    this.activeColor,
+    this.inactiveColor,
     @required this.onValueChange,
+    this.values,
   });
 
   @override
@@ -23,8 +31,9 @@ class _ValueSelectorState extends State<ValueSelector> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> selectors = [];
-
     for (int i = 1; i <= widget.max; ++i) {
+      final bool excessed = (i * widget.values) > widget.excessValue;
+
       selectors.add(
         GestureDetector(
           onTap: () {
@@ -34,8 +43,13 @@ class _ValueSelectorState extends State<ValueSelector> {
             });
           },
           child: Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: CirclePicker(selected: _selectedValue == i ? true : false, content: i.toString()),
+            padding: EdgeInsets.only(right: 8.0),
+            child: CirclePicker(
+              inactiveColor: excessed ? Colors.red.shade100 : widget.inactiveColor,
+              activeColor: excessed ? Colors.redAccent : widget.activeColor,
+              selected: _selectedValue == i ? true : false,
+              content: i.toString(),
+            ),
           ),
         ),
       );
@@ -54,10 +68,14 @@ class _ValueSelectorState extends State<ValueSelector> {
 class CirclePicker extends StatelessWidget {
   final String content;
   final bool selected;
+  final Color inactiveColor;
+  final Color activeColor;
 
   CirclePicker({
     this.content,
     this.selected,
+    this.inactiveColor,
+    this.activeColor,
   });
 
   @override
@@ -70,7 +88,7 @@ class CirclePicker extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: selected ? Theme.of(context).primaryColor : Colors.grey.shade300,
+          color: selected ? activeColor : inactiveColor,
           width: 3.0,
         ),
         color: Colors.white,
@@ -78,7 +96,10 @@ class CirclePicker extends StatelessWidget {
       child: Center(
         child: Text(
           content,
-          style: TextStyle(color: selected ? Theme.of(context).primaryColor : Colors.grey.shade300, fontSize: 18.0),
+          style: TextStyle(
+            color: selected ? activeColor : inactiveColor,
+            fontSize: 18.0,
+          ),
         ),
       ),
     );

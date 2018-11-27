@@ -1,20 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sodium/bloc/application/application_bloc.dart';
-import 'package:sodium/bloc/application/application_event.dart';
-import 'package:sodium/bloc/provider/bloc_provider.dart';
+import 'package:redux/redux.dart';
 import 'package:sodium/constant/assets.dart';
 import 'package:sodium/constant/styles.dart';
-import 'package:sodium/data/model/loading_status.dart';
-import 'package:sodium/ui/common/loading/loading_content.dart';
-import 'package:sodium/ui/common/loading/loading_view.dart';
+import 'package:sodium/redux/app/app_state.dart';
+import 'package:sodium/redux/user/user_action.dart';
+import 'package:sodium/ui/common/loading/loading_dialog.dart';
 import 'package:sodium/ui/common/ripple_button.dart';
 import 'package:sodium/ui/register_screen.dart';
 import 'package:sodium/utils/widget_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String route = '/login';
+
+  final LoginScreenViewModel viewModel;
+
+  LoginScreen({
+    this.viewModel,
+  });
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -29,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   FocusNode _emailNode;
   FocusNode _passwordNode;
 
-  Widget _buildInitialContent(ApplicationBloc applicationBloc) {
+  Widget _buildInitialContent() {
     final _header = Container(
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 16.0),
       width: double.infinity,
@@ -85,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 labelText: "รหัสผ่าน",
               ),
               textInputAction: TextInputAction.done,
-              onFieldSubmitted: (String value) => _login(applicationBloc),
+              onFieldSubmitted: (String value) => _login(),
             ),
           ),
           SizedBox(height: 24.0),
@@ -94,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
             backgroundColor: Theme.of(context).primaryColor,
             highlightColor: Style.highlightColor,
             textColor: Colors.white,
-            onPress: () => _login(applicationBloc),
+            onPress: () => _login(),
           ),
           SizedBox(height: 24.0),
           RippleButton(
@@ -122,25 +126,31 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.of(context).pushNamed(RegisterScreen.route);
   }
 
-  void _login(ApplicationBloc applicationBloc) {
+  void _login() {
     if (!_formKey.currentState.validate()) {
       return;
     }
 
+    showDialog(
+      context: context,
+      builder: (context) => LoadingDialog(title: 'กำลังเข้าสู่ระบบ..'),
+      barrierDismissible: false,
+    );
+
     Completer<Null> completer = Completer();
     completer.future.then((_) {
+      Navigator.of(context).pop();
       showToast('เข้าสู่ระบบสำเร็จ');
     }).catchError((error) {
+      Navigator.of(context).pop();
       showToast('เข้าสู่ระบบไม่สำเร็จ');
     });
 
-    final LoginEvent loginEvent = LoginEvent(
-      email: _emailController.text,
-      password: _passwordController.text,
-      completer: completer,
+    widget.viewModel.onLogin(
+      _emailController.text,
+      _passwordController.text,
+      completer,
     );
-
-    applicationBloc.inLogin.add(loginEvent);
   }
 
   @override
@@ -167,22 +177,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ApplicationBloc applicationBloc = BlocProvider.of<ApplicationBloc>(context);
-
     return Scaffold(
-      body: StreamBuilder(
-        initialData: LoadingStatus.initial,
-        stream: applicationBloc.outLoginLoading,
-        builder: (BuildContext context, AsyncSnapshot<LoadingStatus> snapshot) {
-          final loadingStatus = snapshot.data;
+      body: _buildInitialContent(),
+    );
+  }
+}
 
-          return LoadingView(
-            loadingStatus: loadingStatus,
-            loadingContent: LoadingContent(title: 'กำลังเข้าสู่ระบบ'),
-            initialContent: _buildInitialContent(applicationBloc),
-          );
-        },
-      ),
+class LoginScreenViewModel {
+  final Function(String email, String password, Completer<Null> completer) onLogin;
+
+  LoginScreenViewModel({
+    this.onLogin,
+  });
+
+  static LoginScreenViewModel fromStore(Store<AppState> store) {
+    return LoginScreenViewModel(
+      onLogin: (String email, String password, Completer<Null> completer) => store.dispatch(Login(email, password, completer)),
     );
   }
 }

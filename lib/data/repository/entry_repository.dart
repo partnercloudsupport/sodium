@@ -23,7 +23,7 @@ class EntryRepository {
     _sharedPreferencesRepository = SharedPreferencesRepository();
   }
 
-  Future<List<Food>> getEntries() async {
+  Future<List<Food>> fetchEntries() async {
     final token = await _sharedPreferencesRepository.getToken();
     final response = await _dio.get(
       '/entry',
@@ -36,10 +36,10 @@ class EntryRepository {
     return foods;
   }
 
-  Future<Null> create(Food food) async {
+  Future<Null> createEntry(Food food) async {
     final token = await _sharedPreferencesRepository.getToken();
 
-    await _dio.post(
+    final response = await _dio.post(
       'entry',
       options: Options(headers: {
         HttpHeaders.authorizationHeader: toBearer(token),
@@ -48,6 +48,7 @@ class EntryRepository {
         'food_id': food.id.toString(),
         'food_name': food.name,
         'food_sodium': food.sodium.toString(),
+        'food_type': food.type,
         'total_sodium': food.totalSodium.toString(),
         'is_local': food.isLocal,
         'serving': food.serving,
@@ -64,7 +65,7 @@ class EntryRepository {
       }),
     );
 
-    final List<Food> foods = FoodParser.fromFatSecretJsonArray(response.data);
+    final List<Food> foods = FoodParser.fromSearchJsonArray(response.data);
     return foods;
   }
 }

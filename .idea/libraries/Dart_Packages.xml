@@ -58,6 +58,13 @@
             </list>
           </value>
         </entry>
+        <entry key="clippy_flutter">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/clippy_flutter-1.0.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="collection">
           <value>
             <list>
@@ -100,6 +107,20 @@
             </list>
           </value>
         </entry>
+        <entry key="date_util">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/date_util-0.1.4/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="date_utils">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/date_utils-0.1.0+2/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="dio">
           <value>
             <list>
@@ -121,10 +142,24 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_calendar">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_calendar-0.0.8/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_circular_chart">
           <value>
             <list>
               <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_circular_chart-0.1.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter_redux">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_redux-0.5.2/lib" />
             </list>
           </value>
         </entry>
@@ -254,6 +289,20 @@
             </list>
           </value>
         </entry>
+        <entry key="modal_drawer_handle">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/modal_drawer_handle-1.0.3/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="month_picker_strip">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/month_picker_strip-0.0.3/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="multi_server_socket">
           <value>
             <list>
@@ -324,6 +373,34 @@
             </list>
           </value>
         </entry>
+        <entry key="redux">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/redux-3.0.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="redux_dev_tools">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/redux_dev_tools-0.4.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="redux_remote_devtools">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/redux_remote_devtools-0.0.5/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="rounded_modal">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/rounded_modal-1.0.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="rxdart">
           <value>
             <list>
@@ -380,6 +457,13 @@
             </list>
           </value>
         </entry>
+        <entry key="socketcluster_client">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/socketcluster_client-0.0.3/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="source_map_stack_trace">
           <value>
             <list>
@@ -433,6 +517,13 @@
           <value>
             <list>
               <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/test-1.3.4/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="tuple">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/tuple-1.0.2/lib" />
             </list>
           </value>
         </entry>
@@ -496,15 +587,20 @@
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/charcode-1.1.2/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/charts_common-0.4.0/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/charts_flutter-0.4.0/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/clippy_flutter-1.0.0/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.14.11/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/convert-2.0.2/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/cookie_jar-0.0.6/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-2.0.6/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/csslib-0.14.6/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-0.1.2/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/date_util-0.1.4/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/date_utils-0.1.0+2/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/dio-1.0.6/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/fluro-1.3.5/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_calendar-0.0.8/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_circular_chart-0.1.0/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_redux-0.5.2/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-2.0.9/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-8.1.0/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/front_end-0.1.6/lib" />
@@ -522,6 +618,8 @@
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.3+1/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.1.6/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/mime-0.9.6+2/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/modal_drawer_handle-1.0.3/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/month_picker_strip-0.0.3/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/multi_server_socket-1.0.2/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/node_preamble-1.4.4/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/package_config-1.0.5/lib" />
@@ -532,6 +630,10 @@
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/pool-1.3.6/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/pub_semver-1.4.2/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-2.0.0+1/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/redux-3.0.0/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/redux_dev_tools-0.4.0/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/redux_remote_devtools-0.0.5/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/rounded_modal-1.0.0/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/rxdart-0.19.0/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.4.3/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/shelf-0.7.3+3/lib" />
@@ -539,6 +641,7 @@
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/shelf_static-0.2.8/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/shelf_web_socket-0.2.2+4/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/shimmer-0.0.6/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/socketcluster_client-0.0.3/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/source_map_stack_trace-1.1.5/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/source_maps-0.10.8/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.4.1/lib" />
@@ -547,6 +650,7 @@
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/string_scanner-1.0.4/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/test-1.3.4/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/tuple-1.0.2/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/typed_data-1.1.6/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/utf-0.9.0+5/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.0.8/lib" />

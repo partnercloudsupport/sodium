@@ -1,8 +1,9 @@
 import 'package:sodium/data/model/food.dart';
+import 'package:sodium/utils/date_time_util.dart';
 
 class FoodParser {
-  static List<Food> fromFatSecretJsonArray(List<dynamic> jsonArray) {
-    return jsonArray.map((json) => fromFatSecret(json)).toList();
+  static List<Food> fromSearchJsonArray(List<dynamic> jsonArray) {
+    return jsonArray.map((json) => fromSearch(json)).toList();
   }
 
   static List<Food> fromEntryJsonArray(List<dynamic> jsonArray) {
@@ -16,14 +17,15 @@ class FoodParser {
       id: food['id'],
       name: food['name'],
       sodium: food['sodium'],
-      totalSodium: food['sodium'],
-      type: FoodCategory.FatSecret.toString(),
+      totalSodium: food['total_sodium'],
+      type: food['type'],
       isLocal: food['is_local'],
       serving: food['serving'],
+      dateTime: fromMysqlDateTime(food['date_time']),
     );
   }
 
-  static Food fromFatSecret(dynamic json) {
+  static Food fromSearch(dynamic json) {
     final food = json;
 
     return Food(
@@ -43,7 +45,7 @@ class FoodParser {
       id: int.parse(_food['food_id']),
       name: _food['food_name'],
       unit: 'หน่วย',
-      type: FoodCategory.FatSecret.toString(),
+      type: 'อาหารทั่วไป',
       sodium: _parseSodium(_food['servings']['serving']),
       isLocal: false,
     );

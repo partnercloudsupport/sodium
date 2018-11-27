@@ -1,41 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sodium/constant/styles.dart';
 import 'package:sodium/data/model/food.dart';
 import 'package:sodium/data/model/loading_status.dart';
 import 'package:sodium/ui/common/Icon_message.dart';
+import 'package:sodium/ui/common/food_tile.dart';
 import 'package:sodium/ui/common/loading/loading_content.dart';
 import 'package:sodium/ui/common/loading/loading_view.dart';
-import 'package:sodium/ui/common/selected_food_item.dart';
-import 'package:sodium/ui/food_add.dart';
+import 'package:sodium/ui/entry_add/food_add_container.dart';
 
 class FoodSearchDelegate extends SearchDelegate<Food> {
-  final Stream<List<Food>> foods;
-  final Sink<String> foodsSearch;
-  final Stream<LoadingStatus> foodsSearchLoading;
-  final Sink<Food> foodDetailSearch;
+  final Sink<String> search;
+  final Stream<List<Food>> suggestions;
+  final Stream<LoadingStatus> loadingStatus;
 
   FoodSearchDelegate({
-    @required this.foods,
-    @required this.foodsSearch,
-    @required this.foodsSearchLoading,
-    @required this.foodDetailSearch,
+    @required this.search,
+    @required this.suggestions,
+    @required this.loadingStatus,
   });
 
   void _showFoodDetail(Food food, BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => FoodAddScreen(food: food)));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => FoodAddContainer(food: food)));
   }
 
   void _onFoodPressed(Food food, BuildContext context) {
-    if (!food.isLocal) {
-      foodDetailSearch.add(food);
-    }
-
     _showFoodDetail(food, context);
   }
 
-  Widget _buildSuggestion(LoadingStatus loadingStatus) {
+  Widget _buildFoodSuggestion(LoadingStatus loadingStatus) {
     return StreamBuilder<List<Food>>(
-      stream: foods,
+      stream: suggestions,
       initialData: [],
       builder: (context, snapshot) {
         final foods = snapshot.data;
@@ -45,14 +40,29 @@ class FoodSearchDelegate extends SearchDelegate<Food> {
           loadingContent: LoadingContent(title: 'กำลังค้นหา'),
           successContent: _buildFoodList(foods),
           initialContent: IconMessage(
-            icon: FontAwesomeIcons.search,
-            title: 'ค้นหาอาหาร',
-            description: 'ป้อนคำค้นหาที่ช่องด่านบน',
+            icon: Icon(FontAwesomeIcons.search, size: 64.0),
+            title: Text(
+              'ค้าหาอาหารที่ต้องการ',
+              style: TextStyle(fontSize: 20.0),
+            ),
+            description: Text(
+              'ป้อนคำค้นหาที่ช่องด่านบน',
+              style: description,
+            ),
           ),
           notFoundContent: IconMessage(
-            icon: FontAwesomeIcons.meh,
-            title: 'ไม่พบข้อมูลในรายการอาหาร',
-            description: 'กรุณาลองค้นหาด้วยคำอื่น',
+            icon: Icon(
+              FontAwesomeIcons.meh,
+              size: 64.0,
+            ),
+            title: Text(
+              'ไม่พบอาหารที่ค้นหา',
+              style: TextStyle(fontSize: 20.0),
+            ),
+            description: Text(
+              'กรุณาลองค้นหาด้วยคำอื่น',
+              style: description,
+            ),
           ),
         );
       },
@@ -100,28 +110,18 @@ class FoodSearchDelegate extends SearchDelegate<Food> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return StreamBuilder<List<Food>>(
-      stream: foods,
-      initialData: [],
-      builder: ((BuildContext context, AsyncSnapshot snapshot) {
-        final foods = snapshot.data;
-
-        return _buildFoodList(foods);
-      }),
-    );
+    return Container();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    foodsSearch.add(query);
+    search.add(query);
 
     return StreamBuilder<LoadingStatus>(
-      stream: foodsSearchLoading,
+      stream: loadingStatus,
       initialData: LoadingStatus.initial,
       builder: ((context, snapshot) {
-        final loadingStatus = snapshot.data;
-
-        return _buildSuggestion(loadingStatus);
+        return _buildFoodSuggestion(snapshot.data);
       }),
     );
   }

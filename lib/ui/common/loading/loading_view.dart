@@ -39,7 +39,6 @@ class LoadingView extends StatelessWidget {
         content = notFoundContent ?? initialContent;
         break;
     }
-
     return content;
   }
 }

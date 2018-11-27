@@ -5,12 +5,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPreferencesRepository {
   static final String keyToken = 'token';
 
-  saveToken(String token) async {
+  Future<Null> saveToken(String token) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString(keyToken, token);
   }
 
-  deleteToken() async {
+  Future<Null> deleteToken() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.remove(keyToken);
   }

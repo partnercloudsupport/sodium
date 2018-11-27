@@ -13,24 +13,26 @@ class FoodRepository {
   SharedPreferencesRepository _sharedPreferencesRepository;
 
   FoodRepository() {
+    _sharedPreferencesRepository = SharedPreferencesRepository();
+
     final Options options = Options(baseUrl: Environment.baseApi, headers: {
       HttpHeaders.acceptHeader: HttpConstant.httpApplicationJson,
     });
     _dio = Dio(options);
-
-    _sharedPreferencesRepository = SharedPreferencesRepository();
   }
 
   Future<List<Food>> search(String query) async {
     final token = await _sharedPreferencesRepository.getToken();
     final response = await _dio.get(
       'food/fatsecret?q=$query',
-      options: Options(headers: {
-        HttpHeaders.authorizationHeader: toBearer(token),
-      }),
+      options: Options(
+        headers: {
+          HttpHeaders.authorizationHeader: toBearer(token),
+        },
+      ),
     );
 
-    final List<Food> foods = FoodParser.fromFatSecretJsonArray(response.data);
+    final List<Food> foods = FoodParser.fromSearchJsonArray(response.data);
     return foods;
   }
 
