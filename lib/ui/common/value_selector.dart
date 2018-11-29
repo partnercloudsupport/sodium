@@ -32,7 +32,7 @@ class _ValueSelectorState extends State<ValueSelector> {
   Widget build(BuildContext context) {
     final List<Widget> selectors = [];
     for (int i = 1; i <= widget.max; ++i) {
-      final bool excessed = (i * widget.values) > widget.excessValue;
+      final bool excess = (i * widget.values) > widget.excessValue;
 
       selectors.add(
         GestureDetector(
@@ -45,10 +45,10 @@ class _ValueSelectorState extends State<ValueSelector> {
           child: Padding(
             padding: EdgeInsets.only(right: 8.0),
             child: CirclePicker(
-              inactiveColor: excessed ? Colors.red.shade100 : widget.inactiveColor,
-              activeColor: excessed ? Colors.redAccent : widget.activeColor,
+              inactiveColor: excess ? Colors.red.shade100 : widget.inactiveColor,
+              activeColor: excess ? Colors.redAccent : widget.activeColor,
               selected: _selectedValue == i ? true : false,
-              content: i.toString(),
+              label: i.toString(),
             ),
           ),
         ),
@@ -66,13 +66,13 @@ class _ValueSelectorState extends State<ValueSelector> {
 }
 
 class CirclePicker extends StatelessWidget {
-  final String content;
+  final String label;
   final bool selected;
   final Color inactiveColor;
   final Color activeColor;
 
   CirclePicker({
-    this.content,
+    this.label,
     this.selected,
     this.inactiveColor,
     this.activeColor,
@@ -95,7 +95,7 @@ class CirclePicker extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          content,
+          label,
           style: TextStyle(
             color: selected ? activeColor : inactiveColor,
             fontSize: 18.0,

@@ -7,7 +7,7 @@ import 'package:sodium/constant/styles.dart';
 import 'package:sodium/data/model/food.dart';
 import 'package:sodium/data/model/user.dart';
 import 'package:sodium/redux/app/app_state.dart';
-import 'package:sodium/ui/common/loading/shimmer.dart';
+import 'package:sodium/ui/common/shimmer_content.dart';
 import 'package:sodium/utils/date_time_util.dart';
 
 class WeekTrophy extends StatelessWidget {
@@ -15,10 +15,42 @@ class WeekTrophy extends StatelessWidget {
 
   WeekTrophy({this.viewModel});
 
+  Widget _buildLoading() {
+    final circleShimmer = ShimmerContent(
+      type: ShimmerContentType.circle,
+      width: 32,
+      height: 32,
+      baseColor: Colors.grey.shade200,
+      highlightColor: Colors.grey.shade100,
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        ShimmerContent(type: ShimmerContentType.title),
+        SizedBox(height: 4.0),
+        ShimmerContent(type: ShimmerContentType.description),
+        SizedBox(height: 16.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            circleShimmer,
+            circleShimmer,
+            circleShimmer,
+            circleShimmer,
+            circleShimmer,
+            circleShimmer,
+            circleShimmer,
+          ],
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (viewModel.entries == null) {
-      return ShimmerLoading.header();
+    if (viewModel.isLoading) {
+      return _buildLoading();
     }
 
     final now = DateTime.now();
@@ -64,10 +96,28 @@ class WeekTrophy extends StatelessWidget {
       );
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: trophies,
+      children: <Widget>[
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'ภาพรวมสัปดาห์นี้',
+              style: title,
+            ),
+            Text(
+              'คุณสามารถรักษาระดับน้ำตาลได้ 5 วัน',
+              style: description,
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: trophies,
+        ),
+      ],
     );
   }
 }
@@ -88,13 +138,19 @@ class Trophy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(day, style: tileSubtitle),
-        Icon(FontAwesomeIcons.trophy, color: achieved ? Colors.yellow : Colors.grey.shade300),
-        SizedBox(height: 4.0),
-        Text(today ? 'วันนี้' : '', style: tileSubtitle),
+        SizedBox(height: 16.0),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(day, style: tileSubtitle),
+            Icon(FontAwesomeIcons.trophy, color: achieved ? Colors.yellow : Colors.grey.shade300),
+            SizedBox(height: 4.0),
+            Text(today ? 'วันนี้' : '', style: tileSubtitle),
+          ],
+        )
       ],
     );
   }
@@ -103,16 +159,19 @@ class Trophy extends StatelessWidget {
 class WeekTrophyViewModel {
   final List<Food> entries;
   final User user;
+  final bool isLoading;
 
   WeekTrophyViewModel({
     @required this.entries,
     @required this.user,
+    @required this.isLoading,
   });
 
   static WeekTrophyViewModel fromStore(Store<AppState> store) {
     return WeekTrophyViewModel(
       entries: store.state.entries,
       user: store.state.user,
+      isLoading: store.state.entries == null || store.state.user == null,
     );
   }
 }

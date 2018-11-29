@@ -11,13 +11,26 @@ class Calendar extends StatefulWidget {
   final ValueChanged<DateTime> onDateSelected;
   final ValueChanged<Tuple2<DateTime, DateTime>> onSelectedRangeChange;
   final bool isExpandable;
+  final bool showFixedBody;
   final DayBuilder dayBuilder;
+  final Widget fixedBody;
   final bool showChevronsToChangeRange;
   final bool showTodayAction;
   final bool showCalendarPickerIcon;
   final DateTime initialCalendarDateOverride;
 
-  Calendar({this.onDateSelected, this.onSelectedRangeChange, this.isExpandable: false, this.dayBuilder, this.showTodayAction: true, this.showChevronsToChangeRange: true, this.showCalendarPickerIcon: true, this.initialCalendarDateOverride});
+  Calendar({
+    this.onDateSelected,
+    this.onSelectedRangeChange,
+    this.isExpandable: false,
+    this.dayBuilder,
+    this.showTodayAction: true,
+    this.showChevronsToChangeRange: true,
+    this.showCalendarPickerIcon: true,
+    this.initialCalendarDateOverride,
+    this.showFixedBody: false,
+    this.fixedBody,
+  });
 
   @override
   _CalendarState createState() => _CalendarState();
@@ -205,11 +218,21 @@ class _CalendarState extends State<Calendar> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           nameAndIconRow,
-          ExpansionCrossFade(
-            collapsed: calendarGridView,
-            expanded: calendarGridView,
-            isExpanded: isExpanded,
-          ),
+          widget.showFixedBody
+              ? Container()
+              : ExpansionCrossFade(
+                  collapsed: calendarGridView,
+                  expanded: calendarGridView,
+                  isExpanded: isExpanded,
+                ),
+          widget.showFixedBody
+              ? GestureDetector(
+                  onHorizontalDragStart: (gestureDetails) => beginSwipe(gestureDetails),
+                  onHorizontalDragUpdate: (gestureDetails) => getDirection(gestureDetails),
+                  onHorizontalDragEnd: (gestureDetails) => endSwipe(gestureDetails),
+                  child: widget.fixedBody,
+                )
+              : Container(),
         ],
       ),
     );

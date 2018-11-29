@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sodium/constant/styles.dart';
 import 'package:sodium/data/model/food.dart';
-import 'package:sodium/data/model/loading_status.dart';
+import 'package:sodium/data/model/loading.dart';
 import 'package:sodium/ui/common/Icon_message.dart';
-import 'package:sodium/ui/common/food_tile.dart';
-import 'package:sodium/ui/common/loading/loading_content.dart';
-import 'package:sodium/ui/common/loading/loading_view.dart';
-import 'package:sodium/ui/entry_add/food_add_container.dart';
+import 'package:sodium/ui/common/food/food_tile.dart';
+import 'package:sodium/ui/common/loading/loading.dart';
+import 'package:sodium/ui/common/loading/loading_container.dart';
+import 'package:sodium/ui/screen/entry_add/container.dart';
 
 class FoodSearchDelegate extends SearchDelegate<Food> {
   final Sink<String> search;
@@ -35,9 +35,9 @@ class FoodSearchDelegate extends SearchDelegate<Food> {
       builder: (context, snapshot) {
         final foods = snapshot.data;
 
-        return LoadingView(
+        return LoadingContainer(
           loadingStatus: loadingStatus,
-          loadingContent: LoadingContent(title: 'กำลังค้นหา'),
+          loadingContent: Loading(title: 'กำลังค้นหา'),
           successContent: _buildFoodList(foods),
           initialContent: IconMessage(
             icon: Icon(FontAwesomeIcons.search, size: 64.0),

@@ -38,6 +38,8 @@ Middleware<AppState> _createMentalHealth(MentalRepository mentalHealthsRepositor
       try {
         await mentalHealthsRepository.createEntry(action.mentalHealth);
         action.completer.complete(null);
+
+        store.dispatch(FetchMentalHealths());
       } catch (error) {
         print(error);
         action.completer.completeError(error);

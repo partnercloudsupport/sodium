@@ -35,7 +35,7 @@ Middleware<AppState> _fetchRecentlyUnlockedAchievements(AchievementRepository ac
     if (action is FetchRecentlyUnlockedAcchivements) {
       try {
         final achievements = await achievementRepository.fetchRecentlyUnlockedAchievements();
-        store.state.achievementsRecentlyUnlocked.add(achievements);
+        store.state.achievementsRecentlyUnlockedStream.add(achievements);
       } catch (error) {
         print(error);
       }

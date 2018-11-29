@@ -10,8 +10,7 @@ class LoadingDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-     // title: Text(title),
-      contentPadding: EdgeInsets.symmetric(horizontal: 24.0,vertical: 12.0),
+      contentPadding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       children: <Widget>[
         SizedBox(height: 16.0),
         Row(

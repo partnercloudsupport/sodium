@@ -20,9 +20,7 @@ class RippleButton extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24.0),
       child: Material(
-        borderRadius: BorderRadius.all(
-          Radius.circular(5.0),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
         color: backgroundColor,
         child: InkWell(
           highlightColor: highlightColor,

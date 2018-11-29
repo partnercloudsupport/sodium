@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:sodium/data/model/food.dart';
-import 'package:sodium/ui/entry_add/food_add_screen.dart';
+import 'package:sodium/ui/screen/entry_add/screen.dart';
 
 class FetchEntries {
   final Completer<Null> completer;

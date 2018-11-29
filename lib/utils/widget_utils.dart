@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:sodium/constant/styles.dart';
 import 'package:sodium/data/model/metal.dart';
 
@@ -13,18 +12,6 @@ void showToast(String message) {
     timeInSecForIos: 3,
     bgcolor: "#000000",
     textcolor: '#ffffff',
-  );
-}
-
-Widget shimmer(double width, double height) {
-  return Shimmer.fromColors(
-    baseColor: Colors.grey[200],
-    highlightColor: Colors.grey[50],
-    child: Container(
-      color: Colors.grey[200],
-      height: height,
-      width: width,
-    ),
   );
 }
 
@@ -54,25 +41,25 @@ Icon mentalLevelToIcon(int level) {
   if (level == MentalHealth.levelSad) {
     return Icon(
       FontAwesomeIcons.sadTear,
-      color: Style.sadColor,
+      color: Palette.sad,
       size: 35.0,
     );
   } else if (level == MentalHealth.levelMeh) {
     return Icon(
       FontAwesomeIcons.meh,
-      color: Style.mehColor,
+      color: Palette.meh,
       size: 35.0,
     );
   } else if (level == MentalHealth.levelSmile) {
     return Icon(
       FontAwesomeIcons.smile,
-      color: Style.smileColor,
+      color: Palette.smile,
       size: 35.0,
     );
   } else if (level == MentalHealth.levelSmileBeam) {
     return Icon(
       FontAwesomeIcons.smileBeam,
-      color: Style.smileBeamColor,
+      color: Palette.smileBeam,
       size: 35.0,
     );
   }
@@ -82,14 +69,14 @@ Icon mentalLevelToIcon(int level) {
 
 Color mentalLevelToColor(int level) {
   if (level == MentalHealth.levelSad) {
-    return Style.sadColor;
+    return Palette.sad;
   } else if (level == MentalHealth.levelMeh) {
-    return Style.mehColor;
+    return Palette.meh;
   } else if (level == MentalHealth.levelSmile) {
-    return Style.smileColor;
+    return Palette.smile;
   } else if (level == MentalHealth.levelSmileBeam) {
-    return Style.smileBeamColor;
+    return Palette.smileBeam;
   }
 
-  return Style.smileBeamColor;
+  return Palette.smileBeam;
 }

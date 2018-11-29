@@ -1,5 +1,5 @@
 import 'package:redux/redux.dart';
-import 'package:sodium/data/model/loading_status.dart';
+import 'package:sodium/data/model/loading.dart';
 import 'package:sodium/redux/ui/food_add/food_add_action.dart';
 import 'package:sodium/redux/ui/food_search/food_search_action.dart';
 import 'package:sodium/redux/ui/ui_state.dart';

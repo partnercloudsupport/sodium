@@ -5,13 +5,13 @@ import 'package:sodium/constant/styles.dart';
 import 'package:sodium/redux/app/app_action.dart';
 import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/redux/store.dart';
-import 'package:sodium/ui/food_search/food_search_container.dart';
-import 'package:sodium/ui/food_search/food_search_screen.dart';
-import 'package:sodium/ui/login/login_screen.dart';
-import 'package:sodium/ui/main/main_container.dart';
-import 'package:sodium/ui/overview/overview_container.dart';
-import 'package:sodium/ui/overview/overview_screen.dart';
-import 'package:sodium/ui/register_screen.dart';
+import 'package:sodium/ui/screen/food_search/container.dart';
+import 'package:sodium/ui/screen/food_search/screen.dart';
+import 'package:sodium/ui/screen/login/screen.dart';
+import 'package:sodium/ui/screen/main/container.dart';
+import 'package:sodium/ui/screen/overview/container.dart';
+import 'package:sodium/ui/screen/overview/screen.dart';
+import 'package:sodium/ui/screen/register_screen.dart';
 
 void main() async {
   final store = await createStore();
@@ -34,8 +34,8 @@ class SodiumAppState extends State<SodiumApp> {
   final ThemeData themeData = ThemeData(
     brightness: Brightness.light,
     fontFamily: 'Kanit',
-    primaryColor: Style.primaryColor,
-    accentColor: Style.primaryColor,
+    primaryColor: Palette.primary,
+    accentColor: Palette.primary,
     accentIconTheme: IconThemeData(color: Colors.white),
     primaryTextTheme: TextTheme(title: TextStyle(color: Colors.white)),
     accentTextTheme: TextTheme(title: TextStyle(color: Colors.white)),

@@ -16,7 +16,7 @@ AppState appReducer(AppState state, action) {
     foodSearchResults: foodResultsReducers(state.foodSearchResults, action),
     foodSearchSelected: foodSelectedReducers(state.foodSearchSelected, action),
     achievements: achievementReducers(state.achievements, action),
-    achievementsRecentlyUnlocked: state.achievementsRecentlyUnlocked,
+    achievementsRecentlyUnlockedStream: state.achievementsRecentlyUnlockedStream,
     mentalHealthsStream: state.mentalHealthsStream,
     mentalHealths: mentalHealthReducers(state.mentalHealths, action),
     uiState: uiReducers(state.uiState, action),

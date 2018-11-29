@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sodium/data/model/loading_status.dart';
+import 'package:sodium/data/model/loading.dart';
 
 class FoodSearchState {
   final LoadingStatus loadingStatus;

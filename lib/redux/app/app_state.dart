@@ -15,7 +15,7 @@ class AppState {
   final List<MentalHealth> mentalHealths;
   final UiState uiState;
 
-  final BehaviorSubject<List<Achievement>> achievementsRecentlyUnlocked;
+  final BehaviorSubject<List<Achievement>> achievementsRecentlyUnlockedStream;
   final BehaviorSubject<List<MentalHealth>> mentalHealthsStream;
 
   AppState({
@@ -27,7 +27,7 @@ class AppState {
     this.achievements,
     this.mentalHealths,
     this.uiState,
-    this.achievementsRecentlyUnlocked,
+    this.achievementsRecentlyUnlockedStream,
     this.mentalHealthsStream,
   });
 
@@ -39,8 +39,8 @@ class AppState {
       foodSearchResults: [],
       foodSearchSelected: null,
       achievements: null,
-      mentalHealths: [],
-      achievementsRecentlyUnlocked: BehaviorSubject<List<Achievement>>(),
+      mentalHealths: null,
+      achievementsRecentlyUnlockedStream: BehaviorSubject<List<Achievement>>(),
       mentalHealthsStream: BehaviorSubject<List<MentalHealth>>(),
       uiState: UiState.initial(),
     );
@@ -67,17 +67,8 @@ class AppState {
       uiState: uiState ?? this.uiState,
       achievements: achievements ?? this.achievements,
       mentalHealths: mentalHealths ?? this.mentalHealths,
-      achievementsRecentlyUnlocked: achievementStream ?? this.achievementsRecentlyUnlocked,
+      achievementsRecentlyUnlockedStream: achievementStream ?? this.achievementsRecentlyUnlockedStream,
       mentalHealthsStream: mentalHealthsStream ?? this.mentalHealthsStream,
     );
-  }
-
-  String toJson() {
-    return 'AppState{user: $user, token:  ${null}, entries: $entries, foodSearchResults: ${[]}, foodSearchSelected: $foodSearchSelected, uiState: $uiState}';
-  }
-
-  @override
-  String toString() {
-    return 'AppState{user: $user, token: $token, entries: $entries, foodSearchResults: $foodSearchResults, foodSearchSelected: $foodSearchSelected, uiState: $uiState}';
   }
 }
