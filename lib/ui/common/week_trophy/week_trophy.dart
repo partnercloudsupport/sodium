@@ -58,6 +58,8 @@ class WeekTrophy extends StatelessWidget {
     final weekEnd = now.add(Duration(days: 7 - now.weekday));
     final range = weekEnd.difference(weekStart).inDays;
 
+    int totalTrophy = 0;
+
     final thisWeekEntries = viewModel.entries.where((Food food) => isSameOrBetweenDate(datetime: food.dateTime, from: weekStart, to: weekEnd)).toList();
 
     final List<Widget> trophies = [];
@@ -83,6 +85,10 @@ class WeekTrophy extends StatelessWidget {
       final formatter = DateFormat('EE');
       final dayName = formatter.format(diffDate);
 
+      if (achieved) {
+        totalTrophy++;
+      }
+
       trophies.add(
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
@@ -106,9 +112,22 @@ class WeekTrophy extends StatelessWidget {
               'ภาพรวมสัปดาห์นี้',
               style: title,
             ),
-            Text(
-              'คุณสามารถรักษาระดับน้ำตาลได้ 5 วัน',
-              style: description,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'คุณสามารถรักษาระดับน้ำตาลได้ ',
+                  style: description,
+                ),
+                Text(
+                  '$totalTrophy',
+                  style: titlePrimary,
+                ),
+                Text(
+                  ' วัน',
+                  style: description,
+                ),
+              ],
             ),
           ],
         ),

@@ -10,7 +10,7 @@ import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/ui/common/Icon_message.dart';
 import 'package:sodium/ui/common/calendar/calendar.dart';
 import 'package:sodium/ui/common/chart/week_chart.dart';
-import 'package:sodium/ui/common/chip_selector.dart';
+import 'package:sodium/ui/common/chip.dart';
 import 'package:sodium/ui/common/food/food_tile.dart';
 import 'package:sodium/ui/common/loading/loading_shimmer.dart';
 import 'package:sodium/ui/common/section/section_divider.dart';

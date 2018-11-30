@@ -10,6 +10,7 @@ import 'package:sodium/redux/food/food_action.dart';
 import 'package:sodium/redux/ui/food_search/food_search_state.dart';
 import 'package:sodium/ui/common/Icon_message.dart';
 import 'package:sodium/ui/delelgate/food_search_delelgate.dart';
+import 'package:sodium/ui/screen/food_my/container.dart';
 
 class FoodSearchScreen extends StatefulWidget {
   static final String route = '/food_search';
@@ -44,7 +45,7 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with SingleTickerPr
     );
   }
 
-  Widget _buildContent(LoadingStatus loadingStatus) {
+  Widget _buildGenericFood(LoadingStatus loadingStatus) {
     return Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -69,6 +70,10 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with SingleTickerPr
         )
       ],
     );
+  }
+
+  Widget _buildMyFood() {
+    return MyFoodContainer();
   }
 
   @override
@@ -123,7 +128,8 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with SingleTickerPr
       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildContent(widget.viewModel.state.loadingStatus),
+          _buildGenericFood(widget.viewModel.state.loadingStatus),
+          _buildMyFood(),
         ],
       ),
     );

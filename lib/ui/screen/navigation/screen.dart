@@ -49,7 +49,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
           child: FlatButton(
             onPressed: () {
               Navigator.pop(context);
-              Navigator.pop(context);
+              //  Navigator.pop(context);
             },
             child: Text('ยืนยัน', style: TextStyle(color: Colors.white)),
             color: Theme.of(context).primaryColor,
@@ -129,7 +129,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.smile, color: Colors.grey.shade400, size: 18.0),
-            title: Text('สุขภาพใจ', style: TextStyle(color: _currentIndex == 2 ? Theme.of(context).primaryColor : Colors.grey)),
+            title: Text('สุขภาพจิต', style: TextStyle(color: _currentIndex == 2 ? Theme.of(context).primaryColor : Colors.grey)),
             activeIcon: Icon(FontAwesomeIcons.smile, color: Theme.of(context).primaryColor, size: 18.0),
           ),
           BottomNavigationBarItem(

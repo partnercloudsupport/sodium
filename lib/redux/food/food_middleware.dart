@@ -10,18 +10,21 @@ List<Middleware<AppState>> createFoodMiddleware(
   FoodRepository foodRepository,
   SharedPreferencesRepository sharedPrefRepository,
 ) {
-  final searchFood = _searchFood(foodRepository, sharedPrefRepository);
-  final fetchFoodSelected = _fetchFoodSelected(foodRepository, sharedPrefRepository);
+  final searchFood = _searchFood(foodRepository);
+  final fetchFoodSelected = _fetchFoodSelected(foodRepository);
+  final createUserFood = _createFood(foodRepository);
+  final fetchUserFoods = _fetchUserFoods(foodRepository);
 
   return [
     TypedMiddleware<AppState, SearchFood>(searchFood),
     TypedMiddleware<AppState, FetchFoodSelected>(fetchFoodSelected),
+    TypedMiddleware<AppState, CreateFoodUser>(createUserFood),
+    TypedMiddleware<AppState, FetchFoodsUser>(fetchUserFoods),
   ];
 }
 
 Middleware<AppState> _searchFood(
   FoodRepository foodRepository,
-  SharedPreferencesRepository sharedPrefRepository,
 ) {
   return (Store store, action, NextDispatcher next) async {
     if (action is SearchFood) {
@@ -47,7 +50,6 @@ Middleware<AppState> _searchFood(
 
 Middleware<AppState> _fetchFoodSelected(
   FoodRepository foodRepository,
-  SharedPreferencesRepository sharedPrefRepository,
 ) {
   return (Store store, action, NextDispatcher next) async {
     if (action is FetchFoodSelected) {
@@ -59,6 +61,40 @@ Middleware<AppState> _fetchFoodSelected(
         store.dispatch(SuccessFoodSelected());
       } catch (error) {
         store.dispatch(InitialFoodSelected());
+      }
+
+      next(action);
+    }
+  };
+}
+
+Middleware<AppState> _createFood(
+  FoodRepository foodRepository,
+) {
+  return (Store store, action, NextDispatcher next) async {
+    if (action is CreateFoodUser) {
+      try {
+        await foodRepository.createUserFood(action.food);
+        store.dispatch(FetchFoodsUser());
+
+        action.completer.complete(null);
+      } catch (error) {}
+
+      next(action);
+    }
+  };
+}
+
+Middleware<AppState> _fetchUserFoods(
+  FoodRepository foodRepository,
+) {
+  return (Store store, action, NextDispatcher next) async {
+    if (action is FetchFoodsUser) {
+      try {
+        final foods = await foodRepository.fetchUserFoods();
+        store.dispatch(StoreFoodsUser(foods));
+      } catch (error) {
+        print(error);
       }
 
       next(action);

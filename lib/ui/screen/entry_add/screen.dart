@@ -16,10 +16,10 @@ import 'package:sodium/ui/common/info_item.dart';
 import 'package:sodium/ui/common/loading/loading.dart';
 import 'package:sodium/ui/common/loading/loading_container.dart';
 import 'package:sodium/ui/common/loading/loading_dialog.dart';
+import 'package:sodium/ui/common/number_bar.dart';
 import 'package:sodium/ui/common/ripple_button.dart';
 import 'package:sodium/ui/common/section/section.dart';
 import 'package:sodium/ui/common/section/section_divider.dart';
-import 'package:sodium/ui/common/value_selector.dart';
 import 'package:sodium/utils/widget_utils.dart';
 
 class AddEntryScreen extends StatefulWidget {
@@ -199,7 +199,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
           ),
         ],
       ),
-      body: ValueSelector(
+      body: NumberBar(
         initial: _serving,
         min: 1,
         max: 15,
@@ -208,7 +208,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
         activeColor: Theme.of(context).primaryColor,
         inactiveColor: Colors.grey.shade300,
         onValueChange: (value) {
-          setState(() => _serving = value);
+          setState(() => _serving = value.toInt());
           print('${double.parse(((_serving * food.sodium) / widget.viewModel.user.sodiumLimit).toString())}');
         },
       ),
@@ -253,7 +253,9 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
           ? SingleChildScrollView(
               child: _buildContent(widget.food),
             )
-          : _buildLoadingView(widget.viewModel.state.loadingStatus),
+          : _buildLoadingView(
+              widget.viewModel.state.loadingStatus,
+            ),
     );
   }
 }

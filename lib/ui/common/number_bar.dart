@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class ValueSelector extends StatefulWidget {
+class NumberBar extends StatefulWidget {
   final int min;
   final int max;
   final initial;
   final int excessValue;
   final int values;
-  final Function(int value) onValueChange;
+  final Function(double value) onValueChange;
   final Color inactiveColor;
   final Color activeColor;
 
-  ValueSelector({
+  NumberBar({
     this.min = 1,
     this.max = 7,
     this.excessValue = 2500,
@@ -22,10 +22,10 @@ class ValueSelector extends StatefulWidget {
   });
 
   @override
-  _ValueSelectorState createState() => _ValueSelectorState();
+  _NumberBarState createState() => _NumberBarState();
 }
 
-class _ValueSelectorState extends State<ValueSelector> {
+class _NumberBarState extends State<NumberBar> {
   int _selectedValue = 1;
 
   @override
@@ -39,8 +39,9 @@ class _ValueSelectorState extends State<ValueSelector> {
           onTap: () {
             setState(() {
               _selectedValue = i;
-              widget.onValueChange(i);
             });
+
+            widget.onValueChange(i.toDouble());
           },
           child: Padding(
             padding: EdgeInsets.only(right: 8.0),

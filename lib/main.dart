@@ -5,6 +5,8 @@ import 'package:sodium/constant/styles.dart';
 import 'package:sodium/redux/app/app_action.dart';
 import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/redux/store.dart';
+import 'package:sodium/ui/food_my_add/container.dart';
+import 'package:sodium/ui/food_my_add/screen.dart';
 import 'package:sodium/ui/screen/food_search/container.dart';
 import 'package:sodium/ui/screen/food_search/screen.dart';
 import 'package:sodium/ui/screen/login/screen.dart';
@@ -63,6 +65,7 @@ class SodiumAppState extends State<SodiumApp> {
           LoginScreen.route: (_) => LoginScreen(),
           RegisterScreen.route: (_) => RegisterScreen(),
           FoodSearchScreen.route: (_) => FoodSearchContainer(),
+          MyFoodAddScreen.route: (_) => MyFoodAddContainer(),
         },
       ),
     );

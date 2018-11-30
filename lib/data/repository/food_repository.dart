@@ -48,4 +48,33 @@ class FoodRepository {
     final Food food = FoodParser.fromFatSecretDetail(response.data);
     return food;
   }
+
+  Future<List<Food>> fetchUserFoods() async {
+    final token = await _sharedPreferencesRepository.getToken();
+    final response = await _dio.get(
+      'food',
+      options: Options(headers: {
+        HttpHeaders.authorizationHeader: toBearer(token),
+      }),
+    );
+
+    final foods = FoodParser.fromSearchJsonArray(response.data);
+    return foods;
+  }
+
+  Future<Null> createUserFood(Food food) async {
+    final token = await _sharedPreferencesRepository.getToken();
+    final response = await _dio.post(
+      'food',
+      options: Options(headers: {
+        HttpHeaders.authorizationHeader: toBearer(token),
+      }),
+      data: {
+        'food_name': food.name,
+        'food_sodium': food.sodium.toString(),
+        'food_type': food.type,
+        'is_local': food.isLocal,
+      },
+    );
+  }
 }

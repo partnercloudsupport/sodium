@@ -2,6 +2,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sodium/data/model/acchievement.dart';
 import 'package:sodium/data/model/food.dart';
 import 'package:sodium/data/model/metal.dart';
+import 'package:sodium/data/model/seasoning.dart';
 import 'package:sodium/data/model/user.dart';
 import 'package:sodium/redux/ui/ui_state.dart';
 
@@ -10,7 +11,9 @@ class AppState {
   final String token;
   final List<Food> entries;
   final List<Food> foodSearchResults;
+  final List<Food> userFoods;
   final Food foodSearchSelected;
+  final List<Seasoning> seasonings;
   final List<Achievement> achievements;
   final List<MentalHealth> mentalHealths;
   final UiState uiState;
@@ -24,6 +27,8 @@ class AppState {
     this.entries,
     this.foodSearchResults,
     this.foodSearchSelected,
+    this.userFoods,
+    this.seasonings,
     this.achievements,
     this.mentalHealths,
     this.uiState,
@@ -37,7 +42,9 @@ class AppState {
       token: null,
       entries: null,
       foodSearchResults: [],
+      userFoods: [],
       foodSearchSelected: null,
+      seasonings: [],
       achievements: null,
       mentalHealths: null,
       achievementsRecentlyUnlockedStream: BehaviorSubject<List<Achievement>>(),
@@ -51,7 +58,9 @@ class AppState {
     String token,
     List<Food> entries,
     List<Food> foodSearchResults,
+    List<Food> userFoods,
     Food foodSearchSelected,
+    List<Seasoning> seasonings,
     List<Achievement> achievements,
     List<MentalHealth> mentalHealths,
     BehaviorSubject<BehaviorSubject> achievementStream,
@@ -64,6 +73,8 @@ class AppState {
       entries: entries ?? this.entries,
       foodSearchResults: foodSearchResults ?? this.foodSearchResults,
       foodSearchSelected: foodSearchSelected ?? this.foodSearchSelected,
+      userFoods: userFoods ?? this.userFoods,
+      seasonings: seasonings ?? this.seasonings,
       uiState: uiState ?? this.uiState,
       achievements: achievements ?? this.achievements,
       mentalHealths: mentalHealths ?? this.mentalHealths,

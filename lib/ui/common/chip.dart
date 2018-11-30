@@ -7,7 +7,7 @@ class ChipSelector extends StatelessWidget {
 
   const ChipSelector({
     this.onTap,
-    this.selected,
+    this.selected = false,
     this.label,
   });
 
@@ -18,8 +18,8 @@ class ChipSelector extends StatelessWidget {
       child: Container(
         child: Chip(
           shape: StadiumBorder(),
-          backgroundColor: selected ? Theme.of(context).primaryColor : Colors.grey.shade300,
-          label: Text(label, style: TextStyle(color: selected ? Colors.white : Colors.grey.shade500)),
+          backgroundColor: selected ? Theme.of(context).primaryColor : Colors.grey.shade200,
+          label: Text(label, style: TextStyle(color: selected ? Colors.white : Colors.grey.shade600)),
         ),
       ),
     );

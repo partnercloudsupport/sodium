@@ -2,6 +2,7 @@ import 'package:redux/redux.dart';
 import 'package:sodium/data/model/user.dart';
 import 'package:sodium/data/repository/prefs_repository.dart';
 import 'package:sodium/data/repository/user_repository.dart';
+import 'package:sodium/redux/app/app_action.dart';
 import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/redux/token/token_action.dart';
 import 'package:sodium/redux/user/user_action.dart';
@@ -37,6 +38,8 @@ Middleware<AppState> _login(
 
         await sharedPrefRepository.saveToken(user.token);
         store.dispatch(StoreToken(user.token));
+
+        store.dispatch(Init());
 
         action.completer.complete(null);
       } catch (error) {

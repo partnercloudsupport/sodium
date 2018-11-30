@@ -12,7 +12,7 @@ class Food {
   final DateTime dateTime;
 
   Food({
-    @required this.id,
+    this.id,
     @required this.name,
     this.unit,
     this.sodium,
@@ -61,7 +61,7 @@ class Food {
 
   @override
   String toString() {
-    return ' date : $dateTime , total_sodum : $totalSodium , food_id : $id';
+    return 'Food{id: $id, name: $name, unit: $unit, sodium: $sodium, totalSodium: $totalSodium, type: $type, isLocal: $isLocal, serving: $serving, dateTime: $dateTime}';
   }
 
   @override

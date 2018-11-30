@@ -98,7 +98,7 @@ class _MentalHealthStatsScreenState extends State<MentalHealthStatsScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('สุขภาพใจ'),
+        title: Text('สุขภาพจิต'),
         elevation: .3,
       ),
       body: Container(
@@ -106,9 +106,9 @@ class _MentalHealthStatsScreenState extends State<MentalHealthStatsScreen> {
         child: ListView(
           shrinkWrap: true,
           children: <Widget>[
-            widget.viewModel.isLoadding ? _buildMentalCalendarLoading() : _buildMentalCalendar(),
+            widget.viewModel.isLoading ? _buildMentalCalendarLoading() : _buildMentalCalendar(),
             SizedBox(height: 24.0),
-            widget.viewModel.isLoadding ? ShimmerLoading.circle() : _buildMentalOverview(),
+            widget.viewModel.isLoading ? ShimmerLoading.circle() : _buildMentalOverview(),
           ],
         ),
       ),
@@ -118,17 +118,17 @@ class _MentalHealthStatsScreenState extends State<MentalHealthStatsScreen> {
 
 class MentalHealthScreenViewModel {
   final List<MentalHealth> mentalHealths;
-  final bool isLoadding;
+  final bool isLoading;
 
   MentalHealthScreenViewModel({
     this.mentalHealths,
-    this.isLoadding,
+    this.isLoading,
   });
 
   static MentalHealthScreenViewModel fromStore(Store<AppState> store) {
     return MentalHealthScreenViewModel(
       mentalHealths: store.state.mentalHealths,
-      isLoadding: store.state.mentalHealths == null,
+      isLoading: store.state.mentalHealths == null,
     );
   }
 }

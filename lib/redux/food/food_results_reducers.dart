@@ -6,9 +6,6 @@ final foodResultsReducers = combineReducers<List<Food>>([
   TypedReducer<List<Food>, StoreFoodResults>(_storeFoodSearchResults),
 ]);
 
-List<Food> _storeFoodSearchResults(
-  List<Food> state,
-  StoreFoodResults action,
-) {
+List<Food> _storeFoodSearchResults(List<Food> state, StoreFoodResults action) {
   return action.foods;
 }
