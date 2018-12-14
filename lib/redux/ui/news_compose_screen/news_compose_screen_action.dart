@@ -1,0 +1,3 @@
+class ShowNewsComposeLoading {}
+
+class SuccessNewsComposeLoading {}

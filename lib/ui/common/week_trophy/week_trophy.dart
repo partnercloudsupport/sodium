@@ -110,22 +110,22 @@ class WeekTrophy extends StatelessWidget {
           children: <Widget>[
             Text(
               'ภาพรวมสัปดาห์นี้',
-              style: title,
+              style: Style.title,
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
                   'คุณสามารถรักษาระดับน้ำตาลได้ ',
-                  style: description,
+                  style: Style.description,
                 ),
                 Text(
                   '$totalTrophy',
-                  style: titlePrimary,
+                  style: Style.titlePrimary,
                 ),
                 Text(
                   ' วัน',
-                  style: description,
+                  style: Style.description,
                 ),
               ],
             ),
@@ -164,10 +164,10 @@ class Trophy extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(day, style: tileSubtitle),
+            Text(day, style: Style.tileSubtitle),
             Icon(FontAwesomeIcons.trophy, color: achieved ? Colors.yellow : Colors.grey.shade300),
             SizedBox(height: 4.0),
-            Text(today ? 'วันนี้' : '', style: tileSubtitle),
+            Text(today ? 'วันนี้' : '', style: Style.tileSubtitle),
           ],
         )
       ],

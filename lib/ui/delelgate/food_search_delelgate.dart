@@ -47,7 +47,7 @@ class FoodSearchDelegate extends SearchDelegate<Food> {
             ),
             description: Text(
               'ป้อนคำค้นหาที่ช่องด่านบน',
-              style: description,
+              style: Style.description,
             ),
           ),
           notFoundContent: IconMessage(
@@ -61,7 +61,7 @@ class FoodSearchDelegate extends SearchDelegate<Food> {
             ),
             description: Text(
               'กรุณาลองค้นหาด้วยคำอื่น',
-              style: description,
+              style: Style.description,
             ),
           ),
         );

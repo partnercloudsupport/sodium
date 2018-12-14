@@ -44,7 +44,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
       children: <Widget>[
         Text(
           'ปริมาณโซเดียมที่ได้รับวันนี้',
-          style: title,
+          style: Style.title,
         ),
         Text(
           '$totalSodium มก.',
@@ -56,7 +56,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
         ),
         Text(
           'ควรรับประทานไม่เกิน ${widget.viewModel.user.sodiumLimit} มก. ต่อวัน',
-          style: description,
+          style: Style.description,
         ),
       ],
     );
@@ -99,7 +99,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
         children: <Widget>[
           Text(
             'อาหารที่บริโภควันนี้',
-            style: title,
+            style: Style.title,
           ),
         ],
       ),
@@ -117,7 +117,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
       final emptyMessage = IconMessage(
         title: Text(
           'คุณยังไมได้เพิ่มบันทึกอาหาร',
-          style: description,
+          style: Style.description,
         ),
         icon: Icon(
           FontAwesomeIcons.utensils,

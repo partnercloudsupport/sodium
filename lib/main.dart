@@ -5,12 +5,14 @@ import 'package:sodium/constant/styles.dart';
 import 'package:sodium/redux/app/app_action.dart';
 import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/redux/store.dart';
-import 'package:sodium/ui/food_my_add/container.dart';
-import 'package:sodium/ui/food_my_add/screen.dart';
+import 'package:sodium/ui/food_user_add/container.dart';
+import 'package:sodium/ui/food_user_add/screen.dart';
 import 'package:sodium/ui/screen/food_search/container.dart';
 import 'package:sodium/ui/screen/food_search/screen.dart';
 import 'package:sodium/ui/screen/login/screen.dart';
 import 'package:sodium/ui/screen/main/container.dart';
+import 'package:sodium/ui/screen/news_compose/news_add_container.dart';
+import 'package:sodium/ui/screen/news_compose/news_compose_screen.dart';
 import 'package:sodium/ui/screen/overview/container.dart';
 import 'package:sodium/ui/screen/overview/screen.dart';
 import 'package:sodium/ui/screen/register_screen.dart';
@@ -66,6 +68,7 @@ class SodiumAppState extends State<SodiumApp> {
           RegisterScreen.route: (_) => RegisterScreen(),
           FoodSearchScreen.route: (_) => FoodSearchContainer(),
           MyFoodAddScreen.route: (_) => MyFoodAddContainer(),
+          NewsComposeScreen.route: (_) => NewsComposeContainer(),
         },
       ),
     );

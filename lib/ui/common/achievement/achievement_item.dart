@@ -34,7 +34,7 @@ class AchievementItem extends StatelessWidget {
           ),
         ),
         SizedBox(width: 8.0),
-        Text(label, style: achieved ? descriptionPrimary : description),
+        Text(label, style: achieved ? Style.descriptionPrimary : Style.description),
       ],
     );
 
@@ -50,7 +50,7 @@ class AchievementItem extends StatelessWidget {
           ),
         ),
         SizedBox(height: 8.0),
-        Text(label, style: achieved ? descriptionPrimary : description)
+        Text(label, style: achieved ? Style.descriptionPrimary : Style.description)
       ],
     );
 

@@ -11,7 +11,7 @@ class ShimmerLoading extends StatelessWidget {
 
   ShimmerLoading.list({this.type = ShimmerType.list});
 
-  ShimmerLoading.calendar({this.type = ShimmerType.calendar});
+  ShimmerLoading.square({this.type = ShimmerType.square});
 
   ShimmerLoading.navigationHeader({this.type = ShimmerType.navigationHeader});
 
@@ -200,7 +200,7 @@ class ShimmerLoading extends StatelessWidget {
       return _buildListShimmer();
     }
 
-    if (type == ShimmerType.calendar) {
+    if (type == ShimmerType.square) {
       return _buildCalendarShimmer();
     }
 
@@ -227,7 +227,7 @@ class ShimmerLoading extends StatelessWidget {
 enum ShimmerType {
   header,
   list,
-  calendar,
+  square,
   navigationHeader,
   chart,
   sixSides,

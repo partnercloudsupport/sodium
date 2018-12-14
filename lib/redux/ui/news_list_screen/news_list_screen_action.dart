@@ -1,0 +1,3 @@
+class ShowNewsListLoading {}
+
+class SuccessNewsListLoading {}

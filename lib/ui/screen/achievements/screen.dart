@@ -44,7 +44,7 @@ class _AchievementScreenState extends State<AchievementsScreen> {
 
   Widget _buildSodiumBalancingSection() {
     return SectionContainer(
-      title: Text('รักษาระดับโซเดียมติดต่อกัน', style: title),
+      title: Text('รักษาระดับโซเดียมติดต่อกัน', style: Style.title),
       body: Container(
         height: 110.0,
         child: ListView(

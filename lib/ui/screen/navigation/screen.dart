@@ -11,6 +11,7 @@ import 'package:sodium/ui/screen/achievements/container.dart';
 import 'package:sodium/ui/screen/entry_stats/container.dart';
 import 'package:sodium/ui/screen/mental_health_stats/container.dart';
 import 'package:sodium/ui/screen/mental_health_survey/container.dart';
+import 'package:sodium/ui/screen/news_list/news_list_container.dart';
 import 'package:sodium/ui/screen/overview/container.dart';
 import 'package:sodium/utils/date_time_util.dart';
 
@@ -101,13 +102,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _children = [
-      OverviewContainer(),
-      EntryStatsContainer(),
-      MentalHealthContainer(),
-      AchievementsContainer(),
-      Text('me'),
-    ];
+    _children = [OverviewContainer(), EntryStatsContainer(), MentalHealthContainer(), AchievementsContainer(), NewsListContainer()];
 
     return Scaffold(
       body: _children[_currentIndex],
@@ -138,9 +133,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
             title: Text('ความสำเร็จ', style: TextStyle(color: _currentIndex == 3 ? Theme.of(context).primaryColor : Colors.grey)),
           ),
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.user, color: Colors.grey.shade400, size: 18.0),
-            activeIcon: Icon(FontAwesomeIcons.user, color: Theme.of(context).primaryColor, size: 18.0),
-            title: Text('ฉัน', style: TextStyle(color: _currentIndex == 4 ? Theme.of(context).primaryColor : Colors.grey)),
+            icon: Icon(FontAwesomeIcons.newspaper, color: Colors.grey.shade400, size: 18.0),
+            activeIcon: Icon(FontAwesomeIcons.newspaper, color: Theme.of(context).primaryColor, size: 18.0),
+            title: Text('ข่าวสาร', style: TextStyle(color: _currentIndex == 4 ? Theme.of(context).primaryColor : Colors.grey)),
           ),
         ],
       ),

@@ -2,15 +2,17 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-TextStyle description = TextStyle(fontSize: 16.0, color: Colors.grey);
-TextStyle descriptionPrimary = TextStyle(fontSize: 16.0, color: Palette.primary);
+class Style {
+  static TextStyle description = TextStyle(fontSize: 16.0, color: Colors.grey);
+  static TextStyle descriptionPrimary = TextStyle(fontSize: 16.0, color: Palette.primary);
 
-TextStyle title = TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500, color: Colors.grey.shade800);
-TextStyle titlePrimary = title.copyWith(color: Palette.primary);
+  static TextStyle title = TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500, color: Colors.grey.shade800, fontFamily: 'Kanit');
+  static TextStyle titlePrimary = title.copyWith(color: Palette.primary);
 
-TextStyle tileTitle = TextStyle(fontSize: 18.0, color: Colors.grey.shade800);
-TextStyle tileSubtitle = TextStyle(fontSize: 14.0, color: Colors.grey.shade500);
-TextStyle tileTrailing = TextStyle(fontSize: 16.0, color: Colors.grey.shade500);
+  static TextStyle tileTitle = TextStyle(fontSize: 18.0, color: Colors.grey.shade800);
+  static TextStyle tileSubtitle = TextStyle(fontSize: 14.0, color: Colors.grey.shade500);
+  static TextStyle tileTrailing = TextStyle(fontSize: 16.0, color: Colors.grey.shade500);
+}
 
 class Palette {
   static final Color primary = Color(0xFF00CB7B);

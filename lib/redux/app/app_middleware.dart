@@ -7,6 +7,7 @@ import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/redux/entry/entry_action.dart';
 import 'package:sodium/redux/food/food_action.dart';
 import 'package:sodium/redux/mental/mental_action.dart';
+import 'package:sodium/redux/news/news_action.dart';
 import 'package:sodium/redux/seasoning/seasoning_action.dart';
 import 'package:sodium/redux/token/token_action.dart';
 import 'package:sodium/redux/user/user_action.dart';
@@ -38,6 +39,7 @@ Middleware<AppState> _init(
           store.dispatch(FetchAchievements());
           store.dispatch(FetchRecentlyUnlockedAcchivements());
           store.dispatch(FetchMentalHealths());
+          store.dispatch(FetchNews());
           store.dispatch(FetchSeasonings());
           store.dispatch(FetchFoodsUser());
         }

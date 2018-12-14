@@ -7,7 +7,7 @@ class UserParser {
       email: json['email'],
       name: json['name'],
       token: json['token'] ?? null,
-      isAdmin: json['isAdmin'],
+      isAdmin: json['is_admin'],
       sodiumLimit: json['sodium_limit'],
     );
   }

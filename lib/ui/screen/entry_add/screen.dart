@@ -42,32 +42,32 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
       InfoItem(
         title: Text(
           'วันนี้',
-          style: tileTitle,
+          style: Style.tileTitle,
         ),
         info: Text(
           '${widget.viewModel.todayEatenSodium} มก.',
-          style: description,
+          style: Style.description,
         ),
       ),
       InfoItem(
         title: Text(
           'มื้อนี้',
-          style: tileTitle,
+          style: Style.tileTitle,
         ),
         info: Text(
           '$entrySodium มก.',
-          style: description,
+          style: Style.description,
         ),
       ),
       SectionDivider(),
       InfoItem(
         title: Text(
           'รวม',
-          style: tileTitle,
+          style: Style.tileTitle,
         ),
         info: Text(
           '$totalSodium มก.',
-          style: description,
+          style: Style.description,
         ),
       )
     ];
@@ -139,7 +139,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
       ),
       body: Text(
         '${widget.food.type}',
-        style: tileTitle,
+        style: Style.tileTitle,
       ),
     );
 
@@ -151,7 +151,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
             children: <Widget>[
               Text(
                 remaining >= 0 ? 'บริโภคได้อีก' : 'บริโภคเกินมา',
-                style: title,
+                style: Style.title,
               ),
               SizedBox(width: 4.0),
               GestureDetector(
@@ -191,7 +191,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
         children: <Widget>[
           Text(
             'เลือกจำนวนที่รับประทาน',
-            style: title,
+            style: Style.title,
           ),
           Text(
             '${(_serving * food.sodium).toString()} มก.',

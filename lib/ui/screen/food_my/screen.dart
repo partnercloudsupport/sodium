@@ -12,7 +12,7 @@ import 'package:sodium/ui/common/Icon_message.dart';
 import 'package:sodium/ui/common/food/food_tile.dart';
 import 'package:sodium/ui/common/loading/loading.dart';
 import 'package:sodium/ui/common/loading/loading_container.dart';
-import 'package:sodium/ui/food_my_add/screen.dart';
+import 'package:sodium/ui/food_user_add/screen.dart';
 import 'package:sodium/ui/screen/entry_add/container.dart';
 
 class MyFoodScreen extends StatefulWidget {
@@ -69,7 +69,7 @@ class _MyFoodScreenState extends State<MyFoodScreen> {
         ),
         description: Text(
           'ป้อนคำค้นหาที่ช่องด่านบน',
-          style: description,
+          style: Style.description,
         ),
       ),
       notFoundContent: IconMessage(
@@ -83,7 +83,7 @@ class _MyFoodScreenState extends State<MyFoodScreen> {
         ),
         description: Text(
           'กรุณาลองค้นหาด้วยคำอื่น',
-          style: description,
+          style: Style.description,
         ),
       ),
     );

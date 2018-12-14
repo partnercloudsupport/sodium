@@ -27,7 +27,7 @@ class MentalOverviewItem extends StatelessWidget {
 
     final text = Text(
       '$label',
-      style: description,
+      style: Style.description,
     );
 
     return Column(

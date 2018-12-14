@@ -5,6 +5,7 @@ import 'package:sodium/redux/food/food_results_reducers.dart';
 import 'package:sodium/redux/food/food_selected_reducers.dart';
 import 'package:sodium/redux/food/food_user_reducer.dart';
 import 'package:sodium/redux/mental/mental_reducers.dart';
+import 'package:sodium/redux/news/news_reducer.dart';
 import 'package:sodium/redux/seasoning/seasoning_reducers.dart';
 import 'package:sodium/redux/token/token_reducers.dart';
 import 'package:sodium/redux/ui/ui_reducer.dart';
@@ -22,6 +23,7 @@ AppState appReducer(AppState state, action) {
     achievements: achievementReducers(state.achievements, action),
     achievementsRecentlyUnlockedStream: state.achievementsRecentlyUnlockedStream,
     mentalHealthsStream: state.mentalHealthsStream,
+    news: newsReducers(state.news, action),
     mentalHealths: mentalHealthReducers(state.mentalHealths, action),
     uiState: uiReducers(state.uiState, action),
   );

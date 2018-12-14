@@ -54,11 +54,11 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with SingleTickerPr
           icon: Icon(FontAwesomeIcons.search, size: 64.0),
           title: Text(
             'ค้นหาอาหารที่ต้องการ',
-            style: title,
+            style: Style.title,
           ),
           description: Text(
             'กดปุ่มด้านล่างเพื่อค้นหา',
-            style: description,
+            style: Style.description,
           ),
         ),
         SizedBox(height: 32.0),

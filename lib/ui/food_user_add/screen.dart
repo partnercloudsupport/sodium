@@ -102,9 +102,9 @@ class _MyFoodAddScreenState extends State<MyFoodAddScreen> {
         .map((Seasoning seasoning) => Padding(
               padding: EdgeInsets.only(bottom: 14.0),
               child: Tile(
-                title: Text('${seasoning.name}', style: tileTitle),
-                subtitle: Text('${seasoning.selectedAmount.toInt()} ${seasoning.unit.name}', style: description),
-                trail: Text('${seasoning.totalSodium} มก.', style: description, textAlign: TextAlign.right),
+                title: Text('${seasoning.name}', style: Style.tileTitle),
+                subtitle: Text('${seasoning.selectedAmount.toInt()} ${seasoning.unit.name}', style: Style.description),
+                trail: Text('${seasoning.totalSodium} มก.', style: Style.description, textAlign: TextAlign.right),
               ),
             ))
         .toList();
@@ -155,7 +155,7 @@ class _MyFoodAddScreenState extends State<MyFoodAddScreen> {
           color: Colors.grey,
         ),
         SizedBox(height: 8.0),
-        Text('เลือกเครื่องปรุงด้านบน', style: description),
+        Text('เลือกเครื่องปรุงด้านบน', style: Style.description),
       ]);
     }
 
@@ -211,7 +211,7 @@ class _MyFoodAddScreenState extends State<MyFoodAddScreen> {
         child: Column(
           children: <Widget>[
             SectionContainer(
-              title: Text('ข้อมูลเบื้องต้น', style: title),
+              title: Text('ข้อมูลเบื้องต้น', style: Style.title),
               body: Padding(
                 padding: EdgeInsets.only(bottom: 8.0),
                 child: _form,
@@ -221,8 +221,8 @@ class _MyFoodAddScreenState extends State<MyFoodAddScreen> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text('การปรุงรสด้วยโซเดียม', style: title),
-                  Text('$selectedSeasoningTotalSodium มก.', style: descriptionPrimary),
+                  Text('การปรุงรสด้วยโซเดียม', style: Style.title),
+                  Text('$selectedSeasoningTotalSodium มก.', style: Style.descriptionPrimary),
                 ],
               ),
               body: _buildSeasoningSection(),

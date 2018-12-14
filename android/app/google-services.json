@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "103648885048",
+    "firebase_url": "https://sodium-1ed65.firebaseio.com",
+    "project_id": "sodium-1ed65",
+    "storage_bucket": "sodium-1ed65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:103648885048:android:d70a9d6071e8d9a9",
+        "android_client_info": {
+          "package_name": "th.ac.cmu.camt.sodium"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "103648885048-prqke2d5iklla0877l1dc8nk5acettek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiQtJfN4yJ-JYbxLALhPlIuDAaOYagy2E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

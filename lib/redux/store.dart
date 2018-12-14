@@ -3,6 +3,7 @@ import 'package:sodium/data/repository/achievement_repository.dart';
 import 'package:sodium/data/repository/entry_repository.dart';
 import 'package:sodium/data/repository/food_repository.dart';
 import 'package:sodium/data/repository/mental_repository.dart';
+import 'package:sodium/data/repository/news_repository.dart';
 import 'package:sodium/data/repository/prefs_repository.dart';
 import 'package:sodium/data/repository/seasoning_repository.dart';
 import 'package:sodium/data/repository/user_repository.dart';
@@ -13,6 +14,7 @@ import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/redux/entry/entry_middleware.dart';
 import 'package:sodium/redux/food/food_middleware.dart';
 import 'package:sodium/redux/mental/mental_middleware.dart';
+import 'package:sodium/redux/news/news_middleware.dart';
 import 'package:sodium/redux/seasoning/seasoning_middleware.dart';
 import 'package:sodium/redux/user/user_middleware.dart';
 
@@ -24,6 +26,7 @@ Future<Store<AppState>> createStore() async {
   final achievementRepository = AchievementRepository();
   final mentalHealthsRepository = MentalRepository();
   final seasoningRepository = SeasoningRepository();
+  final newsRepository = NewsRepository();
 //  final remote = RemoteDevToolsMiddleware('192.168.2.106:8001');
 //  await remote.connect();
 
@@ -38,7 +41,8 @@ Future<Store<AppState>> createStore() async {
       ..addAll(createFoodMiddleware(foodRepository, prefsRepository))
       ..addAll(createAchievementMiddleware(achievementRepository))
       ..addAll(createMentalHealthsMiddleware(mentalHealthsRepository))
-      ..addAll(createSeasoningMiddleware(seasoningRepository)),
+      ..addAll(createSeasoningMiddleware(seasoningRepository))
+      ..addAll(createNewsMiddleware(newsRepository)),
   );
 
 //  remote.store = store;

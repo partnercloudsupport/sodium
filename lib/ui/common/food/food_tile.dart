@@ -32,18 +32,18 @@ class FoodTile extends StatelessWidget {
         children: <Widget>[
           Text(
             '${food.name}',
-            style: tileTitle,
+            style: Style.tileTitle,
             overflow: TextOverflow.ellipsis,
           ),
           search
               ? Text(
                   '${food.type}',
-                  style: tileSubtitle,
+                  style: Style.tileSubtitle,
                   textAlign: TextAlign.right,
                 )
               : Text(
                   '${food.serving} หน่วย',
-                  style: tileSubtitle,
+                  style: Style.tileSubtitle,
                   textAlign: TextAlign.right,
                 ),
         ],
@@ -54,7 +54,7 @@ class FoodTile extends StatelessWidget {
       flex: 4,
       child: Text(
         '${search ? food.sodium : food.totalSodium} มก.',
-        style: tileTrailing,
+        style: Style.tileTrailing,
         textAlign: TextAlign.right,
       ),
     );

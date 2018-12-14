@@ -73,9 +73,9 @@ class SeasoningOptionsState extends State<SeasoningOptions> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('${widget.seasoning.name}', style: titlePrimary),
+            Text('${widget.seasoning.name}', style: Style.titlePrimary),
             SizedBox(width: 4.0),
-            Text('โซเดียม ${widget.seasoning.sodiumPerTeaspoon * (selectedAmount * selectedUnit.multiplier).toInt()} มก.', style: description),
+            Text('โซเดียม ${widget.seasoning.sodiumPerTeaspoon * (selectedAmount * selectedUnit.multiplier).toInt()} มก.', style: Style.description),
           ],
         ),
         FlatButton(
@@ -84,7 +84,7 @@ class SeasoningOptionsState extends State<SeasoningOptions> {
             children: <Widget>[
               Icon(Icons.check, color: Theme.of(context).primaryColor),
               SizedBox(width: 4.0),
-              Text('บันทึก', style: descriptionPrimary),
+              Text('บันทึก', style: Style.descriptionPrimary),
             ],
           ),
         )
@@ -94,7 +94,7 @@ class SeasoningOptionsState extends State<SeasoningOptions> {
     final body = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('ปริมาณ', style: descriptionPrimary),
+        Text('ปริมาณ', style: Style.descriptionPrimary),
         SizedBox(height: 4.0),
         NumberBar(
           initial: selectedAmount,
@@ -111,7 +111,7 @@ class SeasoningOptionsState extends State<SeasoningOptions> {
           },
         ),
         SizedBox(height: 14.0),
-        Text('หน่วย', style: descriptionPrimary),
+        Text('หน่วย', style: Style.descriptionPrimary),
         SizedBox(height: 4.0),
         Container(
           height: 36.0,

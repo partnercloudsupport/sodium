@@ -23,6 +23,14 @@ void popScreen(BuildContext context) {
   Navigator.of(context).pop();
 }
 
+Widget buildAppbar(String title) {
+  return AppBar(
+    centerTitle: true,
+    title: Text(title),
+    elevation: 2.5,
+  );
+}
+
 IconData mentalLevelToIconData(int level) {
   if (level == MentalHealth.levelSad) {
     return FontAwesomeIcons.sadTear;

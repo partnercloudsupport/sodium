@@ -47,7 +47,7 @@ class _EntryStatsScreenState extends State<EntryStatsScreen> {
       children: <Widget>[
         Row(
           children: <Widget>[
-            Text(toThaiDate(datetime), style: title),
+            Text(toThaiDate(datetime), style: Style.title),
             SizedBox(width: 8.0),
             Icon(
               FontAwesomeIcons.medal,
@@ -56,7 +56,7 @@ class _EntryStatsScreenState extends State<EntryStatsScreen> {
             ),
           ],
         ),
-        Text('$totalSodium มก.', style: descriptionPrimary),
+        Text('$totalSodium มก.', style: Style.descriptionPrimary),
       ],
     );
 
@@ -172,8 +172,8 @@ class _EntryStatsScreenState extends State<EntryStatsScreen> {
                 width: double.infinity,
                 child: IconMessage(
                   icon: Icon(FontAwesomeIcons.chartBar, size: 64.0),
-                  title: Text('ไม่มีบันทึกในเดือนนี้', style: title),
-                  description: Text('กดปุ่มด้านล่างเพื่อเพิ่มบันทึก', style: description),
+                  title: Text('ไม่มีบันทึกในเดือนนี้', style: Style.title),
+                  description: Text('กดปุ่มด้านล่างเพื่อเพิ่มบันทึก', style: Style.description),
                 ),
               )
       ],

@@ -28,7 +28,7 @@ class _MentalHealthStatsScreenState extends State<MentalHealthStatsScreen> {
         children: <Widget>[
           ShimmerLoading.navigationHeader(),
           SizedBox(height: 16.0),
-          ShimmerLoading.calendar(),
+          ShimmerLoading.square(),
         ],
       ),
     );
