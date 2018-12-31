@@ -30,11 +30,23 @@ class NumberBar extends StatefulWidget {
 class _NumberBarState extends State<NumberBar> {
   double _selectedValue = 1;
 
+  List<double> _fractionNumbers = [
+    0.125,
+    0.25,
+    0.33,
+    0.375,
+    0.5,
+    0.625,
+    0.66,
+    0.75,
+    0.875,
+  ];
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> selectors = [];
 
-    for (double i = 0.25; i < 1; i = i + 0.25) {
+    _fractionNumbers.forEach((i) {
       final bool excess = (i * widget.values) > widget.excessValue;
 
       selectors.add(
@@ -57,7 +69,7 @@ class _NumberBarState extends State<NumberBar> {
           ),
         ),
       );
-    }
+    });
 
     for (int i = 1; i <= widget.max; ++i) {
       final bool excess = (i * widget.values) > widget.excessValue;
