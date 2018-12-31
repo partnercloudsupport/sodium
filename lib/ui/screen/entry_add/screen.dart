@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:redux/redux.dart';
 import 'package:sodium/constant/styles.dart';
 import 'package:sodium/data/model/acchievement.dart';
 import 'package:sodium/data/model/food.dart';
 import 'package:sodium/data/model/loading.dart';
+import 'package:sodium/data/model/seasoning.dart';
 import 'package:sodium/data/model/user.dart';
 import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/redux/entry/entry_action.dart';
@@ -20,6 +22,8 @@ import 'package:sodium/ui/common/number_bar.dart';
 import 'package:sodium/ui/common/ripple_button.dart';
 import 'package:sodium/ui/common/section/section.dart';
 import 'package:sodium/ui/common/section/section_divider.dart';
+import 'package:sodium/ui/seasoning_section/seasoning_container.dart';
+import 'package:sodium/utils/date_time_util.dart';
 import 'package:sodium/utils/widget_utils.dart';
 
 class AddEntryScreen extends StatefulWidget {
@@ -27,15 +31,48 @@ class AddEntryScreen extends StatefulWidget {
 
   final Food food;
   final FoodAddScreenViewModel viewModel;
+  final DateTime dateTime;
 
-  AddEntryScreen({this.food, this.viewModel});
+  AddEntryScreen({
+    @required this.food,
+    @required this.viewModel,
+    @required this.dateTime,
+  });
 
   @override
   _AddEntryScreenState createState() => _AddEntryScreenState();
 }
 
 class _AddEntryScreenState extends State<AddEntryScreen> {
-  int _serving = 1;
+  double _serving = 1;
+  List<Seasoning> _selectedSeasonings;
+  int _selectedSeasoningTotalSodium;
+  DateTime dateTime;
+
+  double get totalSodiumWithSeasoning => ((widget.food.isLocal ? widget.food.sodium.toDouble() : widget.viewModel.foodSearchSelected.sodium.toDouble()) * _serving) + _selectedSeasoningTotalSodium;
+
+  void _showDatePicker() {
+    final now = DateTime.now();
+
+    DatePicker.showDatePicker(
+      context,
+      showTitleActions: true,
+      locale: 'en',
+      minYear: 1970,
+      maxYear: now.year + 1,
+      initialYear: now.year,
+      initialMonth: now.month,
+      initialDate: now.day,
+      cancel: Text('ยกเลิก', style: Style.description),
+      confirm: Text('บันทึก', style: Style.descriptionPrimary),
+      dateFormat: 'dd-mmmm-yyyy',
+      onConfirm: (year, month, date) {
+        setState(() {
+          dateTime = DateTime(year, month, date);
+        });
+      },
+    );
+  }
 
   void _showCalculationInfo(int entrySodium, int totalSodium) {
     final content = [
@@ -90,8 +127,10 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
     );
 
     final _food = food.copyWith(
-      amount: _serving,
-      totalSodium: (food.sodium * _serving).toInt(),
+      serving: _serving,
+      totalSodium: totalSodiumWithSeasoning.toInt(),
+      seasonings: _selectedSeasonings,
+      dateTime: dateTime,
     );
 
     final Completer<CreateEntryResponse> completer = Completer();
@@ -122,24 +161,52 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
       return Container();
     }
 
-    final int entrySodium = _serving * food.sodium;
+    final int entrySodium = (_serving * food.sodium).toInt();
     final int totalSodium = widget.viewModel.todayEatenSodium + entrySodium;
     final int remaining = widget.viewModel.user.sodiumLimit - totalSodium;
     final bool limitExcess = totalSodium > widget.viewModel.user.sodiumLimit;
 
     final double eatenPercent = double.parse((totalSodium / widget.viewModel.user.sodiumLimit).toString());
     final nameSection = SectionContainer(
-      title: Text(
-        '${widget.food.name}',
-        style: TextStyle(
-//          color: limitExcess ? Colors.redAccent : Theme.of(context).primaryColor,
-          fontSize: 24.0,
-          fontWeight: FontWeight.w500,
-        ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            flex: 7,
+            child: Text(
+              '${widget.food.name}',
+              style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              '${totalSodiumWithSeasoning.toInt()} มก.',
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontSize: 24.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
       ),
-      body: Text(
-        '${widget.food.type}',
-        style: Style.tileTitle,
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            '${widget.food.type}',
+            style: Style.description,
+          ),
+          Text(
+            'โซเดียมรวม',
+            style: Style.description,
+          )
+        ],
       ),
     );
 
@@ -162,7 +229,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
           ),
           Text(
             '${remaining.abs()} มก.',
-            style: TextStyle(color: limitExcess ? Colors.redAccent : Theme.of(context).primaryColor, fontSize: 24.0, fontWeight: FontWeight.w500),
+            style: TextStyle(color: limitExcess ? Colors.redAccent : Theme.of(context).primaryColor, fontSize: 16.0, fontWeight: FontWeight.w500),
           ),
         ],
       ),
@@ -194,23 +261,43 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
             style: Style.title,
           ),
           Text(
-            '${(_serving * food.sodium).toString()} มก.',
-            style: TextStyle(color: limitExcess ? Colors.redAccent : Theme.of(context).primaryColor, fontSize: 24.0, fontWeight: FontWeight.w500),
+            '${food.unit}',
+            style: Style.description,
           ),
         ],
       ),
-      body: NumberBar(
-        initial: _serving,
-        min: 1,
-        max: 15,
-        values: food.sodium,
-        excessValue: widget.viewModel.user.sodiumLimit - widget.viewModel.todayEatenSodium,
-        activeColor: Theme.of(context).primaryColor,
-        inactiveColor: Colors.grey.shade300,
-        onValueChange: (value) {
-          setState(() => _serving = value.toInt());
-          print('${double.parse(((_serving * food.sodium) / widget.viewModel.user.sodiumLimit).toString())}');
-        },
+      body: Column(
+        children: <Widget>[
+          NumberBar(
+            initial: _serving,
+            min: 1,
+            max: 15,
+            values: food.sodium,
+            excessValue: widget.viewModel.user.sodiumLimit - widget.viewModel.todayEatenSodium,
+            activeColor: Theme.of(context).primaryColor,
+            inactiveColor: Colors.grey.shade300,
+            onValueChange: (value) {
+              setState(() => _serving = value);
+//              print('${double.parse(((_serving * food.sodium) / widget.viewModel.user.sodiumLimit).toString())}');
+            },
+          ),
+          SizedBox(height: 12.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'โซเดียม ',
+                style: Theme.of(context).textTheme.caption.copyWith(color: Colors.grey),
+                textAlign: TextAlign.right,
+              ),
+              Text(
+                ' ${(_serving * food.sodium).toInt()} มก.',
+                style: TextStyle(color: limitExcess ? Colors.redAccent : Theme.of(context).primaryColor, fontSize: 16.0),
+              ),
+            ],
+          ),
+        ],
       ),
     );
 
@@ -222,8 +309,17 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
         SizedBox(height: 4.0),
         servingSection,
         SizedBox(height: 4.0),
-        progressSection,
+        SeasoningContainer(
+          onSelected: (seasonings, totalSodium) {
+            setState(() {
+              _selectedSeasonings = seasonings;
+              _selectedSeasoningTotalSodium = totalSodium;
+            });
+          },
+        ),
         SizedBox(height: 16.0),
+//        progressSection,
+//        SizedBox(height: 16.0),
         RippleButton(
           text: "บันทึก",
           backgroundColor: Theme.of(context).primaryColor,
@@ -239,6 +335,11 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
   @override
   void initState() {
     super.initState();
+
+    _selectedSeasonings = [];
+    _selectedSeasoningTotalSodium = 0;
+
+    dateTime = widget.dateTime ?? DateTime.now();
   }
 
   @override
@@ -247,6 +348,15 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
       appBar: AppBar(
         title: Text('เพิ่มบันทึกอาหาร'),
         elevation: .75,
+        actions: <Widget>[
+          Center(
+            child: GestureDetector(
+              child: Text('${toHumanReadableDate(dateTime)}', style: TextStyle(color: Colors.white)),
+              onTap: () => _showDatePicker(),
+            ),
+          ),
+          SizedBox(width: 8.0),
+        ],
       ),
       backgroundColor: Colors.grey.shade100,
       body: widget.food.isLocal
@@ -265,12 +375,14 @@ class FoodAddScreenViewModel {
   final User user;
   final FoodAddState state;
   final int todayEatenSodium;
+  final List<Seasoning> seasonings;
   final Function(Food food, Completer<CreateEntryResponse> completer) onSave;
 
   FoodAddScreenViewModel({
     @required this.foodSearchSelected,
     @required this.user,
     @required this.todayEatenSodium,
+    @required this.seasonings,
     @required this.state,
     @required this.onSave,
   });
@@ -280,6 +392,7 @@ class FoodAddScreenViewModel {
       foodSearchSelected: store.state.foodSearchSelected,
       user: store.state.user,
       todayEatenSodium: todayEatenSodiumSelector(store.state.entries),
+      seasonings: store.state.seasonings,
       state: store.state.uiState.foodAddState,
       onSave: (Food food, Completer<CreateEntryResponse> completer) => store.dispatch(CreateEntry(food, completer)),
     );

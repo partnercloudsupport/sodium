@@ -3,6 +3,12 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:sodium/ui/screen/food_search/screen.dart';
 
 class FoodSearchContainer extends StatelessWidget {
+  final DateTime dateTime;
+
+  FoodSearchContainer({
+    this.dateTime,
+  });
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector(
@@ -10,6 +16,7 @@ class FoodSearchContainer extends StatelessWidget {
       builder: (BuildContext context, FoodSearchScreenViewModel viewModel) {
         return FoodSearchScreen(
           viewModel: viewModel,
+          dateTime: dateTime,
         );
       },
     );

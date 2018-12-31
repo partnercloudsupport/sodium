@@ -11,10 +11,12 @@ List<Middleware<AppState>> createEntryMiddleware(
 ) {
   final createEntry = _createEntry(entryRepository);
   final fetchEntries = _fetchEntries(entryRepository);
+  final deleteEntry = _deleteEntry(entryRepository);
 
   return [
     TypedMiddleware<AppState, CreateEntry>(createEntry),
     TypedMiddleware<AppState, FetchEntries>(fetchEntries),
+    TypedMiddleware<AppState, DeleteEntry>(deleteEntry),
   ];
 }
 
@@ -46,6 +48,23 @@ Middleware<AppState> _fetchEntries(
       try {
         final entries = await entryRepository.fetchEntries();
         store.dispatch(StoreEntries(entries));
+      } catch (error) {
+        print(error);
+      }
+
+      next(action);
+    }
+  };
+}
+
+Middleware<AppState> _deleteEntry(
+  EntryRepository entryRepository,
+) {
+  return (Store store, action, NextDispatcher next) async {
+    if (action is DeleteEntry) {
+      try {
+        await entryRepository.deleteEntry(action.id);
+        action.completer.complete(null);
       } catch (error) {
         print(error);
       }

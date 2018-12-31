@@ -28,7 +28,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
     return SimpleDialog(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -46,14 +46,20 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  FlatButton(
-                    onPressed: widget.onCancel,
-                    child: Text(widget.cancelText, style: TextStyle(color: Theme.of(context).primaryColor)),
+                  GestureDetector(
+                    onTap: () => widget.onCancel(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(widget.cancelText, style: TextStyle(color: Colors.grey)),
+                    ),
                   ),
-                  FlatButton(
-                    onPressed: widget.onConfirm,
-                    child: Text(widget.confirmText, style: TextStyle(color: Colors.white)),
-                    color: Theme.of(context).primaryColor,
+                  SizedBox(width: 8.0),
+                  GestureDetector(
+                    onTap: () => widget.onConfirm(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(widget.confirmText, style: TextStyle(color: Theme.of(context).primaryColor)),
+                    ),
                   ),
                 ],
               ),

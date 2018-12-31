@@ -8,12 +8,13 @@ class RippleButton extends StatelessWidget {
   final Color highlightColor;
 
   RippleButton({
+    Key key,
     this.onPress,
     this.text,
     this.textColor,
     this.backgroundColor,
     this.highlightColor = Colors.orange,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

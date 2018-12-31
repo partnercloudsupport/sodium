@@ -43,6 +43,14 @@ class Seasoning {
 
   @override
   String toString() {
-    return 'Seasoning{id: $id, name: $name, sodiumPerTeaspoon: $sodiumPerTeaspoon, unit: $unit, selectedAmount: $selectedAmount, totalSodium: $totalSodium}';
+    return '{id: $id, name: $name, sodiumPerTeaspoon: $sodiumPerTeaspoon, unit: $unit, selectedAmount: $selectedAmount, totalSodium: $totalSodium}';
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'total_sodium': totalSodium,
+      'unit': unit.name,
+    };
   }
 }

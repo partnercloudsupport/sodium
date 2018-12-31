@@ -9,6 +9,7 @@ class OverviewContainer extends StatelessWidget {
       converter: OverviewScreenViewModel.fromStore,
       builder: (BuildContext context, OverviewScreenViewModel viewModel) {
         return OverviewScreen(
+          key: Key('__overview_screen__'),
           viewModel: viewModel,
         );
       },

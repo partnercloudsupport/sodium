@@ -5,17 +5,23 @@ import 'package:sodium/constant/styles.dart';
 import 'package:sodium/redux/app/app_action.dart';
 import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/redux/store.dart';
-import 'package:sodium/ui/food_user_add/container.dart';
-import 'package:sodium/ui/food_user_add/screen.dart';
 import 'package:sodium/ui/screen/food_search/container.dart';
 import 'package:sodium/ui/screen/food_search/screen.dart';
+import 'package:sodium/ui/screen/food_user_add/container.dart';
+import 'package:sodium/ui/screen/food_user_add/screen.dart';
 import 'package:sodium/ui/screen/login/screen.dart';
 import 'package:sodium/ui/screen/main/container.dart';
+import 'package:sodium/ui/screen/main/screen.dart';
 import 'package:sodium/ui/screen/news_compose/news_add_container.dart';
 import 'package:sodium/ui/screen/news_compose/news_compose_screen.dart';
 import 'package:sodium/ui/screen/overview/container.dart';
 import 'package:sodium/ui/screen/overview/screen.dart';
-import 'package:sodium/ui/screen/register_screen.dart';
+import 'package:sodium/ui/screen/profile/profile_container.dart';
+import 'package:sodium/ui/screen/profile/profile_screen.dart';
+import 'package:sodium/ui/screen/register/register_container.dart';
+import 'package:sodium/ui/screen/register/register_screen.dart';
+import 'package:sodium/ui/screen/user_info_step/user_info_step_container.dart';
+import 'package:sodium/ui/screen/user_info_step/user_info_step_screen.dart';
 
 void main() async {
   final store = await createStore();
@@ -59,16 +65,21 @@ class SodiumAppState extends State<SodiumApp> {
     return StoreProvider<AppState>(
       store: widget.store,
       child: MaterialApp(
+        showSemanticsDebugger: false,
         title: 'Sodium',
         theme: themeData,
         home: MainContainer(),
         routes: {
+          MainScreen.route: (_) => MainContainer(),
           OverviewScreen.route: (_) => OverviewContainer(),
           LoginScreen.route: (_) => LoginScreen(),
           RegisterScreen.route: (_) => RegisterScreen(),
           FoodSearchScreen.route: (_) => FoodSearchContainer(),
           MyFoodAddScreen.route: (_) => MyFoodAddContainer(),
           NewsComposeScreen.route: (_) => NewsComposeContainer(),
+          ProfileScreen.route: (_) => ProfileContainer(),
+          RegisterScreen.route: (_) => RegisterContainer(),
+          UserInfoStepScreen.route: (_) => UserStepInfoContainer(),
         },
       ),
     );

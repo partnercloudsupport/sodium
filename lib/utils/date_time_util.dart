@@ -15,7 +15,7 @@ bool isSameDate(DateTime datetime, DateTime other) {
   return datetime.day == other.day && datetime.month == other.month && datetime.year == other.year;
 }
 
-String toThaiDate(DateTime datetime, [String format = 'dd MMM yyyy']) {
+String toHumanReadableDate(DateTime datetime, [String format = 'dd MMM yyyy']) {
   final formatter = DateFormat(format);
   return formatter.format(datetime);
 }

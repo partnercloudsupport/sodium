@@ -5,6 +5,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:sodium/constant/assets.dart';
 import 'package:sodium/data/model/acchievement.dart';
 import 'package:sodium/data/model/metal.dart';
+import 'package:sodium/data/model/user.dart';
 import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/ui/common/achievement/achievement_item.dart';
 import 'package:sodium/ui/screen/achievements/container.dart';
@@ -13,6 +14,7 @@ import 'package:sodium/ui/screen/mental_health_stats/container.dart';
 import 'package:sodium/ui/screen/mental_health_survey/container.dart';
 import 'package:sodium/ui/screen/news_list/news_list_container.dart';
 import 'package:sodium/ui/screen/overview/container.dart';
+import 'package:sodium/ui/screen/user_info_step/user_info_step_screen.dart';
 import 'package:sodium/utils/date_time_util.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -50,7 +52,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
           child: FlatButton(
             onPressed: () {
               Navigator.pop(context);
-              //  Navigator.pop(context);
             },
             child: Text('ยืนยัน', style: TextStyle(color: Colors.white)),
             color: Theme.of(context).primaryColor,
@@ -75,6 +76,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
     ));
   }
 
+  void _showUserInfoStep() {
+    Navigator.of(context).pushReplacementNamed(UserInfoStepScreen.route);
+  }
+
   @override
   void initState() {
     widget.viewModel.achievements.listen((List<Achievement> achievements) {
@@ -91,6 +96,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
       }
     });
 
+    widget.viewModel.userStream.listen((User user) {
+      if (user.isNewUser) {
+        _showUserInfoStep();
+      }
+    });
+
     super.initState();
   }
 
@@ -102,7 +113,13 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _children = [OverviewContainer(), EntryStatsContainer(), MentalHealthContainer(), AchievementsContainer(), NewsListContainer()];
+    _children = [
+      OverviewContainer(),
+      EntryStatsContainer(),
+      MentalHealthContainer(),
+      AchievementsContainer(),
+      NewsListContainer(),
+    ];
 
     return Scaffold(
       body: _children[_currentIndex],
@@ -146,16 +163,19 @@ class _NavigationScreenState extends State<NavigationScreen> {
 class NavigationViewModel {
   BehaviorSubject<List<Achievement>> achievements;
   BehaviorSubject<List<MentalHealth>> mentalHealthsStream;
+  BehaviorSubject<User> userStream;
 
   NavigationViewModel({
     this.achievements,
     this.mentalHealthsStream,
+    this.userStream,
   });
 
   static NavigationViewModel fromStore(Store<AppState> store) {
     return NavigationViewModel(
       achievements: store.state.achievementsRecentlyUnlockedStream,
       mentalHealthsStream: store.state.mentalHealthsStream,
+      userStream: store.state.userStream,
     );
   }
 }

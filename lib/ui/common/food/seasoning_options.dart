@@ -75,7 +75,7 @@ class SeasoningOptionsState extends State<SeasoningOptions> {
           children: <Widget>[
             Text('${widget.seasoning.name}', style: Style.titlePrimary),
             SizedBox(width: 4.0),
-            Text('โซเดียม ${widget.seasoning.sodiumPerTeaspoon * (selectedAmount * selectedUnit.multiplier).toInt()} มก.', style: Style.description),
+            Text('โซเดียม ${(widget.seasoning.sodiumPerTeaspoon * (selectedAmount * selectedUnit.multiplier)).toInt()} มก.', style: Style.description),
           ],
         ),
         FlatButton(

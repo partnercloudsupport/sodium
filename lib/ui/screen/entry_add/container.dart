@@ -8,9 +8,11 @@ import 'package:sodium/ui/screen/entry_add/screen.dart';
 
 class FoodAddContainer extends StatelessWidget {
   final Food food;
+  final DateTime dateTime;
 
   FoodAddContainer({
     this.food,
+    this.dateTime,
   });
 
   @override
@@ -26,6 +28,7 @@ class FoodAddContainer extends StatelessWidget {
         return AddEntryScreen(
           food: food,
           viewModel: viewModel,
+          dateTime: dateTime,
         );
       },
     );

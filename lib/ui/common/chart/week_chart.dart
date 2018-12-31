@@ -6,13 +6,17 @@ import 'package:sodium/data/model/food.dart';
 class TimeSeriesBar extends StatelessWidget {
   final List<charts.Series<TimeSeriesEntry, DateTime>> seriesList;
   final bool animate;
+  final List<Food> entries;
+  final Function(DateTime) onSelection;
 
-  TimeSeriesBar(this.seriesList, {this.animate});
+  TimeSeriesBar(this.seriesList, {this.animate, this.entries, this.onSelection});
 
-  factory TimeSeriesBar.withRealData(DateTime month, List<Food> entries) {
+  factory TimeSeriesBar.withRealData(DateTime month, List<Food> entries, Function onSelection) {
     return TimeSeriesBar(
       _convertData(month, entries),
       animate: true,
+      entries: entries,
+      onSelection: onSelection,
     );
   }
 
@@ -35,6 +39,14 @@ class TimeSeriesBar extends StatelessWidget {
       ),
       defaultInteractions: false,
       behaviors: [charts.SelectNearest(), charts.DomainHighlighter()],
+      selectionModels: [
+        charts.SelectionModelConfig(
+            type: charts.SelectionModelType.info,
+            listener: (charts.SelectionModel model) {
+              final datetime = model.selectedDatum.first.datum.time;
+              onSelection(datetime);
+            })
+      ],
     );
   }
 

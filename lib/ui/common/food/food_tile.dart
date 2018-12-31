@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sodium/constant/styles.dart';
 import 'package:sodium/data/model/food.dart';
 import 'package:sodium/ui/common/ripple.dart';
+import 'package:sodium/utils/string_util.dart';
 
 class FoodTile extends StatelessWidget {
   final Food food;
@@ -42,7 +43,7 @@ class FoodTile extends StatelessWidget {
                   textAlign: TextAlign.right,
                 )
               : Text(
-                  '${food.serving} หน่วย',
+                  '${decimalToFraction(food.serving)} ${food.unit}',
                   style: Style.tileSubtitle,
                   textAlign: TextAlign.right,
                 ),
@@ -53,7 +54,7 @@ class FoodTile extends StatelessWidget {
     final trailing = Expanded(
       flex: 4,
       child: Text(
-        '${search ? food.sodium : food.totalSodium} มก.',
+        '${search ? food.sodium : food.totalSodium} มก',
         style: Style.tileTrailing,
         textAlign: TextAlign.right,
       ),

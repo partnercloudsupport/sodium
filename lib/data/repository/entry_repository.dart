@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -39,7 +40,7 @@ class EntryRepository {
   Future<Null> createEntry(Food food) async {
     final token = await _sharedPreferencesRepository.getToken();
 
-    final response = await _dio.post(
+    await _dio.post(
       'entry',
       options: Options(headers: {
         HttpHeaders.authorizationHeader: toBearer(token),
@@ -52,7 +53,20 @@ class EntryRepository {
         'total_sodium': food.totalSodium.toString(),
         'is_local': food.isLocal,
         'serving': food.serving,
+        'seasonings': json.encode(food.seasonings),
+        'date_time': toMysqlDateTime(food.dateTime),
       },
+    );
+  }
+
+  Future<Null> deleteEntry(int id) async {
+    final token = await _sharedPreferencesRepository.getToken();
+
+    await _dio.delete(
+      'entry/$id',
+      options: Options(headers: {
+        HttpHeaders.authorizationHeader: toBearer(token),
+      }),
     );
   }
 

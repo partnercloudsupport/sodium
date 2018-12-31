@@ -21,3 +21,10 @@ class CreateEntry {
 
   CreateEntry(this.food, this.completer);
 }
+
+class DeleteEntry {
+  final int id;
+  final Completer<Null> completer;
+
+  DeleteEntry({this.id, this.completer});
+}

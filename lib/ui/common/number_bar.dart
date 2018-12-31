@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sodium/utils/string_util.dart';
 
 class NumberBar extends StatefulWidget {
   final int min;
@@ -26,12 +27,13 @@ class NumberBar extends StatefulWidget {
 }
 
 class _NumberBarState extends State<NumberBar> {
-  int _selectedValue = 1;
+  double _selectedValue = 1;
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> selectors = [];
-    for (int i = 1; i <= widget.max; ++i) {
+
+    for (double i = 0.25; i < 1; i = i + 0.25) {
       final bool excess = (i * widget.values) > widget.excessValue;
 
       selectors.add(
@@ -39,6 +41,31 @@ class _NumberBarState extends State<NumberBar> {
           onTap: () {
             setState(() {
               _selectedValue = i;
+            });
+
+            widget.onValueChange(i.toDouble());
+          },
+          child: Padding(
+            padding: EdgeInsets.only(right: 8.0),
+            child: CirclePicker(
+              inactiveColor: excess ? Colors.red.shade100 : widget.inactiveColor,
+              activeColor: excess ? Colors.redAccent : widget.activeColor,
+              selected: _selectedValue == i ? true : false,
+              label: decimalToFraction(i),
+            ),
+          ),
+        ),
+      );
+    }
+
+    for (int i = 1; i <= widget.max; ++i) {
+      final bool excess = (i * widget.values) > widget.excessValue;
+
+      selectors.add(
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _selectedValue = i.toDouble();
             });
 
             widget.onValueChange(i.toDouble());

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:sodium/ui/food_user_add/screen.dart';
+import 'package:sodium/ui/screen/food_user_add/screen.dart';
 
 class MyFoodAddContainer extends StatelessWidget {
   @override

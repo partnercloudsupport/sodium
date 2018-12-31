@@ -10,14 +10,19 @@ import 'package:sodium/redux/food/food_action.dart';
 import 'package:sodium/redux/ui/food_search/food_search_state.dart';
 import 'package:sodium/ui/common/Icon_message.dart';
 import 'package:sodium/ui/delelgate/food_search_delelgate.dart';
-import 'package:sodium/ui/screen/food_my/container.dart';
+import 'package:sodium/ui/screen/entry_add/container.dart';
+import 'package:sodium/ui/screen/food_user/container.dart';
 
 class FoodSearchScreen extends StatefulWidget {
   static final String route = '/food_search';
+  final DateTime dateTime;
 
   final FoodSearchScreenViewModel viewModel;
 
-  FoodSearchScreen({this.viewModel});
+  FoodSearchScreen({
+    this.viewModel,
+    this.dateTime,
+  });
 
   @override
   _FoodSearchScreenState createState() => _FoodSearchScreenState();
@@ -37,12 +42,22 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with SingleTickerPr
       search: _foodSearchController.sink,
       suggestions: _foods.stream,
       loadingStatus: _loadingStatus.stream,
+      onFoodClick: (Food food) => _showFoodDetail(food),
     );
 
     showSearch(
       context: context,
       delegate: foodSearchDelegate,
     );
+  }
+
+  void _showFoodDetail(Food food) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => FoodAddContainer(
+            food: food,
+            dateTime: widget.dateTime ?? DateTime.now(),
+          ),
+    ));
   }
 
   Widget _buildGenericFood(LoadingStatus loadingStatus) {
@@ -72,14 +87,9 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with SingleTickerPr
     );
   }
 
-  Widget _buildMyFood() {
-    return MyFoodContainer();
-  }
-
   @override
   void initState() {
     super.initState();
-
     _tabController = TabController(length: 2, vsync: this);
 
     _foodSearchController.debounce(Duration(milliseconds: 500)).listen((String query) {
@@ -128,8 +138,12 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with SingleTickerPr
       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildGenericFood(widget.viewModel.state.loadingStatus),
-          _buildMyFood(),
+          _buildGenericFood(
+            widget.viewModel.state.loadingStatus,
+          ),
+          UserFoodContainer(
+            onFoodClick: (Food food) => _showFoodDetail(food),
+          ),
         ],
       ),
     );

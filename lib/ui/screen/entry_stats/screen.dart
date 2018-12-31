@@ -1,20 +1,24 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:modal_drawer_handle/modal_drawer_handle.dart';
 import 'package:redux/redux.dart';
-import 'package:rounded_modal/rounded_modal.dart';
 import 'package:sodium/constant/styles.dart';
 import 'package:sodium/data/model/food.dart';
 import 'package:sodium/data/model/user.dart';
 import 'package:sodium/redux/app/app_state.dart';
+import 'package:sodium/redux/entry/entry_action.dart';
 import 'package:sodium/ui/common/Icon_message.dart';
 import 'package:sodium/ui/common/calendar/calendar.dart';
 import 'package:sodium/ui/common/chart/week_chart.dart';
 import 'package:sodium/ui/common/chip.dart';
-import 'package:sodium/ui/common/food/food_tile.dart';
+import 'package:sodium/ui/common/dialog/confirm_dialog.dart';
+import 'package:sodium/ui/common/food/food_list_entry.dart';
+import 'package:sodium/ui/common/loading/loading_dialog.dart';
 import 'package:sodium/ui/common/loading/loading_shimmer.dart';
-import 'package:sodium/ui/common/section/section_divider.dart';
+import 'package:sodium/ui/common/option_item.dart';
 import 'package:sodium/utils/date_time_util.dart';
+import 'package:sodium/utils/widget_utils.dart';
 
 class EntryStatsScreen extends StatefulWidget {
   final EntryStatsScreenViewModel viewModel;
@@ -30,62 +34,89 @@ class EntryStatsScreen extends StatefulWidget {
 class _EntryStatsScreenState extends State<EntryStatsScreen> {
   StatsView mode = StatsView.chart;
   DateTime thisMonth = DateTime.now();
+  bool showCalendar = false;
 
-  void _showFoodList(List<Food> foods, DateTime datetime) {
-    final handler = Padding(
-      padding: EdgeInsets.all(8.0),
-      child: ModalDrawerHandle(
-        handleColor: Theme.of(context).primaryColor,
-      ),
-    );
-
-    final totalSodium = foods.fold(0, (accumulated, food) => food.totalSodium + accumulated);
-    final belowLimit = totalSodium < widget.viewModel.user.sodiumLimit && totalSodium != 0;
-
-    final header = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Text(toThaiDate(datetime), style: Style.title),
-            SizedBox(width: 8.0),
-            Icon(
-              FontAwesomeIcons.medal,
-              color: belowLimit ? Colors.yellow : Colors.grey.shade200,
-              size: 20.0,
-            ),
-          ],
-        ),
-        Text('$totalSodium มก.', style: Style.descriptionPrimary),
-      ],
-    );
-
-    final body = Expanded(
-      child: ListView.builder(
-        itemCount: foods.length,
-        itemBuilder: (BuildContext context, int index) => Padding(
-              padding: EdgeInsets.only(bottom: 16.0),
-              child: FoodTile.selected(food: foods[index]),
-            ),
-      ),
-    );
-
-    final content = Container(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: Column(
-        children: <Widget>[
-          handler,
-          header,
-          SizedBox(height: 12.0),
-          body,
-        ],
-      ),
-    );
-
-    showRoundedModalBottomSheet(
+  void _showOptions(Food food) {
+    showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => content,
+      builder: (BuildContext modalBottomSheetContext) => ListView(
+            children: <Widget>[
+              ListTile(
+                onTap: () {
+                  print('edit');
+                },
+                title: OptionItem(
+                  icon: Icons.edit,
+                  title: 'แก้ไข',
+                  description: 'แก้ไขรายการอาหาร',
+                ),
+              ),
+              ListTile(
+                onTap: () {
+                  hideDialog(context); // Hide confirm dialog
+
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext dialogContext) {
+                        return ConfirmDialog(
+                          title: 'ต้องการลบหรือไม่',
+                          description: 'ข่าวสารจะหายไปและไม่สามารถกู้คืนได้',
+                          confirmText: 'ลบ',
+                          cancelText: 'ยกเลิก',
+                          onCancel: () {
+                            hideDialog(context); // Hide confirm dialog
+                          },
+                          onConfirm: () {
+                            hideDialog(context); // Hide confirm dialog
+
+                            showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return LoadingDialog(title: 'กำลังลบข่าวสาร');
+                              },
+                            );
+
+                            Completer<Null> completer = Completer();
+                            completer.future.then((_) {
+                              hideDialog(context); // Hide LoadingDialog
+                              popScreen(context);
+
+                              showToast("ลบข่าวสารแล้ว");
+                            });
+
+                            widget.viewModel.onDelete(food.entryId, completer);
+                          },
+                        );
+                      });
+                },
+                title: OptionItem(
+                  icon: Icons.delete,
+                  title: 'ลบ',
+                  description: 'ลบรายการอาหาร',
+                ),
+              ),
+            ],
+          ),
+    );
+  }
+
+  void _showFoodList(DateTime datetime) {
+    final selectedDayFoods = widget.viewModel.entries.where((Food food) => isSameDate(food.dateTime, datetime)).toList();
+    final totalSodium = selectedDayFoods.fold(0, (accumulated, food) => food.totalSodium + accumulated);
+    final achieved = totalSodium < widget.viewModel.user.sodiumLimit && totalSodium != 0;
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (BuildContext context) => FoodListEntry(
+              foods: selectedDayFoods,
+              datetime: datetime,
+              achieved: achieved,
+              onLongPressed: (Food food) => _showOptions(food),
+            ),
+      ),
     );
   }
 
@@ -151,7 +182,10 @@ class _EntryStatsScreenState extends State<EntryStatsScreen> {
         return noEntryTile;
       }
 
-      return belowLimit ? belowLimitTile : overLimitTile;
+      return GestureDetector(
+        onTap: () => _showFoodList(datetime),
+        child: belowLimit ? belowLimitTile : overLimitTile,
+      );
     };
   }
 
@@ -164,7 +198,9 @@ class _EntryStatsScreenState extends State<EntryStatsScreen> {
         thisMonthEntries.isNotEmpty
             ? Container(
                 height: 256.0,
-                child: TimeSeriesBar.withRealData(thisMonth, thisMonthEntries),
+                child: TimeSeriesBar.withRealData(thisMonth, thisMonthEntries, (DateTime datetime) {
+                  _showFoodList(datetime);
+                }),
               )
             : Container(
                 color: Theme.of(context).scaffoldBackgroundColor,
@@ -204,11 +240,6 @@ class _EntryStatsScreenState extends State<EntryStatsScreen> {
       dayBuilder: _buildCalendarBuilder(),
       fixedBody: _buildChartView(),
       showFixedBody: mode == StatsView.chart,
-      onDateSelected: (DateTime datetime) {
-        final thisDayEntries = widget.viewModel.entries.where((Food food) => isSameDate(food.dateTime, datetime)).toList();
-
-        _showFoodList(thisDayEntries, datetime);
-      },
     );
   }
 
@@ -235,9 +266,9 @@ class _EntryStatsScreenState extends State<EntryStatsScreen> {
           padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             children: <Widget>[
-              SizedBox(height: 16.0),
+              SizedBox(height: 4.0),
               _buildModeSelector(),
-              SectionDivider(),
+              SizedBox(height: 4.0),
               widget.viewModel.entries != null ? _buildCalendarView() : _buildChartViewLoading(),
             ],
           ),
@@ -250,16 +281,19 @@ class _EntryStatsScreenState extends State<EntryStatsScreen> {
 class EntryStatsScreenViewModel {
   final List<Food> entries;
   final User user;
+  final Function(int, Completer) onDelete;
 
   EntryStatsScreenViewModel({
     @required this.entries,
     @required this.user,
+    @required this.onDelete,
   });
 
   static EntryStatsScreenViewModel fromStore(Store<AppState> store) {
     return EntryStatsScreenViewModel(
       entries: store.state.entries,
       user: store.state.user,
+      onDelete: (int id, Completer completer) => store.dispatch(DeleteEntry(id: id, completer: completer)),
     );
   }
 }

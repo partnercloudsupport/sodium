@@ -75,11 +75,11 @@ class _CalendarState extends State<Calendar> {
     if (widget.showChevronsToChangeRange) {
       leftOuterIcon = IconButton(
         onPressed: isExpanded ? previousMonth : previousWeek,
-        icon: Icon(Icons.chevron_left, color: Theme.of(context).primaryColor),
+        icon: Icon(Icons.chevron_left, color: Colors.grey),
       );
       rightOuterIcon = IconButton(
         onPressed: isExpanded ? nextMonth : nextWeek,
-        icon: Icon(Icons.chevron_right, color: Theme.of(context).primaryColor),
+        icon: Icon(Icons.chevron_right, color: Colors.grey),
       );
     } else {
       leftOuterIcon = Container();

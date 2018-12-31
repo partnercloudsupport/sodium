@@ -4,6 +4,7 @@ import 'package:sodium/data/repository/user_repository.dart';
 import 'package:sodium/redux/achievement/achievement_action.dart';
 import 'package:sodium/redux/app/app_action.dart';
 import 'package:sodium/redux/app/app_state.dart';
+import 'package:sodium/redux/blood_pressures/blood_pressure_action.dart';
 import 'package:sodium/redux/entry/entry_action.dart';
 import 'package:sodium/redux/food/food_action.dart';
 import 'package:sodium/redux/mental/mental_action.dart';
@@ -42,6 +43,7 @@ Middleware<AppState> _init(
           store.dispatch(FetchNews());
           store.dispatch(FetchSeasonings());
           store.dispatch(FetchFoodsUser());
+          store.dispatch(FetchBloodPressures());
         }
       } catch (error) {
         print(error);

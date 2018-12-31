@@ -8,7 +8,10 @@ class LoginContainer extends StatelessWidget {
     return StoreConnector(
       converter: LoginScreenViewModel.fromStore,
       builder: (BuildContext context, LoginScreenViewModel viewModel) {
-        return LoginScreen(viewModel: viewModel);
+        return LoginScreen(
+          key: Key('__login_screen__'),
+          viewModel: viewModel,
+        );
       },
     );
   }

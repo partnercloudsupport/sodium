@@ -48,10 +48,17 @@ class _MentalHealthStatsScreenState extends State<MentalHealthStatsScreen> {
       dayBuilder: (BuildContext context, DateTime datetime) {
         final thisDayMentalHealths = widget.viewModel.mentalHealths.where((MentalHealth mentalHealth) => isSameDate(mentalHealth.datetime, datetime)).toList();
 
-        if (thisDayMentalHealths.isEmpty) {
+        if (datetime.month != currentMonth.month) {
           return Container(
             alignment: Alignment.center,
             child: Text('${datetime.day}', style: TextStyle(color: Colors.grey.shade300)),
+          );
+        }
+
+        if (thisDayMentalHealths.isEmpty) {
+          return Container(
+            alignment: Alignment.center,
+            child: Text('${datetime.day}', style: TextStyle(color: Colors.grey.shade600)),
           );
         }
 

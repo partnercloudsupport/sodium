@@ -15,13 +15,16 @@ class FoodParser {
 
     return Food.fromEntry(
       id: food['id'],
+      entryId: food['entry_id'],
       name: food['name'],
       sodium: food['sodium'],
       totalSodium: food['total_sodium'],
       type: food['type'],
       isLocal: food['is_local'],
-      serving: food['serving'],
+      serving: double.parse(food['serving']),
+      unit: food['unit'],
       dateTime: fromMysqlDateTime(food['date_time']),
+      seasonings: [],
     );
   }
 
@@ -32,6 +35,7 @@ class FoodParser {
       id: food['id'],
       name: food['name'],
       isLocal: food['is_local'],
+      unit: food['unit'],
       sodium: food['is_local'] ? food['sodium'] : 0,
       type: food['type'],
       totalSodium: 0,

@@ -10,8 +10,8 @@ void showToast(String message) {
     toastLength: Toast.LENGTH_SHORT,
     gravity: ToastGravity.BOTTOM,
     timeInSecForIos: 3,
-    bgcolor: "#000000",
-    textcolor: '#ffffff',
+//    backgroundColor: "#000000",
+//    textColor: '#ffffff',
   );
 }
 

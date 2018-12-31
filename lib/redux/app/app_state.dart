@@ -1,5 +1,6 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:sodium/data/model/acchievement.dart';
+import 'package:sodium/data/model/blood_pressure.dart';
 import 'package:sodium/data/model/food.dart';
 import 'package:sodium/data/model/metal.dart';
 import 'package:sodium/data/model/news.dart';
@@ -17,11 +18,13 @@ class AppState {
   final List<Seasoning> seasonings;
   final List<Achievement> achievements;
   final List<MentalHealth> mentalHealths;
+  final List<BloodPressure> bloodPressures;
   final List<News> news;
   final UiState uiState;
 
   final BehaviorSubject<List<Achievement>> achievementsRecentlyUnlockedStream;
   final BehaviorSubject<List<MentalHealth>> mentalHealthsStream;
+  final BehaviorSubject<User> userStream;
 
   AppState({
     this.user,
@@ -33,10 +36,12 @@ class AppState {
     this.seasonings,
     this.achievements,
     this.mentalHealths,
+    this.bloodPressures,
     this.news,
     this.uiState,
     this.achievementsRecentlyUnlockedStream,
     this.mentalHealthsStream,
+    this.userStream,
   });
 
   factory AppState.initial() {
@@ -50,9 +55,11 @@ class AppState {
       seasonings: [],
       achievements: null,
       mentalHealths: null,
+      bloodPressures: [],
       news: [],
       achievementsRecentlyUnlockedStream: BehaviorSubject<List<Achievement>>(),
       mentalHealthsStream: BehaviorSubject<List<MentalHealth>>(),
+      userStream: BehaviorSubject<User>(),
       uiState: UiState.initial(),
     );
   }
@@ -67,9 +74,11 @@ class AppState {
     List<Seasoning> seasonings,
     List<Achievement> achievements,
     List<MentalHealth> mentalHealths,
+    List<BloodPressure> bloodPressures,
     List<News> news,
     BehaviorSubject<BehaviorSubject> achievementStream,
     BehaviorSubject<BehaviorSubject> mentalHealthsStream,
+    BehaviorSubject<BehaviorSubject> userStream,
     UiState uiState,
   }) {
     return AppState(
@@ -83,9 +92,11 @@ class AppState {
       uiState: uiState ?? this.uiState,
       achievements: achievements ?? this.achievements,
       mentalHealths: mentalHealths ?? this.mentalHealths,
+      bloodPressures: bloodPressures ?? this.bloodPressures,
       news: news ?? this.news,
       achievementsRecentlyUnlockedStream: achievementStream ?? this.achievementsRecentlyUnlockedStream,
       mentalHealthsStream: mentalHealthsStream ?? this.mentalHealthsStream,
+      userStream: userStream ?? this.userStream,
     );
   }
 }

@@ -139,9 +139,7 @@ class NewsListViewModel {
       news: store.state.news,
       state: store.state.uiState.newsListScreenState,
       user: store.state.user,
-      onRefresh: (Completer<Null> completer) {
-        store.dispatch(FetchNews(completer: completer));
-      },
+      onRefresh: (Completer<Null> completer) => store.dispatch(FetchNews(completer: completer)),
     );
   }
 }

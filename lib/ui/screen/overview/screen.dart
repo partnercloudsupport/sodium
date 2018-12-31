@@ -14,13 +14,17 @@ import 'package:sodium/ui/common/loading/loading_shimmer.dart';
 import 'package:sodium/ui/common/section/section_divider.dart';
 import 'package:sodium/ui/common/week_trophy/week_trophy_container.dart';
 import 'package:sodium/ui/screen/food_search/screen.dart';
+import 'package:sodium/ui/screen/profile/profile_screen.dart';
 
 class OverviewScreen extends StatefulWidget {
   static final String route = '/overview';
 
   final OverviewScreenViewModel viewModel;
 
-  OverviewScreen({this.viewModel});
+  OverviewScreen({
+    Key key,
+    this.viewModel,
+  }) : super(key: key);
 
   @override
   _OverviewScreenState createState() => _OverviewScreenState();
@@ -36,7 +40,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
   Widget _buildUpperSection(List<Food> foods) {
     final totalSodium = foods.fold(0, (accumulated, food) => food.totalSodium + accumulated);
-    final eaten = double.parse((totalSodium / 3000).toString()) * 100;
+    final eaten = double.parse((totalSodium / widget.viewModel.user.sodiumLimit).toString()) * 100;
     final remaining = 100 - eaten;
 
     final detail = Column(
@@ -54,9 +58,23 @@ class _OverviewScreenState extends State<OverviewScreen> {
             color: Theme.of(context).primaryColor,
           ),
         ),
-        Text(
-          'ควรรับประทานไม่เกิน ${widget.viewModel.user.sodiumLimit} มก. ต่อวัน',
-          style: Style.description,
+        Row(
+          children: <Widget>[
+            Text(
+              'ควรรับประทานไม่เกิน',
+              style: Style.description,
+            ),
+            SizedBox(width: 4.0),
+            Text(
+              '${widget.viewModel.user.sodiumLimit}',
+              style: Style.descriptionPrimary,
+            ),
+            SizedBox(width: 2.0),
+            Text(
+              ' มก. ต่อวัน',
+              style: Style.description,
+            ),
+          ],
         ),
       ],
     );
@@ -121,7 +139,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
         ),
         icon: Icon(
           FontAwesomeIcons.utensils,
-          color: Colors.grey.shade300,
+          color: Colors.grey,
         ),
       );
 
@@ -197,6 +215,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
             floating: true,
             title: Text('กิจกรรมวันนี้'),
             elevation: 2.5,
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.person),
+                onPressed: () => Navigator.of(context).pushNamed(ProfileScreen.route),
+              )
+            ],
             // backgroundColor: Colors.white,
           ),
           SliverList(

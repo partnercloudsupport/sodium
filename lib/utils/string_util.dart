@@ -23,14 +23,6 @@ DateTime fromMysqlDateTime(String datetime) {
   return formatter.parse(datetime);
 }
 
-List<String> fromTagsString(String tags) {
-  return tags.split(",").toList();
-}
-
-String fromTagsList(List<String> tags) {
-  return tags.join(",");
-}
-
 String toThaiDate(DateTime datetime, [String format = 'dd MMM yyyy']) {
   final formatter = DateFormat(format, 'th_TH');
   return formatter.format(datetime);
@@ -53,15 +45,14 @@ double fractionTextToDouble(String fraction) {
   }
 }
 
-String fractionDoubleToText(num fraction) {
+String decimalToFraction(num fraction) {
+  if (fraction >= 1) return fraction.toInt().toString();
+
   if (fraction == 0.0)
     return '0';
   else if (fraction == 0.25)
     return '1/4';
   else if (fraction == 0.5)
     return '1/2';
-  else if (fraction == 0.75)
-    return '3/4';
+  else if (fraction == 0.75) return '3/4';
 }
-
-

@@ -1,5 +1,7 @@
 import 'package:sodium/redux/achievement/achievement_reducers.dart';
+import 'package:sodium/redux/app/app_action.dart';
 import 'package:sodium/redux/app/app_state.dart';
+import 'package:sodium/redux/blood_pressures/blood_pressure_reducer.dart';
 import 'package:sodium/redux/entry/entry_reducer.dart';
 import 'package:sodium/redux/food/food_results_reducers.dart';
 import 'package:sodium/redux/food/food_selected_reducers.dart';
@@ -12,6 +14,10 @@ import 'package:sodium/redux/ui/ui_reducer.dart';
 import 'package:sodium/redux/user/user_reducer.dart';
 
 AppState appReducer(AppState state, action) {
+  if (action is Clear) {
+    return AppState.initial();
+  }
+
   final appState = AppState(
     user: userReducers(state.user, action),
     token: tokenReducers(state.token, action),
@@ -23,8 +29,10 @@ AppState appReducer(AppState state, action) {
     achievements: achievementReducers(state.achievements, action),
     achievementsRecentlyUnlockedStream: state.achievementsRecentlyUnlockedStream,
     mentalHealthsStream: state.mentalHealthsStream,
+    userStream: state.userStream,
     news: newsReducers(state.news, action),
     mentalHealths: mentalHealthReducers(state.mentalHealths, action),
+    bloodPressures: bloodPressureReducers(state.bloodPressures, action),
     uiState: uiReducers(state.uiState, action),
   );
 

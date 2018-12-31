@@ -24,8 +24,8 @@ class Tile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          title,
-          subtitle,
+          title ?? Container(),
+          subtitle ?? Container(),
         ],
       ),
     );
@@ -37,7 +37,7 @@ class Tile extends StatelessWidget {
 
     final body = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         heading,
         trailing ?? Container(),

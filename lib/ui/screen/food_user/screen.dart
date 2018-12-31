@@ -12,27 +12,34 @@ import 'package:sodium/ui/common/Icon_message.dart';
 import 'package:sodium/ui/common/food/food_tile.dart';
 import 'package:sodium/ui/common/loading/loading.dart';
 import 'package:sodium/ui/common/loading/loading_container.dart';
-import 'package:sodium/ui/food_user_add/screen.dart';
 import 'package:sodium/ui/screen/entry_add/container.dart';
+import 'package:sodium/ui/screen/food_user_add/screen.dart';
 
-class MyFoodScreen extends StatefulWidget {
+class UserFoodScreen extends StatefulWidget {
   final MyFoodScreenViewModel viewModel;
+  final Function(Food food) onFoodClick;
 
-  MyFoodScreen({
+  UserFoodScreen({
     this.viewModel,
+    this.onFoodClick,
   });
 
   @override
-  _MyFoodScreenState createState() => _MyFoodScreenState();
+  _UserFoodScreenState createState() => _UserFoodScreenState();
 }
 
-class _MyFoodScreenState extends State<MyFoodScreen> {
+class _UserFoodScreenState extends State<UserFoodScreen> {
   void _showMyFoodAddScreen() {
     Navigator.of(context).pushNamed(MyFoodAddScreen.route);
   }
 
   void _showFoodDetail(Food food, BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => FoodAddContainer(food: food)));
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => FoodAddContainer(
+            food: food,
+            dateTime: DateTime.now(),
+          ),
+    ));
   }
 
   Widget _buildFoodList(List<Food> foods) {
@@ -49,18 +56,30 @@ class _MyFoodScreenState extends State<MyFoodScreen> {
           padding: index == 0 || index == foods.length ? EdgeInsets.only(top: 8.0, left: 16, right: 16.0) : EdgeInsets.symmetric(horizontal: 16.0),
           child: FoodTile(
             food: food,
-            onPressed: () => _showFoodDetail(food, context),
+            onPressed: () => widget.onFoodClick(food),
           ),
         );
       },
     );
   }
 
-  Widget _buildFoodSuggestion() {
+  Widget _buildUserFoods() {
     return LoadingContainer(
       loadingStatus: LoadingStatus.success,
       loadingContent: Loading(title: 'กำลังค้นหา'),
-      successContent: _buildFoodList(widget.viewModel.foods),
+      successContent: widget.viewModel.foods.isNotEmpty
+          ? _buildFoodList(widget.viewModel.foods)
+          : IconMessage(
+              icon: Icon(FontAwesomeIcons.utensils, size: 64.0),
+              title: Text(
+                'คุณยังไม่ได้เพิ่มข้อมูลอาหารของฉัน',
+                style: Style.title,
+              ),
+              description: Text(
+                'กดปุ่มด้านล่างเพื่อเพิ่ม',
+                style: Style.description,
+              ),
+            ),
       initialContent: IconMessage(
         icon: Icon(FontAwesomeIcons.search, size: 64.0),
         title: Text(
@@ -91,8 +110,6 @@ class _MyFoodScreenState extends State<MyFoodScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.viewModel.foods);
-
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
@@ -101,7 +118,7 @@ class _MyFoodScreenState extends State<MyFoodScreen> {
         label: Text('เพิ่มอาหารของฉัน'),
         onPressed: () => _showMyFoodAddScreen(),
       ),
-      body: _buildFoodSuggestion(),
+      body: _buildUserFoods(),
     );
   }
 }

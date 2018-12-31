@@ -11,7 +11,7 @@ List<Middleware<AppState>> createUserMiddleware(
   UserRepository userRepository,
   SharedPreferencesRepository sharedPrefRepository,
 ) {
-  final register = _register(userRepository);
+  final register = _register(userRepository, sharedPrefRepository);
   final login = _login(userRepository, sharedPrefRepository);
   final logout = _logout(userRepository, sharedPrefRepository);
   final update = _update(userRepository);
@@ -59,7 +59,7 @@ Middleware<AppState> _logout(
     if (action is Logout) {
       try {
         await sharedPrefRepository.deleteToken();
-        // next(ClearAppState());
+        next(Clear());
       } catch (error) {}
       next(action);
     }
@@ -76,7 +76,9 @@ Middleware<AppState> _fetchUser(
         final user = await userRepository.fetchDetail(token);
 
         store.dispatch(StoreUser(user));
-      } catch (error) {}
+      } catch (error) {
+        print(error);
+      }
 
       next(action);
     }
@@ -85,14 +87,21 @@ Middleware<AppState> _fetchUser(
 
 Middleware<AppState> _register(
   UserRepository userRepository,
+  SharedPreferencesRepository sharedPrefRepository,
 ) {
   return (Store<AppState> store, action, NextDispatcher next) async {
     if (action is Register) {
       try {
         final user = await userRepository.register(action.user);
-        //  next(SaveToken(user.token));
-        next(FetchUser());
+        store.dispatch(StoreUser(user));
+
+        await sharedPrefRepository.saveToken(user.token);
+        store.dispatch(StoreToken(user.token));
+
+        store.dispatch(Init());
         action.completer.complete(null);
+
+        store.state.userStream.add(user);
       } catch (error) {
         action.completer.completeError(null);
       }
@@ -107,9 +116,11 @@ Middleware<AppState> _update(
 ) {
   return (Store<AppState> store, action, NextDispatcher next) async {
     if (action is UpdateUser) {
+      print('update');
+
       try {
-        final token = store.state.token;
-        // await userRepository.update(token, action.user);
+        await userRepository.update(action.user);
+
         next(FetchUser());
         action.completer.complete(null);
       } catch (error) {

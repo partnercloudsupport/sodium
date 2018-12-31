@@ -1,32 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:modal_drawer_handle/modal_drawer_handle.dart';
+import 'package:rounded_modal/rounded_modal.dart';
 import 'package:sodium/constant/styles.dart';
 import 'package:sodium/data/model/food.dart';
 import 'package:sodium/data/model/loading.dart';
 import 'package:sodium/ui/common/Icon_message.dart';
+import 'package:sodium/ui/common/chip.dart';
 import 'package:sodium/ui/common/food/food_tile.dart';
 import 'package:sodium/ui/common/loading/loading.dart';
 import 'package:sodium/ui/common/loading/loading_container.dart';
-import 'package:sodium/ui/screen/entry_add/container.dart';
+import 'package:sodium/utils/widget_utils.dart';
 
 class FoodSearchDelegate extends SearchDelegate<Food> {
   final Sink<String> search;
   final Stream<List<Food>> suggestions;
   final Stream<LoadingStatus> loadingStatus;
+  final Function(Food food) onFoodClick;
 
   FoodSearchDelegate({
     @required this.search,
     @required this.suggestions,
     @required this.loadingStatus,
+    @required this.onFoodClick,
   });
-
-  void _showFoodDetail(Food food, BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => FoodAddContainer(food: food)));
-  }
-
-  void _onFoodPressed(Food food, BuildContext context) {
-    _showFoodDetail(food, context);
-  }
 
   Widget _buildFoodSuggestion(LoadingStatus loadingStatus) {
     return StreamBuilder<List<Food>>(
@@ -83,16 +80,72 @@ class FoodSearchDelegate extends SearchDelegate<Food> {
           padding: index == 0 || index == foods.length ? EdgeInsets.only(top: 8.0, left: 16, right: 16.0) : EdgeInsets.symmetric(horizontal: 16.0),
           child: FoodTile(
             food: food,
-            onPressed: () => _onFoodPressed(food, context),
+            onPressed: () => onFoodClick(food),
           ),
         );
       },
     );
   }
 
+  void _showFilter(BuildContext context) {
+    final handler = Padding(
+      padding: EdgeInsets.all(8.0),
+      child: ModalDrawerHandle(
+        handleColor: Theme.of(context).primaryColor,
+      ),
+    );
+
+    final header = Wrap(
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Text('ประเภทอาหาร', style: Style.title),
+          ],
+        ),
+      ],
+    );
+
+    final categories = ['แกง', 'ผัด', 'ต้ม', 'ข้าว'];
+    final body = Wrap(
+      children: categories
+          .map((String category) => Padding(
+                padding: EdgeInsets.only(right: 8.0),
+                child: ChipSelector(
+                  label: category,
+                  selected: false,
+                  onTap: () {
+                    query = category;
+                    hideDialog(context);
+                  },
+                ),
+              ))
+          .toList(),
+    );
+
+    final content = Container(
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          handler,
+          header,
+          SizedBox(height: 12.0),
+          body,
+        ],
+      ),
+    );
+
+    showRoundedModalBottomSheet(context: context, builder: (BuildContext context) => content, dismissOnTap: false);
+  }
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
+      IconButton(
+        icon: Icon(Icons.filter_list),
+        onPressed: () => _showFilter(context),
+      ),
       IconButton(
         icon: Icon(Icons.clear),
         onPressed: () => query = '',

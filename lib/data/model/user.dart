@@ -8,6 +8,10 @@ class User {
   final int sodiumLimit;
   final String token;
   final bool isAdmin;
+  final DateTime dateOfBirth;
+  final String healthCondition;
+  final String gender;
+  final bool isNewUser;
 
   User({
     this.id,
@@ -17,6 +21,10 @@ class User {
     this.sodiumLimit = 2400,
     this.token,
     this.isAdmin = false,
+    this.dateOfBirth,
+    this.healthCondition,
+    this.gender,
+    this.isNewUser,
   });
 
   String toJson() {
@@ -25,7 +33,7 @@ class User {
 
   @override
   String toString() {
-    return 'User{id: $id, name: $name, email: $email, password: $password, sodiumLimit: $sodiumLimit, token: $token, isAdmin: $isAdmin}';
+    return 'User{id: $id, name: $name, email: $email, password: $password, sodiumLimit: $sodiumLimit, isAdmin: $isAdmin, dateOfBirth: $dateOfBirth, healthCondition: $healthCondition, gender: $gender, isNewUser: $isNewUser}';
   }
 
   User.register({
@@ -36,6 +44,10 @@ class User {
     this.id,
     this.token,
     this.isAdmin = false,
+    this.dateOfBirth,
+    this.healthCondition,
+    this.gender,
+    this.isNewUser = false,
   });
 
   User copyWith({
@@ -46,6 +58,10 @@ class User {
     int sodiumLimit,
     String token,
     bool isAdmin,
+    DateTime dateOfBirth,
+    String healthCondition,
+    String gender,
+    bool isNewUser,
   }) {
     return User(
       id: id ?? this.id,
@@ -55,6 +71,10 @@ class User {
       sodiumLimit: sodiumLimit ?? this.sodiumLimit,
       token: token ?? this.token,
       isAdmin: isAdmin ?? this.isAdmin,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      healthCondition: healthCondition ?? this.healthCondition,
+      gender: gender ?? this.gender,
+      isNewUser: isNewUser ?? this.isNewUser,
     );
   }
 }

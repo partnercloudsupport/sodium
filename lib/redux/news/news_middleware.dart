@@ -36,8 +36,6 @@ Middleware<AppState> _addNews(
         await newsRepository.createNews(action.news);
 
         action.completer.complete(null);
-
-        //next(BroadcastTopic('แจ้งเตือนข่าวสาร', action.news.title, Environment.notificationTopicNews));
         next(FetchNews());
       } catch (error) {
         print(error);
@@ -76,10 +74,7 @@ Middleware<AppState> _deleteNews(
 ) {
   return (Store<AppState> store, action, NextDispatcher next) async {
     if (action is DeleteNews) {
-      //      next(ShowNewsLoading());
-
       try {
-        final token = store.state.token;
         await Future.delayed(Duration(seconds: 1));
         await newsRepository.delete(action.newsId);
 
@@ -89,7 +84,6 @@ Middleware<AppState> _deleteNews(
         print(error);
       }
 
-      //     next(HideNewsLoading());
       next(action);
     }
   };
@@ -100,21 +94,14 @@ Middleware<AppState> _fetchNews(
 ) {
   return (Store<AppState> store, action, NextDispatcher next) async {
     if (action is FetchNews) {
-      //  next(ShowNewsListLoading());
-
       try {
-        final token = store.state.token;
         final news = await newsRepository.fetchNews();
-
-        print(news);
-
         action.completer?.complete(null);
         next(FetchNewsSuccess(news));
       } catch (error) {
         print(error);
       }
 
-      //   next(HideNewsListLoading());
       next(action);
     }
   };
