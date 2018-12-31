@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:sodium/constant/assets.dart';
+import 'package:sodium/constant/key.dart';
 import 'package:sodium/constant/styles.dart';
 import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/redux/user/user_action.dart';
 import 'package:sodium/ui/common/loading/loading_dialog.dart';
 import 'package:sodium/ui/common/ripple_button.dart';
 import 'package:sodium/ui/screen/register/register_screen.dart';
+import 'package:sodium/utils/string_util.dart';
 import 'package:sodium/utils/widget_utils.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -69,8 +71,11 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
 
-    _emailController = TextEditingController(text: 'user@gmail.com');
-    _passwordController = TextEditingController(text: '123456s');
+//    _emailController = TextEditingController(text: 'user@gmail.com');
+//    _passwordController = TextEditingController(text: '123456s');
+
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
 
     _emailNode = FocusNode();
     _passwordNode = FocusNode();
@@ -121,7 +126,13 @@ class _LoginScreenState extends State<LoginScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.0),
             child: TextFormField(
-              validator: (String value) => value.isEmpty ? 'กรุณากรอกอีเมลล์' : null,
+              key: loginEmailFieldKey,
+              validator: (String value) {
+                if (value.isEmpty) return 'กรุณากรอกอีเมลล์';
+                if (!isEmail(value)) return 'รูปแบบอีเมลล์ไม่ถูกต้อง';
+
+                return null;
+              },
               controller: _emailController,
               focusNode: _emailNode,
               keyboardType: TextInputType.emailAddress,
@@ -133,6 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.0),
             child: TextFormField(
+              key: loginPasswordFieldKey,
               validator: (String value) => value.isEmpty ? 'กรุณากรอกรหัสผ่าน' : null,
               controller: _passwordController,
               focusNode: _passwordNode,
@@ -145,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           SizedBox(height: 24.0),
           RippleButton(
-            key: Key('__login_button__'),
+            key: loginButtonKey,
             text: "เข้าสู่ระบบ",
             backgroundColor: Theme.of(context).primaryColor,
             highlightColor: Palette.highlight,
@@ -154,6 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           SizedBox(height: 24.0),
           RippleButton(
+            key: loginCreateAccountButtonKey,
             text: "สร้างบัญชีผู้ใช้",
             backgroundColor: Colors.white24,
             textColor: Theme.of(context).primaryColor,

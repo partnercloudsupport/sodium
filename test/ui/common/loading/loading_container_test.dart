@@ -31,8 +31,8 @@ main() {
     );
   }
 
-  group('LoadingContainer with all provided paremeter', () {
-    testWidgets('user should see loading if LoadingStatus is equal to loading', (WidgetTester tester) async {
+  group('When all paremeter is provided', () {
+    testWidgets('When LoadingStatus is equal to loading, should see loading content', (WidgetTester tester) async {
       await _pumpLoadingContainerByStatus(
         LoadingStatus.loading,
         tester,
@@ -45,7 +45,7 @@ main() {
       expect(find.byKey(notFound), findsNothing);
     });
 
-    testWidgets('user should see success content if LoadingStatus is equal to success', (WidgetTester tester) async {
+    testWidgets('When LoadingStatus is equal to success, should see success content', (WidgetTester tester) async {
       await _pumpLoadingContainerByStatus(
         LoadingStatus.success,
         tester,
@@ -58,7 +58,7 @@ main() {
       expect(find.byKey(notFound), findsNothing);
     });
 
-    testWidgets('user should see error content if LoadingStatus is equal to error', (WidgetTester tester) async {
+    testWidgets('When LoadingStatus is equal to error, should see error content', (WidgetTester tester) async {
       await _pumpLoadingContainerByStatus(
         LoadingStatus.error,
         tester,
@@ -71,7 +71,7 @@ main() {
       expect(find.byKey(notFound), findsNothing);
     });
 
-    testWidgets('user should see notFound content if LoadingStatus is equal to notFound', (WidgetTester tester) async {
+    testWidgets('When LoadingStatus is equal to notFound, should see notFound content', (WidgetTester tester) async {
       await _pumpLoadingContainerByStatus(
         LoadingStatus.notFound,
         tester,
@@ -85,8 +85,8 @@ main() {
     });
   });
 
-  group('LoadingContainer with some provided paremeter', () {
-    testWidgets('user should see initial content if LoadingStatus is equal to success and success content is not provided', (WidgetTester tester) async {
+  group('When some paremeter is provided', () {
+    testWidgets('When LoadingStatus is equal to success and success content is not provided , should see initial content', (WidgetTester tester) async {
       await _pumpLoadingContainerByStatus(
         LoadingStatus.success,
         tester,
@@ -100,7 +100,7 @@ main() {
       expect(find.byKey(notFound), findsNothing);
     });
 
-    testWidgets('user should see initial content if LoadingStatus is equal to error and error content is not provided', (WidgetTester tester) async {
+    testWidgets('When LoadingStatus is equal to error and error content is not provided , should see initial content', (WidgetTester tester) async {
       await _pumpLoadingContainerByStatus(
         LoadingStatus.error,
         tester,
@@ -114,7 +114,7 @@ main() {
       expect(find.byKey(notFound), findsNothing);
     });
 
-    testWidgets('user should see initial content if LoadingStatus is equal to notFound and notFound content is not provided', (WidgetTester tester) async {
+    testWidgets('When LoadingStatus is equal to notFound and notFound content is not provided , should see initial content ', (WidgetTester tester) async {
       await _pumpLoadingContainerByStatus(
         LoadingStatus.notFound,
         tester,
