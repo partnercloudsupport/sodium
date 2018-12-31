@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sodium/utils/string_util.dart';
 
+// 1/8 1/4 1/3 3/8 1/2 5/8 2/3 3/4 7/8
 class NumberBar extends StatefulWidget {
   final int min;
   final int max;

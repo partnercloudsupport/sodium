@@ -61,6 +61,7 @@ Middleware<AppState> _logout(
         await sharedPrefRepository.deleteToken();
         next(Clear());
       } catch (error) {}
+
       next(action);
     }
   };
@@ -98,7 +99,7 @@ Middleware<AppState> _register(
         await sharedPrefRepository.saveToken(user.token);
         store.dispatch(StoreToken(user.token));
 
-        store.dispatch(Init());
+        store.dispatch(InitForNewUser());
         action.completer.complete(null);
 
         store.state.userStream.add(user);

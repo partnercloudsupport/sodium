@@ -50,9 +50,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 32.0),
           child: FlatButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: () => Navigator.pop(context),
             child: Text('ยืนยัน', style: TextStyle(color: Colors.white)),
             color: Theme.of(context).primaryColor,
           ),
@@ -67,16 +65,16 @@ class _NavigationScreenState extends State<NavigationScreen> {
     );
   }
 
-  void _showMentalHealthDialog() {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) {
-        return MentalHealthSurveyContainer();
-      },
-      fullscreenDialog: true,
-    ));
+  void _showMentalHealthInputDialog() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => MentalHealthSurveyContainer(),
+        fullscreenDialog: true,
+      ),
+    );
   }
 
-  void _showUserInfoStep() {
+  void _showUserInfoStepInput() {
     Navigator.of(context).pushReplacementNamed(UserInfoStepScreen.route);
   }
 
@@ -92,13 +90,13 @@ class _NavigationScreenState extends State<NavigationScreen> {
       final todayMentalHealths = mentalHealths.where((MentalHealth mentalHealth) => isSameDate(mentalHealth.datetime, DateTime.now())).toList();
 
       if (todayMentalHealths.isEmpty) {
-        _showMentalHealthDialog();
+        _showMentalHealthInputDialog();
       }
     });
 
     widget.viewModel.userStream.listen((User user) {
       if (user.isNewUser) {
-        _showUserInfoStep();
+        _showUserInfoStepInput();
       }
     });
 
@@ -164,11 +162,13 @@ class NavigationViewModel {
   BehaviorSubject<List<Achievement>> achievements;
   BehaviorSubject<List<MentalHealth>> mentalHealthsStream;
   BehaviorSubject<User> userStream;
+  User user;
 
   NavigationViewModel({
     this.achievements,
     this.mentalHealthsStream,
     this.userStream,
+    this.user,
   });
 
   static NavigationViewModel fromStore(Store<AppState> store) {
@@ -176,6 +176,7 @@ class NavigationViewModel {
       achievements: store.state.achievementsRecentlyUnlockedStream,
       mentalHealthsStream: store.state.mentalHealthsStream,
       userStream: store.state.userStream,
+      user: store.state.user,
     );
   }
 }

@@ -65,6 +65,8 @@ Middleware<AppState> _deleteEntry(
       try {
         await entryRepository.deleteEntry(action.id);
         action.completer.complete(null);
+
+        store.dispatch(FetchEntries());
       } catch (error) {
         print(error);
       }

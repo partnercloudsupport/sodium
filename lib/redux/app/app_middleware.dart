@@ -18,9 +18,11 @@ List<Middleware<AppState>> createAppMiddleware(
   SharedPreferencesRepository sharedPrefRepository,
 ) {
   final init = _init(userRepository, sharedPrefRepository);
+  final initForNewUser = _initForNewUser(userRepository, sharedPrefRepository);
 
   return [
     TypedMiddleware<AppState, Init>(init),
+    TypedMiddleware<AppState, InitForNewUser>(initForNewUser),
   ];
 }
 
@@ -40,6 +42,36 @@ Middleware<AppState> _init(
           store.dispatch(FetchAchievements());
           store.dispatch(FetchRecentlyUnlockedAcchivements());
           store.dispatch(FetchMentalHealths());
+          store.dispatch(FetchNews());
+          store.dispatch(FetchSeasonings());
+          store.dispatch(FetchFoodsUser());
+          store.dispatch(FetchBloodPressures());
+        }
+      } catch (error) {
+        print(error);
+      }
+
+      next(action);
+    }
+  };
+}
+
+Middleware<AppState> _initForNewUser(
+  UserRepository userRepository,
+  SharedPreferencesRepository sharedPrefRepository,
+) {
+  return (Store store, action, NextDispatcher next) async {
+    if (action is InitForNewUser) {
+      try {
+        final String token = await sharedPrefRepository.getToken();
+
+        if (token != null) {
+          store.dispatch(StoreToken(token));
+          store.dispatch(FetchUser());
+          store.dispatch(FetchEntries());
+          store.dispatch(FetchAchievements());
+          store.dispatch(FetchRecentlyUnlockedAcchivements());
+          //store.dispatch(FetchMentalHealths());
           store.dispatch(FetchNews());
           store.dispatch(FetchSeasonings());
           store.dispatch(FetchFoodsUser());
