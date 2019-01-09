@@ -81,7 +81,7 @@ class _NewsComposeScreenState extends State<NewsComposeScreen> {
   }
 
   void _onCompleteUpload() {
-    hideDialog(context);
+    popDialog(context);
   }
 
   @override

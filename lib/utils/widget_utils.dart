@@ -15,7 +15,15 @@ void showToast(String message) {
   );
 }
 
-void hideDialog(BuildContext context) {
+void popBottomSheet(BuildContext context) {
+  Navigator.of(context).pop();
+}
+
+void popDialog(BuildContext context) {
+  Navigator.of(context).pop();
+}
+
+void popLoading(BuildContext context) {
   Navigator.of(context).pop();
 }
 

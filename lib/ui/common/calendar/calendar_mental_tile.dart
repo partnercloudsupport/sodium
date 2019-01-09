@@ -14,7 +14,7 @@ class MentalCalendarTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 5.0),
+      margin: EdgeInsets.symmetric(horizontal: 12.0),
       decoration: !isEmpty
           ? BoxDecoration(
               color: color,

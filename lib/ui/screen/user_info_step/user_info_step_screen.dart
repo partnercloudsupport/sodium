@@ -56,7 +56,7 @@ class _UserInfoStepScreenState extends State<UserInfoStepScreen> {
 
     Completer<Null> userProfileCompleter = Completer();
     userProfileCompleter.future.then((_) {
-      hideDialog(context);
+      popDialog(context);
       showToast('บันทึกแล้ว');
 
       _pageController.nextPage(
@@ -64,7 +64,7 @@ class _UserInfoStepScreenState extends State<UserInfoStepScreen> {
         curve: Curves.linear,
       );
     }).catchError((error) {
-      hideDialog(context);
+      popDialog(context);
       showToast('บันทึกไม่สำเร็จ');
     });
 
@@ -89,12 +89,12 @@ class _UserInfoStepScreenState extends State<UserInfoStepScreen> {
 
       Completer<Null> bloodPressureCompleter = Completer();
       bloodPressureCompleter.future.then((_) {
-        hideDialog(context);
+        popDialog(context);
         showToast('บันทึกแล้ว');
 
         popScreen(context);
       }).catchError((error) {
-        hideDialog(context);
+        popDialog(context);
         showToast('บันทึกไม่สำเร็จ');
       });
 

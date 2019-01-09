@@ -1,3 +1,4 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:redux/redux.dart';
 import 'package:sodium/data/repository/prefs_repository.dart';
 import 'package:sodium/data/repository/user_repository.dart';
@@ -12,13 +13,15 @@ import 'package:sodium/redux/news/news_action.dart';
 import 'package:sodium/redux/seasoning/seasoning_action.dart';
 import 'package:sodium/redux/token/token_action.dart';
 import 'package:sodium/redux/user/user_action.dart';
+import 'package:sodium/service/notification_service.dart';
 
 List<Middleware<AppState>> createAppMiddleware(
   UserRepository userRepository,
   SharedPreferencesRepository sharedPrefRepository,
+  NotificationService notificationService,
 ) {
-  final init = _init(userRepository, sharedPrefRepository);
-  final initForNewUser = _initForNewUser(userRepository, sharedPrefRepository);
+  final init = _init(userRepository, sharedPrefRepository, notificationService);
+  final initForNewUser = _initForNewUser(userRepository, sharedPrefRepository, notificationService);
 
   return [
     TypedMiddleware<AppState, Init>(init),
@@ -29,6 +32,7 @@ List<Middleware<AppState>> createAppMiddleware(
 Middleware<AppState> _init(
   UserRepository userRepository,
   SharedPreferencesRepository sharedPrefRepository,
+  NotificationService notificationService,
 ) {
   return (Store store, action, NextDispatcher next) async {
     if (action is Init) {
@@ -46,6 +50,8 @@ Middleware<AppState> _init(
           store.dispatch(FetchSeasonings());
           store.dispatch(FetchFoodsUser());
           store.dispatch(FetchBloodPressures());
+
+          notificationService.setDailyNotification(999, 'title', 'body', Time(11, 20, 0));
         }
       } catch (error) {
         print(error);
@@ -59,6 +65,7 @@ Middleware<AppState> _init(
 Middleware<AppState> _initForNewUser(
   UserRepository userRepository,
   SharedPreferencesRepository sharedPrefRepository,
+  NotificationService notificationService,
 ) {
   return (Store store, action, NextDispatcher next) async {
     if (action is InitForNewUser) {
@@ -76,6 +83,8 @@ Middleware<AppState> _initForNewUser(
           store.dispatch(FetchSeasonings());
           store.dispatch(FetchFoodsUser());
           store.dispatch(FetchBloodPressures());
+
+          // notificationService.setDailyNotification();
         }
       } catch (error) {
         print(error);

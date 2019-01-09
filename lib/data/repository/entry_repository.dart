@@ -59,6 +59,25 @@ class EntryRepository {
     );
   }
 
+  Future<Null> updateEntry(Food food) async {
+    final token = await _sharedPreferencesRepository.getToken();
+
+    await _dio.put(
+      'entry/${food.entryId}',
+      options: Options(
+        contentType: ContentType.parse("application/x-www-form-urlencoded"),
+        headers: {
+          HttpHeaders.authorizationHeader: toBearer(token),
+        },
+      ),
+      data: {
+        'total_sodium': food.totalSodium.toString(),
+        'serving': food.serving,
+        'date_time': toMysqlDateTime(food.dateTime),
+      },
+    );
+  }
+
   Future<Null> deleteEntry(int id) async {
     final token = await _sharedPreferencesRepository.getToken();
 

@@ -23,9 +23,7 @@ class MainScreen extends StatefulWidget {
 class MainPageState extends State<MainScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    final viewModel = widget.viewModel;
-
-    return viewModel.token == null ? LoginContainer() : NavigationContainer();
+    return widget.viewModel.token == null ? LoginContainer() : NavigationContainer();
   }
 }
 

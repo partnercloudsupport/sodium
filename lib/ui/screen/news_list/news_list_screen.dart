@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:after_layout/after_layout.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:redux/redux.dart';
 import 'package:sodium/constant/styles.dart';
@@ -32,17 +31,6 @@ class NewsListScreen extends StatefulWidget {
 // ignore: mixin_inference_inconsistent_matching_classes
 class _NewsListScreenState extends State<NewsListScreen> with AfterLayoutMixin<NewsListScreen>, SingleTickerProviderStateMixin {
   static GlobalKey<RefreshIndicatorState> _newsRefreshIndicatorKey;
-
-  Widget _buildAppBar() {
-    return SliverAppBar(
-      snap: true,
-      floating: true,
-      elevation: 1.0,
-      forceElevated: true,
-      title: Text('ข่าวสาร'),
-      centerTitle: true,
-    );
-  }
 
   void _showNewsCompose() {
     Navigator.of(context).pushNamed(NewsComposeScreen.route);
@@ -106,17 +94,10 @@ class _NewsListScreenState extends State<NewsListScreen> with AfterLayoutMixin<N
           ? FloatingActionButton(
               onPressed: _showNewsCompose,
               elevation: 1.0,
-              child: Icon(FontAwesomeIcons.pencilAlt),
+              child: Icon(Icons.add),
             )
           : null,
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return [
-            _buildAppBar(),
-          ];
-        },
-        body: _buildNews(),
-      ),
+      body: _buildNews(),
     );
   }
 }

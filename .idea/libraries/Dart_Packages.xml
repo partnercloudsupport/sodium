@@ -226,6 +226,13 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_local_notifications">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications-0.4.2+1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_redux">
           <value>
             <list>
@@ -772,6 +779,13 @@
             </list>
           </value>
         </entry>
+        <entry key="wave">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/wave-0.0.8/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="web_socket_channel">
           <value>
             <list>
@@ -833,6 +847,7 @@
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_circular_chart-0.1.0/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_cupertino_date_picker-0.3.0/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_launcher_icons-0.7.0/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications-0.4.2+1/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_redux-0.5.2/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_svg-0.8.3/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-2.2.3/lib" />
@@ -908,6 +923,7 @@
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.0.8/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/vm_service_client-0.2.6/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/watcher-0.9.7+10/lib" />
+      <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/wave-0.0.8/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/web_socket_channel-1.0.9/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/xml-3.2.3/lib" />
       <root url="file://$PROJECT_DIR$/../flutter_windows_v0.9.4-beta/flutter/.pub-cache/hosted/pub.dartlang.org/yaml-2.1.15/lib" />

@@ -60,11 +60,6 @@ class _AchievementScreenState extends State<AchievementsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('ความสำเร็จ'),
-        elevation: .3,
-      ),
       backgroundColor: Colors.grey.shade100,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.0),

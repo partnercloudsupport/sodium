@@ -24,7 +24,7 @@ class FirebaseImageDelegate implements ZefyrImageDelegate<ImageSource> {
     if (file == null) return null;
 
     try {
-      final resizedFile = await resizeImage(file);
+      final resizedFile = await resizeImage(file, 960);
       final fileName = DateTime.now().millisecondsSinceEpoch.toString();
       final ref = FirebaseStorage.instance.ref().child('images').child('$fileName.jpg');
       final task = ref.putFile(resizedFile);

@@ -35,7 +35,7 @@ class _UserFoodScreenState extends State<UserFoodScreen> {
 
   void _showFoodDetail(Food food, BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => FoodAddContainer(
+      builder: (context) => AddEntryContainer(
             food: food,
             dateTime: DateTime.now(),
           ),
@@ -46,18 +46,15 @@ class _UserFoodScreenState extends State<UserFoodScreen> {
     return ListView.separated(
       padding: EdgeInsets.zero,
       separatorBuilder: (BuildContext context, int index) {
-        return Divider();
+        return Divider(height: 1.0);
       },
       itemCount: foods == null ? 0 : foods.length,
       itemBuilder: (BuildContext context, int index) {
         final food = foods[index];
 
-        return Padding(
-          padding: index == 0 || index == foods.length ? EdgeInsets.only(top: 8.0, left: 16, right: 16.0) : EdgeInsets.symmetric(horizontal: 16.0),
-          child: FoodTile(
-            food: food,
-            onPressed: () => widget.onFoodClick(food),
-          ),
+        return FoodTile(
+          food: food,
+          onPressed: () => widget.onFoodClick(food),
         );
       },
     );
@@ -70,9 +67,9 @@ class _UserFoodScreenState extends State<UserFoodScreen> {
       successContent: widget.viewModel.foods.isNotEmpty
           ? _buildFoodList(widget.viewModel.foods)
           : IconMessage(
-              icon: Icon(FontAwesomeIcons.utensils, size: 64.0),
+              icon: Icon(FontAwesomeIcons.stroopwafel, size: 64.0),
               title: Text(
-                'คุณยังไม่ได้เพิ่มข้อมูลอาหารของฉัน',
+                'คุณยังไม่ได้เพิ่มข้อมูลอาหารของคุณ',
                 style: Style.title,
               ),
               description: Text(

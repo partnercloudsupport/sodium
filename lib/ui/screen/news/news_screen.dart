@@ -35,6 +35,11 @@ class _NewsScreenState extends State<NewsScreen> {
   FocusNode _focusNode;
   FirebaseImageDelegate _firebaseImageDelegate;
 
+  final List<IconData> _overflowActions = [
+    Icons.edit,
+    Icons.delete,
+  ];
+
   void _showEditNews(News news, BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) => NewsEditContainer(news: widget.news)));
   }
@@ -53,7 +58,7 @@ class _NewsScreenState extends State<NewsScreen> {
               Navigator.of(context).pop();
             },
             onConfirm: () {
-              hideDialog(context); // Hide confirm dialog
+              popDialog(context); // Hide confirm dialog
 
               showDialog(
                 barrierDismissible: false,
@@ -65,7 +70,7 @@ class _NewsScreenState extends State<NewsScreen> {
 
               Completer<Null> completer = Completer();
               completer.future.then((_) {
-                hideDialog(context); // Hide LoadingDialog
+                popDialog(context); // Hide LoadingDialog
                 popScreen(context);
 
                 showToast("ลบข่าวสารแล้ว");
@@ -103,13 +108,28 @@ class _NewsScreenState extends State<NewsScreen> {
         title: Text('ข่าวสาร'),
         actions: widget.viewModel.user.isAdmin
             ? <Widget>[
-                IconButton(
-                  icon: Icon(Icons.mode_edit),
-                  onPressed: () => _showEditNews(widget.news, context),
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () => _delete(context),
+                PopupMenuButton<String>(
+                  onSelected: (item) {
+                    if (item == 'edit') {
+                      _showEditNews(widget.news, context);
+                    }
+
+                    if (item == 'delete') {
+                      _delete(context);
+                    }
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      PopupMenuItem(
+                        value: 'edit',
+                        child: Text('แก้ไข'),
+                      ),
+                      PopupMenuItem(
+                        value: 'delete',
+                        child: Text('ลบ'),
+                      )
+                    ];
+                  },
                 ),
               ]
             : [],

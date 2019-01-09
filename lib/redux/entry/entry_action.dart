@@ -22,6 +22,13 @@ class CreateEntry {
   CreateEntry(this.food, this.completer);
 }
 
+class UpdateEntry {
+  final Completer<CreateEntryResponse> completer;
+  final Food food;
+
+  UpdateEntry(this.food, this.completer);
+}
+
 class DeleteEntry {
   final int id;
   final Completer<Null> completer;

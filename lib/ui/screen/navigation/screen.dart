@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:redux/redux.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sodium/constant/assets.dart';
+import 'package:sodium/constant/key.dart';
 import 'package:sodium/data/model/acchievement.dart';
 import 'package:sodium/data/model/metal.dart';
 import 'package:sodium/data/model/user.dart';
 import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/ui/common/achievement/achievement_item.dart';
-import 'package:sodium/ui/screen/achievements/container.dart';
-import 'package:sodium/ui/screen/entry_stats/container.dart';
-import 'package:sodium/ui/screen/mental_health_stats/container.dart';
+import 'package:sodium/ui/common/navigation_drawer.dart';
+import 'package:sodium/ui/model/navigation_item.dart';
 import 'package:sodium/ui/screen/mental_health_survey/container.dart';
-import 'package:sodium/ui/screen/news_list/news_list_container.dart';
-import 'package:sodium/ui/screen/overview/container.dart';
 import 'package:sodium/ui/screen/user_info_step/user_info_step_screen.dart';
 import 'package:sodium/utils/date_time_util.dart';
 
 class NavigationScreen extends StatefulWidget {
   final NavigationViewModel viewModel;
+  final List<NavigationItemModel> navigationItems;
 
-  NavigationScreen({this.viewModel});
+  NavigationScreen({
+    this.viewModel,
+    @required this.navigationItems,
+  });
 
   @override
   _NavigationScreenState createState() => _NavigationScreenState();
@@ -30,7 +30,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   List<Widget> _children;
   int _currentIndex = 0;
 
-  void _showAchievementUnlocked(List<Achievement> achievements) {
+  void _showNewAchievementUnlocked(List<Achievement> achievements) {
     Widget achievementItem;
 
     if (achievements.length > 1) {
@@ -66,12 +66,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   void _showMentalHealthInputDialog() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => MentalHealthSurveyContainer(),
-        fullscreenDialog: true,
-      ),
-    );
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => MentalHealthSurveyContainer(),
+      fullscreenDialog: true,
+    ));
   }
 
   void _showUserInfoStepInput() {
@@ -80,9 +78,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   @override
   void initState() {
-    widget.viewModel.achievements.listen((List<Achievement> achievements) {
+    widget.viewModel.newAchievementUnlockedStream.listen((List<Achievement> achievements) {
       if (achievements.isNotEmpty) {
-        _showAchievementUnlocked(achievements);
+        _showNewAchievementUnlocked(achievements);
       }
     });
 
@@ -111,61 +109,50 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _children = [
-      OverviewContainer(),
-      EntryStatsContainer(),
-      MentalHealthContainer(),
-      AchievementsContainer(),
-      NewsListContainer(),
-    ];
+    _children = widget.navigationItems
+        .map(
+          (navigation) => navigation.widget,
+        )
+        .toList();
 
     return Scaffold(
-      body: _children[_currentIndex],
+      drawer: Drawer(
+        key: navigationDrawerKey,
+        child: NavigationDrawer(),
+      ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(widget.navigationItems[_currentIndex].title),
+        elevation: 0.3,
+      ),
+      body: _children.isNotEmpty ? _children[_currentIndex] : Container(),
       bottomNavigationBar: BottomNavigationBar(
         fixedColor: Colors.redAccent,
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         onTap: (index) => _setPage(index),
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(AssetIcon.salt, color: Colors.grey.shade400, size: 22.0),
-            activeIcon: Icon(AssetIcon.salt, color: Theme.of(context).primaryColor, size: 22.0),
-            title: Text('ภาพรวม', style: TextStyle(color: _currentIndex == 0 ? Theme.of(context).primaryColor : Colors.grey)),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.chartBar, color: Colors.grey.shade400, size: 18.0),
-            title: Text('สถิติ', style: TextStyle(color: _currentIndex == 1 ? Theme.of(context).primaryColor : Colors.grey)),
-            activeIcon: Icon(FontAwesomeIcons.chartBar, color: Theme.of(context).primaryColor, size: 18.0),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.smile, color: Colors.grey.shade400, size: 18.0),
-            title: Text('สุขภาพจิต', style: TextStyle(color: _currentIndex == 2 ? Theme.of(context).primaryColor : Colors.grey)),
-            activeIcon: Icon(FontAwesomeIcons.smile, color: Theme.of(context).primaryColor, size: 18.0),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.trophy, color: Colors.grey.shade400, size: 18.0),
-            activeIcon: Icon(FontAwesomeIcons.trophy, color: Theme.of(context).primaryColor, size: 18.0),
-            title: Text('ความสำเร็จ', style: TextStyle(color: _currentIndex == 3 ? Theme.of(context).primaryColor : Colors.grey)),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.newspaper, color: Colors.grey.shade400, size: 18.0),
-            activeIcon: Icon(FontAwesomeIcons.newspaper, color: Theme.of(context).primaryColor, size: 18.0),
-            title: Text('ข่าวสาร', style: TextStyle(color: _currentIndex == 4 ? Theme.of(context).primaryColor : Colors.grey)),
-          ),
-        ],
+        items: widget.navigationItems
+            .map(
+              (navigation) => BottomNavigationBarItem(
+                    icon: navigation.bottomNavigationBarIcon,
+                    activeIcon: navigation.bottomNavigationBarActiveIcon,
+                    title: navigation.bottomNavigationBarTitle,
+                  ),
+            )
+            .toList(),
       ),
     );
   }
 }
 
 class NavigationViewModel {
-  BehaviorSubject<List<Achievement>> achievements;
+  BehaviorSubject<List<Achievement>> newAchievementUnlockedStream;
   BehaviorSubject<List<MentalHealth>> mentalHealthsStream;
   BehaviorSubject<User> userStream;
   User user;
 
   NavigationViewModel({
-    this.achievements,
+    this.newAchievementUnlockedStream,
     this.mentalHealthsStream,
     this.userStream,
     this.user,
@@ -173,7 +160,7 @@ class NavigationViewModel {
 
   static NavigationViewModel fromStore(Store<AppState> store) {
     return NavigationViewModel(
-      achievements: store.state.achievementsRecentlyUnlockedStream,
+      newAchievementUnlockedStream: store.state.achievementsRecentlyUnlockedStream,
       mentalHealthsStream: store.state.mentalHealthsStream,
       userStream: store.state.userStream,
       user: store.state.user,

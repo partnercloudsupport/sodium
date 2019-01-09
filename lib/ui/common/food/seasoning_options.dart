@@ -98,7 +98,6 @@ class SeasoningOptionsState extends State<SeasoningOptions> {
         SizedBox(height: 4.0),
         NumberBar(
           initial: selectedAmount,
-          min: 1,
           max: 15,
           values: 2,
           excessValue: 2000,

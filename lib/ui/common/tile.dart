@@ -8,6 +8,8 @@ class Tile extends StatelessWidget {
 
   final Function onLongPressed;
   final Function onPressed;
+  final EdgeInsets padding;
+  final Color backgroundColor;
 
   Tile({
     this.onLongPressed,
@@ -15,6 +17,8 @@ class Tile extends StatelessWidget {
     this.title,
     this.subtitle,
     this.trail,
+    this.padding,
+    this.backgroundColor,
   });
 
   @override
@@ -22,6 +26,7 @@ class Tile extends StatelessWidget {
     final heading = Expanded(
       flex: 10,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           title ?? Container(),
@@ -31,13 +36,13 @@ class Tile extends StatelessWidget {
     );
 
     final trailing = Expanded(
-      flex: 4,
+      flex: 5,
       child: trail,
     );
 
     final body = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         heading,
         trailing ?? Container(),
@@ -45,9 +50,11 @@ class Tile extends StatelessWidget {
     );
 
     return RippleContainer(
+      padding: padding,
       onLongPressed: onLongPressed,
       onPressed: onPressed,
       highlightColor: Colors.white70,
+      backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
       child: body,
     );
   }

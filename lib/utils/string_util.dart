@@ -37,23 +37,23 @@ double fractionTextToDouble(String fraction) {
     case '0':
       return 0.0;
     case '1/8':
-      return 0.125;
+      return 0.13;
     case '1/4':
       return 0.25;
     case '1/3':
       return 0.33;
     case '3/8':
-      return 0.375;
+      return 0.38;
     case '1/2':
       return 0.5;
     case '5/8':
-      return 0.625;
+      return 0.63;
     case '2/3':
       return 0.66;
     case '3/4':
       return 0.75;
     case '7/8':
-      return 0.875;
+      return 0.88;
   }
 }
 
@@ -62,21 +62,21 @@ String decimalToFraction(num fraction) {
 
   if (fraction == 0.0)
     return '0';
-  else if (fraction == 0.125)
+  else if (fraction == 0.13)
     return '1/8';
   else if (fraction == 0.25)
     return '1/4';
   else if (fraction == 0.33)
     return '1/3';
-  else if (fraction == 0.375)
+  else if (fraction == 0.38)
     return '3/8';
   else if (fraction == 0.5)
     return '1/2';
-  else if (fraction == 0.625)
+  else if (fraction == 0.63)
     return '5/8';
   else if (fraction == 0.66)
     return '2/3';
   else if (fraction == 0.75)
     return '3/4';
-  else if (fraction == 0.875) return '7/8';
+  else if (fraction == 0.88) return '7/8';
 }

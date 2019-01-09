@@ -46,21 +46,21 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: () => widget.onCancel(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                  ButtonTheme(
+                    minWidth: 20.0,
+                    child: FlatButton(
                       child: Text(widget.cancelText, style: TextStyle(color: Colors.grey)),
+                      onPressed: () => widget.onCancel(),
                     ),
                   ),
                   SizedBox(width: 8.0),
-                  GestureDetector(
-                    onTap: () => widget.onConfirm(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                  ButtonTheme(
+                    minWidth: 20.0,
+                    child: FlatButton(
                       child: Text(widget.confirmText, style: TextStyle(color: Theme.of(context).primaryColor)),
+                      onPressed: () => widget.onConfirm(),
                     ),
-                  ),
+                  )
                 ],
               ),
             ],

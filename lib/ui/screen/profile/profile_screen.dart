@@ -6,10 +6,9 @@ import 'package:sodium/data/model/user.dart';
 import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/redux/user/user_action.dart';
 import 'package:sodium/ui/common/dialog/confirm_dialog.dart';
-import 'package:sodium/ui/common/loading/loading_dialog.dart';
-import 'package:sodium/ui/screen/profile/blood_pressure_section/blood_pressure_section_container.dart';
 import 'package:sodium/ui/screen/profile/profile_personal_section.dart';
 import 'package:sodium/ui/screen/profile/profile_sodium_section.dart';
+import 'package:sodium/utils/completers.dart';
 import 'package:sodium/utils/widget_utils.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -33,12 +32,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int _sodiumLimit;
 
   void _save() {
-    showDialog(
-      context: context,
-      builder: (context) => LoadingDialog(title: 'กำลังบันทึก..'),
-      barrierDismissible: false,
-    );
-
     final user = widget.viewModel.user.copyWith(
       name: _name,
       sodiumLimit: _sodiumLimit,
@@ -47,14 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       healthCondition: _healthCondition,
     );
 
-    Completer<Null> completer = Completer();
-    completer.future.then((_) {
-      hideDialog(context);
-      showToast('บันทึกแล้ว');
-    }).catchError((error) {
-      hideDialog(context);
-      showToast('บันทึกไม่สำเร็จ');
-    });
+    Completer<Null> completer = loadingCompleter(context, 'กำลังบันทึก..', 'บันทึกแล้ว', 'บันทึกไม่สำเร็จ');
 
     widget.viewModel.onSave(user, completer);
   }
@@ -70,10 +56,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             confirmText: 'ออกจากระบบ',
             cancelText: 'ยกเลิก',
             onCancel: () {
-              hideDialog(context);
+              popDialog(context);
             },
             onConfirm: () {
-              hideDialog(context);
+              popDialog(context);
               popScreen(context);
               widget.viewModel.onLogout();
             },
@@ -97,17 +83,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ข้อมูลส่วนตัว"),
+        title: Text("ตั้งค่า"),
+        elevation: 0.3,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.call_missed_outgoing),
-            onPressed: () => _logout(),
+            icon: Icon(Icons.done),
+            onPressed: () => _save(),
           )
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _save(),
-        child: Icon(Icons.done),
       ),
       backgroundColor: Colors.grey.shade100,
       body: ListView(
@@ -134,7 +117,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               });
             },
           ),
-          ProfileBloodPressureContainer(),
+          SizedBox(height: 8.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              FlatButton(
+                onPressed: () => _logout(),
+                child: Text('ออกจากระบบ', style: TextStyle(color: Theme.of(context).primaryColor)),
+              ),
+            ],
+          ),
         ],
       ),
     );

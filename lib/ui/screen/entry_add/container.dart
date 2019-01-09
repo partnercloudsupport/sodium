@@ -6,13 +6,15 @@ import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/redux/food/food_action.dart';
 import 'package:sodium/ui/screen/entry_add/screen.dart';
 
-class FoodAddContainer extends StatelessWidget {
+class AddEntryContainer extends StatelessWidget {
+  final bool editing;
   final Food food;
   final DateTime dateTime;
 
-  FoodAddContainer({
+  AddEntryContainer({
     this.food,
     this.dateTime,
+    this.editing = false,
   });
 
   @override
@@ -27,6 +29,7 @@ class FoodAddContainer extends StatelessWidget {
       builder: (BuildContext context, FoodAddScreenViewModel viewModel) {
         return AddEntryScreen(
           food: food,
+          editing: editing,
           viewModel: viewModel,
           dateTime: dateTime,
         );

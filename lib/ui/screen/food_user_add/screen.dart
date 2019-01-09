@@ -56,11 +56,11 @@ class _MyFoodAddScreenState extends State<MyFoodAddScreen> {
 
     final Completer<Null> completer = Completer();
     completer.future.then((_) {
-      hideDialog(context);
+      popDialog(context);
       popScreen(context);
       showToast('บันทึกแล้ว');
     }).catchError((error) {
-      hideDialog(context);
+      popDialog(context);
       showToast('บันทึกไม่สำเร็จ ลองอีกครั้ง');
     });
 
@@ -100,14 +100,16 @@ class _MyFoodAddScreenState extends State<MyFoodAddScreen> {
     );
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.done),
-        onPressed: _save,
-      ),
       appBar: AppBar(
         centerTitle: true,
         title: Text('เพิ่มอาหาร'),
         elevation: .3,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.done),
+            onPressed: _save,
+          )
+        ],
       ),
       backgroundColor: Colors.grey.shade100,
       body: SingleChildScrollView(
@@ -120,7 +122,7 @@ class _MyFoodAddScreenState extends State<MyFoodAddScreen> {
                 child: _form,
               ),
             ),
-            SeasoningContainer(
+            SeasoningSelectionSectionContainer(
               onSelected: (seasonings, totalSodium) {
                 setState(() {
                   _selectedSeasonings = seasonings;

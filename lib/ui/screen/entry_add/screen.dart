@@ -17,19 +17,19 @@ import 'package:sodium/redux/ui/food_add/food_add_state.dart';
 import 'package:sodium/ui/common/info_item.dart';
 import 'package:sodium/ui/common/loading/loading.dart';
 import 'package:sodium/ui/common/loading/loading_container.dart';
-import 'package:sodium/ui/common/loading/loading_dialog.dart';
 import 'package:sodium/ui/common/number_bar.dart';
-import 'package:sodium/ui/common/ripple_button.dart';
+import 'package:sodium/ui/common/ripple.dart';
 import 'package:sodium/ui/common/section/section.dart';
 import 'package:sodium/ui/common/section/section_divider.dart';
 import 'package:sodium/ui/seasoning_section/seasoning_container.dart';
+import 'package:sodium/utils/completers.dart';
 import 'package:sodium/utils/date_time_util.dart';
-import 'package:sodium/utils/widget_utils.dart';
 
 class AddEntryScreen extends StatefulWidget {
   static final String route = '/food_detail';
 
   final Food food;
+  final bool editing;
   final FoodAddScreenViewModel viewModel;
   final DateTime dateTime;
 
@@ -37,6 +37,7 @@ class AddEntryScreen extends StatefulWidget {
     @required this.food,
     @required this.viewModel,
     @required this.dateTime,
+    this.editing = false,
   });
 
   @override
@@ -47,7 +48,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
   double _serving = 1;
   List<Seasoning> _selectedSeasonings;
   int _selectedSeasoningTotalSodium;
-  DateTime dateTime;
+  DateTime _dateTime;
 
   double get totalSodiumWithSeasoning => ((widget.food.isLocal ? widget.food.sodium.toDouble() : widget.viewModel.foodSearchSelected.sodium.toDouble()) * _serving) + _selectedSeasoningTotalSodium;
 
@@ -68,7 +69,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
       dateFormat: 'dd-mmmm-yyyy',
       onConfirm: (year, month, date) {
         setState(() {
-          dateTime = DateTime(year, month, date);
+          _dateTime = DateTime(year, month, date);
         });
       },
     );
@@ -120,39 +121,27 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
   }
 
   void _save(Food food) async {
-    showDialog(
-      context: context,
-      builder: (context) => LoadingDialog(title: 'กำลังบันทึก'),
-      barrierDismissible: false,
-    );
-
     final _food = food.copyWith(
       serving: _serving,
       totalSodium: totalSodiumWithSeasoning.toInt(),
       seasonings: _selectedSeasonings,
-      dateTime: dateTime,
+      dateTime: _dateTime,
     );
 
-    final Completer<CreateEntryResponse> completer = Completer();
-    completer.future.then((CreateEntryResponse response) {
-      hideDialog(context);
-      popScreen(context);
-      showToast('บันทึกแล้ว');
-    }).catchError((error) {
-      hideDialog(context);
-      showToast('บันทึกไม่สำเร็จ ลองอีกครั้ง');
-    });
+    final Completer<CreateEntryResponse> completer = loadingThenPopCompleter(context, 'กำลังบันทึก..', 'บันทึกแล้ว', 'บันทึกไม่สำเร็จ');
 
-    widget.viewModel.onSave(_food, completer);
+    if (widget.editing) {
+      widget.viewModel.onUpdate(_food, completer);
+    } else {
+      widget.viewModel.onCreate(_food, completer);
+    }
   }
 
   Widget _buildLoadingView(LoadingStatus loadingStatus) {
     return LoadingContainer(
       loadingStatus: loadingStatus,
       loadingContent: Loading(title: 'กำลังโหลด'),
-      initialContent: SingleChildScrollView(
-        child: _buildContent(widget.viewModel.foodSearchSelected),
-      ),
+      initialContent: _buildContent(widget.viewModel.foodSearchSelected),
     );
   }
 
@@ -199,13 +188,13 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            '${widget.food.type}',
+            'วันที่',
             style: Style.description,
           ),
-          Text(
-            'โซเดียมรวม',
-            style: Style.description,
-          )
+          GestureDetector(
+            child: Text('${toHumanReadableDate(_dateTime)}', style: TextStyle(color: Theme.of(context).primaryColor)),
+            onTap: () => _showDatePicker(),
+          ),
         ],
       ),
     );
@@ -270,7 +259,6 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
         children: <Widget>[
           NumberBar(
             initial: _serving,
-            min: 1,
             max: 15,
             values: food.sodium,
             excessValue: widget.viewModel.user.sodiumLimit - widget.viewModel.todayEatenSodium,
@@ -278,7 +266,6 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
             inactiveColor: Colors.grey.shade300,
             onValueChange: (value) {
               setState(() => _serving = value);
-//              print('${double.parse(((_serving * food.sodium) / widget.viewModel.user.sodiumLimit).toString())}');
             },
           ),
           SizedBox(height: 12.0),
@@ -302,32 +289,42 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
     );
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 4.0),
-        nameSection,
-        SizedBox(height: 4.0),
-        servingSection,
-        SizedBox(height: 4.0),
-        SeasoningContainer(
-          onSelected: (seasonings, totalSodium) {
-            setState(() {
-              _selectedSeasonings = seasonings;
-              _selectedSeasoningTotalSodium = totalSodium;
-            });
-          },
+        Expanded(
+          child: ListView(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(height: 4.0),
+                  nameSection,
+                  SizedBox(height: 4.0),
+                  servingSection,
+                  SizedBox(height: 4.0),
+                  SeasoningSelectionSectionContainer(
+                    onSelected: (seasonings, totalSodium) {
+                      setState(() {
+                        _selectedSeasonings = seasonings;
+                        _selectedSeasoningTotalSodium = totalSodium;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-        SizedBox(height: 16.0),
-//        progressSection,
-//        SizedBox(height: 16.0),
-        RippleButton(
-          text: "บันทึก",
+        RippleContainer(
           backgroundColor: Theme.of(context).primaryColor,
           highlightColor: Palette.highlight,
-          textColor: Colors.white,
-          onPress: () => _save(food),
+          child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            width: double.infinity,
+            child: Text('บันทึก', style: TextStyle(color: Colors.white)),
+          ),
+          onPressed: () => _save(food),
         ),
-        SizedBox(height: 32.0),
       ],
     );
   }
@@ -339,7 +336,12 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
     _selectedSeasonings = [];
     _selectedSeasoningTotalSodium = 0;
 
-    dateTime = widget.dateTime ?? DateTime.now();
+    _dateTime = widget.dateTime ?? DateTime.now();
+
+    if (widget.editing) {
+      _dateTime = widget.food.dateTime;
+      _serving = widget.food.serving;
+    }
   }
 
   @override
@@ -348,20 +350,11 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
       appBar: AppBar(
         title: Text('เพิ่มบันทึกอาหาร'),
         elevation: .75,
-        actions: <Widget>[
-          Center(
-            child: GestureDetector(
-              child: Text('${toHumanReadableDate(dateTime)}', style: TextStyle(color: Colors.white)),
-              onTap: () => _showDatePicker(),
-            ),
-          ),
-          SizedBox(width: 8.0),
-        ],
       ),
       backgroundColor: Colors.grey.shade100,
       body: widget.food.isLocal
-          ? SingleChildScrollView(
-              child: _buildContent(widget.food),
+          ? _buildContent(
+              widget.food,
             )
           : _buildLoadingView(
               widget.viewModel.state.loadingStatus,
@@ -376,7 +369,8 @@ class FoodAddScreenViewModel {
   final FoodAddState state;
   final int todayEatenSodium;
   final List<Seasoning> seasonings;
-  final Function(Food food, Completer<CreateEntryResponse> completer) onSave;
+  final Function(Food food, Completer<CreateEntryResponse> completer) onCreate;
+  final Function(Food food, Completer<CreateEntryResponse> completer) onUpdate;
 
   FoodAddScreenViewModel({
     @required this.foodSearchSelected,
@@ -384,7 +378,8 @@ class FoodAddScreenViewModel {
     @required this.todayEatenSodium,
     @required this.seasonings,
     @required this.state,
-    @required this.onSave,
+    @required this.onCreate,
+    this.onUpdate,
   });
 
   static FoodAddScreenViewModel fromStore(Store<AppState> store) {
@@ -394,7 +389,8 @@ class FoodAddScreenViewModel {
       todayEatenSodium: todayEatenSodiumSelector(store.state.entries),
       seasonings: store.state.seasonings,
       state: store.state.uiState.foodAddState,
-      onSave: (Food food, Completer<CreateEntryResponse> completer) => store.dispatch(CreateEntry(food, completer)),
+      onCreate: (Food food, Completer<CreateEntryResponse> completer) => store.dispatch(CreateEntry(food, completer)),
+      onUpdate: (Food food, Completer<CreateEntryResponse> completer) => store.dispatch(UpdateEntry(food, completer)),
     );
   }
 }

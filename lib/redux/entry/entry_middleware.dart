@@ -10,11 +10,13 @@ List<Middleware<AppState>> createEntryMiddleware(
   SharedPreferencesRepository sharedPrefRepository,
 ) {
   final createEntry = _createEntry(entryRepository);
+  final updateEntry = _updateEntry(entryRepository);
   final fetchEntries = _fetchEntries(entryRepository);
   final deleteEntry = _deleteEntry(entryRepository);
 
   return [
     TypedMiddleware<AppState, CreateEntry>(createEntry),
+    TypedMiddleware<AppState, UpdateEntry>(updateEntry),
     TypedMiddleware<AppState, FetchEntries>(fetchEntries),
     TypedMiddleware<AppState, DeleteEntry>(deleteEntry),
   ];
@@ -27,8 +29,25 @@ Middleware<AppState> _createEntry(EntryRepository entryRepository) {
         await entryRepository.createEntry(action.food);
         action.completer.complete(null);
 
-        store.dispatch(FetchAchievements());
         store.dispatch(FetchRecentlyUnlockedAcchivements());
+        store.dispatch(FetchEntries());
+      } catch (error) {
+        print(error);
+        action.completer.completeError(error);
+      }
+
+      next(action);
+    }
+  };
+}
+
+Middleware<AppState> _updateEntry(EntryRepository entryRepository) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is UpdateEntry) {
+      try {
+        await entryRepository.updateEntry(action.food);
+        action.completer.complete(null);
+
         store.dispatch(FetchEntries());
       } catch (error) {
         print(error);

@@ -19,6 +19,9 @@ class _UserInfoBloodPressureState extends State<UserInfoBloodPressure> {
   TextEditingController _systolicController;
   TextEditingController _diastolicController;
 
+  FocusNode _systolicFocusNode;
+  FocusNode _diastolicFocusNode;
+
   int _systolic;
   int _diastolic;
 
@@ -77,6 +80,9 @@ class _UserInfoBloodPressureState extends State<UserInfoBloodPressure> {
 
     _systolicController = TextEditingController();
     _diastolicController = TextEditingController();
+
+    _systolicFocusNode = FocusNode();
+    _diastolicFocusNode = FocusNode();
   }
 
   @override
@@ -112,23 +118,19 @@ class _UserInfoBloodPressureState extends State<UserInfoBloodPressure> {
                         Row(
                           children: <Widget>[
                             Expanded(
-                              child: GestureDetector(
-                                behavior: HitTestBehavior.opaque,
-                                onTap: () => _showSystolicPicker(),
-                                child: TextFormField(
-                                  enabled: false,
-                                  enableInteractiveSelection: true,
-                                  controller: _systolicController,
-                                  keyboardType: TextInputType.number,
-                                  textInputAction: TextInputAction.next,
-                                  decoration: Style.textFieldDecoration,
-                                  textAlign: TextAlign.center,
-                                  validator: (String value) => value.isEmpty ? 'กรุณากรอกระดับความดันโลหิต' : null,
-                                  style: Theme.of(context).textTheme.subhead.copyWith(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                ),
+                              child: TextFormField(
+                                enableInteractiveSelection: true,
+                                controller: _systolicController,
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.next,
+                                decoration: Style.textFieldDecoration,
+                                textAlign: TextAlign.center,
+                                validator: (String value) => value.isEmpty ? 'กรุณากรอกระดับความดันโลหิต' : null,
+                                onFieldSubmitted: (String value) => FocusScope.of(context).requestFocus(_diastolicFocusNode),
+                                style: Theme.of(context).textTheme.subhead.copyWith(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                               ),
                             ),
                             Text('มก.', style: Style.description)
@@ -139,24 +141,18 @@ class _UserInfoBloodPressureState extends State<UserInfoBloodPressure> {
                         Row(
                           children: <Widget>[
                             Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  _showDiastolicPicker();
-                                },
-                                behavior: HitTestBehavior.opaque,
-                                child: TextFormField(
-                                  enabled: false,
-                                  controller: _diastolicController,
-                                  keyboardType: TextInputType.number,
-                                  textInputAction: TextInputAction.next,
-                                  decoration: Style.textFieldDecoration,
-                                  textAlign: TextAlign.center,
-                                  validator: (String value) => value.isEmpty ? 'กรุณากรอกระดับความดันโลหิต' : null,
-                                  style: Theme.of(context).textTheme.subhead.copyWith(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                ),
+                              child: TextFormField(
+                                focusNode: _diastolicFocusNode,
+                                controller: _diastolicController,
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.next,
+                                decoration: Style.textFieldDecoration,
+                                textAlign: TextAlign.center,
+                                validator: (String value) => value.isEmpty ? 'กรุณากรอกระดับความดันโลหิต' : null,
+                                style: Theme.of(context).textTheme.subhead.copyWith(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                               ),
                             ),
                             Text('มก.', style: Style.description)

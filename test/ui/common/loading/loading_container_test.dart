@@ -31,7 +31,7 @@ main() {
     );
   }
 
-  group('When all paremeter is provided', () {
+  group('Loading container test with all paremeter is provided', () {
     testWidgets('When LoadingStatus is equal to loading, should see loading content', (WidgetTester tester) async {
       await _pumpLoadingContainerByStatus(
         LoadingStatus.loading,
@@ -85,7 +85,7 @@ main() {
     });
   });
 
-  group('When some paremeter is provided', () {
+  group('Loading container test with some paremeter is provided ', () {
     testWidgets('When LoadingStatus is equal to success and success content is not provided , should see initial content', (WidgetTester tester) async {
       await _pumpLoadingContainerByStatus(
         LoadingStatus.success,

@@ -1,3 +1,4 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:redux/redux.dart';
 import 'package:sodium/data/repository/achievement_repository.dart';
 import 'package:sodium/data/repository/blood_pressure_repository.dart';
@@ -19,6 +20,34 @@ import 'package:sodium/redux/mental/mental_middleware.dart';
 import 'package:sodium/redux/news/news_middleware.dart';
 import 'package:sodium/redux/seasoning/seasoning_middleware.dart';
 import 'package:sodium/redux/user/user_middleware.dart';
+import 'package:sodium/service/notification_service.dart';
+
+FlutterLocalNotificationsPlugin initLocalNotification() {
+  final initializationSettingsAndroid = AndroidInitializationSettings('mipmap/ic_launcher');
+  final initializationSettingsIOS = IOSInitializationSettings();
+  final initializationSettings = InitializationSettings(initializationSettingsAndroid, initializationSettingsIOS);
+
+  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: null);
+
+  return flutterLocalNotificationsPlugin;
+}
+
+NotificationDetails initNotificationDetail() {
+  final androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    'repeatDailyAtTime channel id',
+    'repeatDailyAtTime channel name',
+    'repeatDailyAtTime description',
+    importance: Importance.Max,
+    priority: Priority.Max,
+  );
+  final iOSPlatformChannelSpecifics = IOSNotificationDetails();
+
+  return NotificationDetails(
+    androidPlatformChannelSpecifics,
+    iOSPlatformChannelSpecifics,
+  );
+}
 
 Future<Store<AppState>> createStore() async {
   final userRepository = UserRepository();
@@ -31,12 +60,14 @@ Future<Store<AppState>> createStore() async {
   final newsRepository = NewsRepository();
   final bloodPressureRepository = BloodPressureRepository();
 
+  final notificationService = NotificationService(initLocalNotification(), initNotificationDetail());
+
   final store = Store<AppState>(
     appReducer,
     initialState: AppState.initial(),
     middleware: []
 //      ..add(remote)
-      ..addAll(createAppMiddleware(userRepository, prefsRepository))
+      ..addAll(createAppMiddleware(userRepository, prefsRepository, notificationService))
       ..addAll(createUserMiddleware(userRepository, prefsRepository))
       ..addAll(createEntryMiddleware(entryRepository, prefsRepository))
       ..addAll(createFoodMiddleware(foodRepository, prefsRepository))

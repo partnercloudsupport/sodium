@@ -36,11 +36,11 @@ class _MentalHealthSurveyScreenState extends State<MentalHealthSurveyScreen> {
 
     final Completer<Null> completer = Completer();
     completer.future.then((_) {
-      hideDialog(context);
+      popDialog(context);
       popScreen(context);
       showToast('บันทึกแล้ว');
     }).catchError((error) {
-      hideDialog(context);
+      popDialog(context);
       showToast('บันทึกไม่สำเร็จ ลองอีกครั้ง');
     });
 

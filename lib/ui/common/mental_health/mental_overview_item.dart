@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sodium/constant/styles.dart';
 import 'package:sodium/utils/widget_utils.dart';
 
 class MentalOverviewItem extends StatelessWidget {
@@ -14,20 +13,21 @@ class MentalOverviewItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final face = Container(
-      width: 45,
-      height: 45,
+      width: 32,
+      height: 32,
       alignment: Alignment.center,
       decoration: BoxDecoration(shape: BoxShape.circle, color: mentalLevelToColor(level)),
       child: Icon(
         mentalLevelToIconData(level),
         color: Colors.white,
-        size: 32.0,
+        size: 25.0,
       ),
     );
 
     final text = Text(
       '$label',
-      style: Style.description,
+      style: TextStyle(color: Colors.grey.shade800),
+//      style: Style.description,
     );
 
     return Column(

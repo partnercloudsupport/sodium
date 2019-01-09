@@ -12,20 +12,20 @@ import 'package:sodium/ui/common/tile.dart';
 import 'package:sodium/utils/string_util.dart';
 import 'package:sodium/utils/widget_utils.dart';
 
-class SeasoningSection extends StatefulWidget {
+class SeasoningSelectionSection extends StatefulWidget {
   final SeasoningSectionViewModel viewModel;
   final Function(List<Seasoning> seasonings, int totalSodium) onSelected;
 
-  SeasoningSection({
+  SeasoningSelectionSection({
     this.viewModel,
     this.onSelected,
   });
 
   @override
-  _SeasoningSectionState createState() => _SeasoningSectionState();
+  _SeasoningSelectionSectionState createState() => _SeasoningSelectionSectionState();
 }
 
-class _SeasoningSectionState extends State<SeasoningSection> {
+class _SeasoningSelectionSectionState extends State<SeasoningSelectionSection> {
   List<Seasoning> selectedSeasonings = [];
   int selectedSeasoningTotalSodium = 0;
 
@@ -33,7 +33,7 @@ class _SeasoningSectionState extends State<SeasoningSection> {
     final seasoningOptions = SeasoningOptions(
       seasoning: seasoning,
       onSave: (amount, unit) {
-        hideDialog(context);
+        popDialog(context);
 
         setState(() {
           final selectedSeasoning = seasoning.copyWith(
@@ -84,14 +84,15 @@ class _SeasoningSectionState extends State<SeasoningSection> {
 
   List<Widget> _buildSelectedSeasonings() {
     return selectedSeasonings
-        .map((Seasoning seasoning) => Padding(
-              padding: EdgeInsets.only(bottom: 14.0),
-              child: Tile(
+        .map(
+          (Seasoning seasoning) => Tile(
                 title: Text('${seasoning.name}', style: Style.tileTitle),
                 subtitle: Text('${decimalToFraction(seasoning.selectedAmount)} ${seasoning.unit.name}', style: Style.description),
                 trail: Text(' ${seasoning.totalSodium} มก.', style: Style.description, textAlign: TextAlign.right),
+                backgroundColor: Colors.white,
+                padding: EdgeInsets.only(bottom: 12.0),
               ),
-            ))
+        )
         .toList();
   }
 
@@ -161,7 +162,6 @@ class _SeasoningSectionState extends State<SeasoningSection> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text('การปรุงรสด้วยโซเดียม', style: Style.title),
-//          Text('$selectedSeasoningTotalSodium มก.', style: Style.descriptionPrimary),
         ],
       ),
       body: _buildSeasoningSection(),

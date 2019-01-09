@@ -7,11 +7,10 @@ import 'package:sodium/constant/key.dart';
 import 'package:sodium/constant/styles.dart';
 import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/redux/user/user_action.dart';
-import 'package:sodium/ui/common/loading/loading_dialog.dart';
 import 'package:sodium/ui/common/ripple_button.dart';
 import 'package:sodium/ui/screen/register/register_screen.dart';
+import 'package:sodium/utils/completers.dart';
 import 'package:sodium/utils/string_util.dart';
-import 'package:sodium/utils/widget_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String route = '/login';
@@ -45,20 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    showDialog(
-      context: context,
-      builder: (context) => LoadingDialog(title: 'กำลังเข้าสู่ระบบ..'),
-      barrierDismissible: false,
-    );
-
-    Completer<Null> completer = Completer();
-    completer.future.then((_) {
-      Navigator.of(context).pop();
-      showToast('เข้าสู่ระบบสำเร็จ');
-    }).catchError((error) {
-      Navigator.of(context).pop();
-      showToast('เข้าสู่ระบบไม่สำเร็จ');
-    });
+    Completer<Null> completer = loadingCompleter(context, 'กำลังเข้าสู่ระบบ..', 'เข้าสู่ระบบสำเร็จ', 'เข้าสู่ระบบไม่สำเร็จ');
 
     widget.viewModel.onLogin(
       _emailController.text,

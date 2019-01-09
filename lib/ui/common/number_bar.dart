@@ -3,7 +3,6 @@ import 'package:sodium/utils/string_util.dart';
 
 // 1/8 1/4 1/3 3/8 1/2 5/8 2/3 3/4 7/8
 class NumberBar extends StatefulWidget {
-  final int min;
   final int max;
   final initial;
   final int excessValue;
@@ -13,13 +12,12 @@ class NumberBar extends StatefulWidget {
   final Color activeColor;
 
   NumberBar({
-    this.min = 1,
-    this.max = 7,
+    @required this.onValueChange,
+    this.max = 10,
     this.excessValue = 2500,
     this.initial = 1,
     this.activeColor,
     this.inactiveColor,
-    @required this.onValueChange,
     this.values,
   });
 
@@ -28,42 +26,51 @@ class NumberBar extends StatefulWidget {
 }
 
 class _NumberBarState extends State<NumberBar> {
-  double _selectedValue = 1;
+  double _currentValue = 1;
 
   List<double> _fractionNumbers = [
-    0.125,
+    0.13,
     0.25,
     0.33,
-    0.375,
+    0.38,
     0.5,
-    0.625,
+    0.63,
     0.66,
     0.75,
-    0.875,
+    0.88,
   ];
+
+  void _changeCurrentValue(double value) {
+    setState(() {
+      _currentValue = value.toDouble();
+    });
+
+    widget.onValueChange(value.toDouble());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _currentValue = widget.initial;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> selectors = [];
+    final List<Widget> numberPickers = [];
 
     _fractionNumbers.forEach((i) {
       final bool excess = (i * widget.values) > widget.excessValue;
 
-      selectors.add(
+      numberPickers.add(
         GestureDetector(
-          onTap: () {
-            setState(() {
-              _selectedValue = i;
-            });
-
-            widget.onValueChange(i.toDouble());
-          },
+          onTap: () => _changeCurrentValue(i),
           child: Padding(
             padding: EdgeInsets.only(right: 8.0),
             child: CirclePicker(
               inactiveColor: excess ? Colors.red.shade100 : widget.inactiveColor,
               activeColor: excess ? Colors.redAccent : widget.activeColor,
-              selected: _selectedValue == i ? true : false,
+              selected: _currentValue == i,
               label: decimalToFraction(i),
             ),
           ),
@@ -74,21 +81,15 @@ class _NumberBarState extends State<NumberBar> {
     for (int i = 1; i <= widget.max; ++i) {
       final bool excess = (i * widget.values) > widget.excessValue;
 
-      selectors.add(
+      numberPickers.add(
         GestureDetector(
-          onTap: () {
-            setState(() {
-              _selectedValue = i.toDouble();
-            });
-
-            widget.onValueChange(i.toDouble());
-          },
+          onTap: () => _changeCurrentValue(i.toDouble()),
           child: Padding(
             padding: EdgeInsets.only(right: 8.0),
             child: CirclePicker(
               inactiveColor: excess ? Colors.red.shade100 : widget.inactiveColor,
               activeColor: excess ? Colors.redAccent : widget.activeColor,
-              selected: _selectedValue == i ? true : false,
+              selected: _currentValue == i,
               label: i.toString(),
             ),
           ),
@@ -100,7 +101,7 @@ class _NumberBarState extends State<NumberBar> {
       height: 40.0,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        children: selectors,
+        children: numberPickers,
       ),
     );
   }

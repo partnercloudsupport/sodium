@@ -24,7 +24,7 @@ class Palette {
 
 //  static final Color primary = Color(0xFF8DB763);
 
-  static final Color highlight = Colors.redAccent.shade400;
+  static final Color highlight = Color(0xFF45D99F);
 
   static final Color sad = Color(0xFFFF4641);
   static final Color meh = Colors.purple;

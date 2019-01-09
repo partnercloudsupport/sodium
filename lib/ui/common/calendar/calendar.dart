@@ -103,8 +103,8 @@ class _CalendarState extends State<Calendar> {
         Text(
           displayMonth,
           style: TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontSize: 20.0,
+            color: Colors.grey.shade800,
+            fontSize: 16.0,
           ),
         ),
         rightInnerIcon ?? Container(),
@@ -140,7 +140,7 @@ class _CalendarState extends State<Calendar> {
           CalendarTile(
             isDayOfWeek: true,
             dayOfWeek: day,
-            dayOfWeekStyles: TextStyle(color: Theme.of(context).primaryColor),
+            dayOfWeekStyles: TextStyle(color: Colors.grey.shade800),
           ),
         );
       },

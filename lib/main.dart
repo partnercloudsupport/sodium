@@ -5,6 +5,9 @@ import 'package:sodium/constant/styles.dart';
 import 'package:sodium/redux/app/app_action.dart';
 import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/redux/store.dart';
+import 'package:sodium/ui/screen/about/about_screen.dart';
+import 'package:sodium/ui/screen/blood_pressure_section/blood_pressure_screen.dart';
+import 'package:sodium/ui/screen/blood_pressure_section/blood_pressure_section_container.dart';
 import 'package:sodium/ui/screen/food_search/container.dart';
 import 'package:sodium/ui/screen/food_search/screen.dart';
 import 'package:sodium/ui/screen/food_user_add/container.dart';
@@ -20,6 +23,7 @@ import 'package:sodium/ui/screen/profile/profile_container.dart';
 import 'package:sodium/ui/screen/profile/profile_screen.dart';
 import 'package:sodium/ui/screen/register/register_container.dart';
 import 'package:sodium/ui/screen/register/register_screen.dart';
+import 'package:sodium/ui/screen/splash/splash_screen.dart';
 import 'package:sodium/ui/screen/user_info_step/user_info_step_container.dart';
 import 'package:sodium/ui/screen/user_info_step/user_info_step_screen.dart';
 
@@ -66,9 +70,9 @@ class SodiumAppState extends State<SodiumApp> {
       store: widget.store,
       child: MaterialApp(
         showSemanticsDebugger: false,
-        title: 'Sodium',
+        title: 'Mind Sodium',
         theme: themeData,
-        home: MainContainer(),
+        home: SplashScreen(),
         routes: {
           MainScreen.route: (_) => MainContainer(),
           OverviewScreen.route: (_) => OverviewContainer(),
@@ -80,6 +84,9 @@ class SodiumAppState extends State<SodiumApp> {
           ProfileScreen.route: (_) => ProfileContainer(),
           RegisterScreen.route: (_) => RegisterContainer(),
           UserInfoStepScreen.route: (_) => UserStepInfoContainer(),
+          BloodPressureScreen.route: (_) => BloodPressureContainer(),
+          SplashScreen.route: (_) => SplashScreen(),
+          AboutScreen.route: (_) => AboutScreen()
         },
       ),
     );

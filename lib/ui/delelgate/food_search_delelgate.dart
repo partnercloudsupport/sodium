@@ -70,18 +70,15 @@ class FoodSearchDelegate extends SearchDelegate<Food> {
     return ListView.separated(
       padding: EdgeInsets.zero,
       separatorBuilder: (BuildContext context, int index) {
-        return Divider();
+        return Divider(height: 1.0);
       },
       itemCount: foods == null ? 0 : foods.length,
       itemBuilder: (BuildContext context, int index) {
         final food = foods[index];
 
-        return Padding(
-          padding: index == 0 || index == foods.length ? EdgeInsets.only(top: 8.0, left: 16, right: 16.0) : EdgeInsets.symmetric(horizontal: 16.0),
-          child: FoodTile(
-            food: food,
-            onPressed: () => onFoodClick(food),
-          ),
+        return FoodTile(
+          food: food,
+          onPressed: () => onFoodClick(food),
         );
       },
     );
@@ -115,7 +112,7 @@ class FoodSearchDelegate extends SearchDelegate<Food> {
                   selected: false,
                   onTap: () {
                     query = category;
-                    hideDialog(context);
+                    popDialog(context);
                   },
                 ),
               ))

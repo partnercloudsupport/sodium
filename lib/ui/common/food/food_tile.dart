@@ -9,12 +9,14 @@ class FoodTile extends StatelessWidget {
   final Function onLongPressed;
   final Function onPressed;
   final bool search;
+  final EdgeInsets padding;
 
   FoodTile({
     this.food,
     this.onLongPressed,
     this.onPressed,
     this.search = true,
+    this.padding = const EdgeInsets.all(8.0),
   });
 
   FoodTile.selected({
@@ -22,6 +24,7 @@ class FoodTile extends StatelessWidget {
     this.onLongPressed,
     this.onPressed,
     this.search = false,
+    this.padding,
   });
 
   @override
@@ -70,6 +73,7 @@ class FoodTile extends StatelessWidget {
     );
 
     return RippleContainer(
+      padding: padding,
       onLongPressed: onLongPressed,
       onPressed: onPressed,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,

@@ -8,6 +8,7 @@ import 'package:sodium/data/model/user.dart';
 import 'package:sodium/redux/app/app_state.dart';
 import 'package:sodium/ui/common/shimmer_content.dart';
 import 'package:sodium/ui/common/trophy.dart';
+import 'package:sodium/ui/screen/entry_food_list/entry_food_list_container.dart';
 import 'package:sodium/ui/screen/food_search/container.dart';
 import 'package:sodium/utils/date_time_util.dart';
 
@@ -19,6 +20,17 @@ class WeekTrophy extends StatelessWidget {
   void _showEntryCreateScreen(DateTime datetime, BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (BuildContext context) => FoodSearchContainer(dateTime: datetime)),
+    );
+  }
+
+  void _showEntryFoods(DateTime datetime, BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (BuildContext context) => EntryFoodListContainer(
+              dateTime: datetime,
+            ),
+      ),
     );
   }
 
@@ -99,7 +111,7 @@ class WeekTrophy extends StatelessWidget {
 
       trophies.add(
         GestureDetector(
-          onTap: () => _showEntryCreateScreen(diffDate, context),
+          onTap: () => daySodium == 0 ? _showEntryCreateScreen(diffDate, context) : _showEntryFoods(diffDate, context),
           child: Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: Trophy(

@@ -53,7 +53,7 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with SingleTickerPr
 
   void _showFoodDetail(Food food) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => FoodAddContainer(
+      builder: (context) => AddEntryContainer(
             food: food,
             dateTime: widget.dateTime ?? DateTime.now(),
           ),

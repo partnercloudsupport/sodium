@@ -3,10 +3,10 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:sodium/data/model/seasoning.dart';
 import 'package:sodium/ui/seasoning_section/seasoning_section.dart';
 
-class SeasoningContainer extends StatelessWidget {
+class SeasoningSelectionSectionContainer extends StatelessWidget {
   final Function(List<Seasoning> seasonings, int totalSodium) onSelected;
 
-  SeasoningContainer({
+  SeasoningSelectionSectionContainer({
     this.onSelected,
   });
 
@@ -15,7 +15,7 @@ class SeasoningContainer extends StatelessWidget {
     return StoreConnector(
       converter: SeasoningSectionViewModel.fromStore,
       builder: (BuildContext context, SeasoningSectionViewModel viewModel) {
-        return SeasoningSection(
+        return SeasoningSelectionSection(
           viewModel: viewModel,
           onSelected: onSelected,
         );

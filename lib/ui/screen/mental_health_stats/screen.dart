@@ -58,7 +58,7 @@ class _MentalHealthStatsScreenState extends State<MentalHealthStatsScreen> {
         if (thisDayMentalHealths.isEmpty) {
           return Container(
             alignment: Alignment.center,
-            child: Text('${datetime.day}', style: TextStyle(color: Colors.grey.shade600)),
+            child: Text('${datetime.day}', style: TextStyle(color: Colors.grey.shade800)),
           );
         }
 
@@ -103,11 +103,6 @@ class _MentalHealthStatsScreenState extends State<MentalHealthStatsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('สุขภาพจิต'),
-        elevation: .3,
-      ),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
         child: ListView(

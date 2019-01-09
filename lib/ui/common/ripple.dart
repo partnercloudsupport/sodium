@@ -25,16 +25,15 @@ class RippleContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: margin,
-      padding: padding,
-      child: Material(
-        color: backgroundColor ?? Colors.white,
-        child: InkWell(
-          onLongPress: onLongPressed,
-          highlightColor: highlightColor ?? Colors.grey.shade300,
-          splashColor: splashColor ?? Colors.grey.shade300,
-          onTap: () => onPressed(),
+    return Material(
+      color: backgroundColor ?? Colors.white,
+      child: InkWell(
+        onLongPress: onLongPressed,
+        highlightColor: highlightColor ?? Colors.grey.shade300,
+        splashColor: splashColor ?? Colors.grey.shade300,
+        onTap: () => onPressed(),
+        child: Container(
+          padding: padding,
           child: child,
         ),
       ),
